@@ -2,13 +2,13 @@
     "identifier": "matt.cook.dart",
     "name": "Dart",
     "organization": "Matt Cook",
-    "description": "Advanced Dart language and Flutter support for Nova",
+    "description": "Dart and Flutter support for Nova",
     "version": "0.1",
     "categories": ["completions", "languages"],
     "license": "MIT",
     "repository": "https://github.com/sciencefidelity/Dart.novaextension",
     "bugs": "https://github.com/sciencefidelity/Dart.novaextension/issues",
-    "min_runtime": "7.0",
+    "min_runtime": "5.0",
     "activationEvents": [
         "onLanguage:dart",
         "onWorkspaceContains:pubspec.yaml"
