@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Adapted from:
+     - https://github.com/Dart-Code/Dart-Code/blob/master/syntaxes/dart.json
+     - https://github.com/dart-atom/dartlang/blob/master/grammars/dart.cson
+    
+    See Dart.xml.license
+ -->
+<syntax name="dart">
+    <meta>
+        <name>Dart</name>
+        <type>script</type>
+        <preferred-file-extension>dart</preferred-file-extension>
+        <scriptable shebang="#!/usr/bin/env dart" />
+    </meta>
+    
+    <detectors>
+        <extension priority="1.0">dart</extension>
+    </detectors>
+    
+    <indentation>
+        <increase>
+            <expression>(\{[^}\"']*$)|(\[[^\]\"']*$)|(\([^)\"']*$)</expression>
+        </increase>
+        <decrease>
+            <expression>^\s*(\s*/\*.*\*/\s*)*[\}\]\)\\]</expression>
+        </decrease>
+    </indentation>
+    
+    <comments>
+        <single>
+            <expression>//</expression>
+        </single>
+        <multiline>
+            <starts-with>
+                <expression>/*</expression>
+            </starts-with>
+            <ends-with>
+                <expression>*/</expression>
+            </ends-with>
+        </multiline>
+    </comments>
+    
+    <brackets>
+        <pair open="{" close="}" />
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+    </brackets>
+    
+    <surrounding-pairs>
+        <pair open="{" close="}" />
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+        <pair open="&lt;" close="&gt;" />
+        <pair open="&apos;" close="&apos;" />
+        <pair open="&quot;" close="&quot;" />
+        <pair open="`" close="`" />
+    </surrounding-pairs>
+    
+    <scopes>
+        <!-- Meta -->
+        <scope name="dart.preprocessor.script">
+            <symbol type="comment" />
+            <expression>^(#!.*)$</expression>
+        </scope>
+        <scope name="dart.keyword.other.import">
+            <symbol type="reference" />
+            <starts-with>
+                <expression>^\w*\b(library|import|part of|part|export)\b</expression>
+            </starts-with>
+            <ends-with>
+                <expression>(;)</expression>
+                <capture number="1" name="dart.punctuation.terminator" />
+            </ends-with>
+            <subscopes>
+                <scope name="dart.meta.declaration" optional="true">
+                    <expression>\b(as|show|hide)\b</expression>
+                    <capture number="1" name="dart.keyword.other.import" />
+                </scope>
+                <!-- TODO: `strings` collection -->
+                <!-- <include syntax="self" collection="strings" optional="true" /> -->
+                <include syntax="self" collection="comments" optional="true" />
+            </subscopes>
+        </scope>
+            
+        <include syntax="self" collection="comments" />
+        <include syntax="self" collection="blocks" />
+        <include syntax="self" collection="statements" />
+        <include syntax="self" collection="punctuation" />
+        <include syntax="self" collection="annotations" />
+        <include syntax="self" collection="keywords" />
+        <include syntax="self" collection="constants-and-special-vars" />
+        <!-- TODO: `strings` collection -->
+        <!-- <include syntax="self" collection="strings" optional="true" /> -->
+    </scopes>
+    
+    <collections>
+        <!-- TODO: Add `dartdoc` collection -->
+        <!-- Comments -->
+        <collection name="comments">
+            <!-- TODO: Add `dart.punctuation.definition.dart`? -->
+            <!-- TODO: <include syntax="self" collection="comments-doc-oldschool" optional="true" /> -->
+            <!-- TODO: <include syntax="self" collection="comments-doc" optional="true" /> -->
+            <include syntax="self" collection="comments-inline" optional="true" />
+        </collection>
+        <!-- TODO: Add `comments-doc-oldschool` and `comments-doc` -->
+        <collection name="comments-inline">
+            <scope name="dart.comment.line.double-slash" spell-check="true">
+                <expression>((\/\/).*)$</expression>
+            </scope>
+            
+            <include syntax="self" collection="comments-block" optional="true" />
+        </collection>
+        <collection name="comments-block">
+            <scope name="dart.comment.block" spell-check="true">
+                <starts-with>
+                    <expression>\/\*</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>\*\/</expression>
+                </ends-with>
+                
+                <include syntax="self" collection="comments-block" optional="true" />
+            </scope>
+        </collection>
+        
+        <!-- Blocks -->
+        <collection name="blocks">
+            <scope name="dart.block">
+                <symbol type="block">
+                    <context behavior="subtree" />
+                </symbol>
+                <starts-with>
+                    <expression>\{</expression>
+                    <capture number="0" name="dart.block.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\}</expression>
+                    <capture number="0" name="dart.block.bracket" />
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" />
+                </subscopes>
+            </scope>
+        </collection>
+        
+        <!-- Identifiers -->
+        <collection name="identifiers">
+            <scope name="dart.identifier">
+                <expression>[_$]*[a-zA-Z0-9_$]*</expression>
+            </scope>
+            <scope name="dart.identifier.pascal">
+                <expression>[_$]*[A-Z][a-zA-Z0-9_$]*</expression>
+            </scope>
+        </collection>
+        
+        <!-- Statements -->
+        <collection name="statements">
+            <scope name="dart.statement.variable-declaration">
+                <symbol type="variable" name-selector="dart.identifier" />
+                <starts-with>
+                    <expression>(covariant)?\s+(final|const|var)\s+([_$]*[a-zA-Z0-9_$]*)</expression>
+                    <capture number="1" name="dart.keyword" />
+                    <capture number="2" name="dart.keyword" />
+                    <capture number="3" name="dart.identifier" />
+                </starts-with>
+                <ends-with>
+                    <expression>([,|;])</expression>
+                    <capture number="1" name="dart.punctuation.terminator" />
+                </ends-with>
+            </scope>
+            <scope name="dart.statement.function-declaration">
+                <symbol type="function" name-selector="dart.identifier" />
+                <expression>(function)\s+([_$]*[a-zA-Z0-9_$]*)\s*\(</expression>
+                <capture number="1" name="dart.keyword" />
+                <capture number="2" name="dart.identifier" />
+            </scope>
+            <scope name="dart.statement.class-declaration">
+                <symbol type="class" name-selector="dart.identifier.pascal" />
+                <expression>(class)\s+(.*)\b</expression>
+                <capture number="1" name="dart.keyword" />
+                <capture number="2" name="dart.identifier.pascal" />
+            </scope>
+        </collection>
+        <collection name="expressions">
+        </collection>
+        
+        <!-- Annotations -->
+        <collection name="annotations">
+            <scope name="dart.storage.type.annotation">
+                <expression>@[a-zA-Z]+</expression>
+            </scope>
+        </collection>
+        
+        <!-- Constants & Special Variables -->
+        <collection name="constants-and-special-vars">
+            <scope name="dart.constant.language">
+                <symbol type="keyword" />
+                <strings>
+                    <string>true</string>
+                    <string>false</string>
+                    <string>null</string>
+                </strings>
+            </scope>
+            <scope name="dart.variable.language">
+                <symbol type="keyword" />
+                <strings>
+                    <string>this</string>
+                    <string>super</string>
+                </strings>
+            </scope>
+            <scope name="dart.constant.numeric">
+                <expression>((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)</expression>
+            </scope>
+            <scope name="dart.support.class">
+                <expression>([_$]*[A-Z][a-zA-Z0-9_$]*|bool\b|num\b|int\b|double\b|dynamic\b)</expression>
+            </scope>
+            <scope name="dart.entity.name.function">
+                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(&lt;|\(|\s+=>)</expression>
+                <capture number="1" name="dart.entity.name.function" />
+            </scope>
+        </collection>
+        
+        <!-- Keywords -->
+        <collection name="keywords">
+            <!-- TODO: Set Cut-Off Scopes for these (https://docs.nova.app/syntax-reference/scopes/#cut-off-scopes) -->
+            <!-- (?<!\\$) -->
+            <scope name="dart.keyword.control.catch-exception">
+                <symbol type="keyword" />
+                <strings>
+                    <string>try</string>
+                    <string>on</string>
+                    <string>catch</string>
+                    <string>finally</string>
+                    <string>throw</string>
+                    <string>rethrow</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.control">
+                <symbol type="keyword" />
+                <strings>
+                    <string>break</string>
+                    <string>case</string>
+                    <string>continue</string>
+                    <string>default</string>
+                    <string>do</string>
+                    <string>else</string>
+                    <string>for</string>
+                    <string>if</string>
+                    <string>in</string>
+                    <string>return</string>
+                    <string>switch</string>
+                    <string>while</string>
+                    
+                    <string>sync</string>
+                    <string>async</string>
+                    <string>await</string>
+                    <string>yield</string>
+                    
+                    <string>assert</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.cast">
+                <symbol type="keyword" />
+                <expression>\b(as)\b</expression>
+            </scope>
+            <scope name="dart.keyword.control.new">
+                <symbol type="keyword" />
+                <expression>\b(new)\b</expression>
+            </scope>
+            <scope name="dart.keyword.declaration">
+                <symbol type="keyword" />
+                <strings>
+                    <string>abstract</string>
+                    <string>class</string>
+                    <string>enum</string>
+                    <string>extends</string>
+                    <string>extension</string>
+                    <string>external</string>
+                    <string>factory</string>
+                    <string>implements</string>
+                    <string>get</string>
+                    <string>mixin</string>
+                    <string>native</string>
+                    <string>operator</string>
+                    <string>set</string>
+                    <string>typedef</string>
+                    <string>with</string>
+                    <string>covariant</string>
+                </strings>
+            </scope>
+            <!-- TODO: `keyword.operator` scope -->
+            <!-- TODO: `keyword.operator.ternary` scope -->
+            <scope name="dart.keyword.operator.bitwise">
+                <expression>(&lt;&lt;|&gt;&gt;&gt;?|~|\^|\||&amp;)</expression>
+            </scope>
+            <scope name="dart.keyword.operator.assignment.bitwise">
+                <expression>((&amp;|\\^|\\||&lt;&lt;|&gt;&gt;&gt;?)=)</expression>
+            </scope>
+            <scope name="dart.keyword.operator.closure">
+                <expression>=></expression>
+            </scope>
+            <scope name="dart.keyword.operator.comparison">
+                <strings>
+                    <string>==</string>
+                    <string>!=</string>
+                    <string>&lt;=?</string>
+                    <string>&gt;=?</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.operator.assignment.arithmetic">
+                <expression>([+*/%-]|\\~)=</expression>
+                <capture number="1" name="dart.keyword.operator.arithmetic" />
+            </scope>
+            <scope name="dart.keyword.operator.assignment">
+                <expression>=</expression>
+            </scope>
+            <scope name="dart.keyword.operator.increment-decrement">
+                <strings>
+                    <!-- Double hyphen -->
+                    <string>&#8208;&#8208;</string>
+                    <string>++</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.operator.arithmetic">
+                <strings>
+                    <string>-</string>
+                    <string>+</string>
+                    <string>*</string>
+                    <string>/</string>
+                    <string>~/</string>
+                    <string>%</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.operator.logical">
+                <strings>
+                    <string>!</string>
+                    <!-- Double ampersands -->
+                    <string>&amp;&amp;</string>
+                    <string>||</string>
+                </strings>
+            </scope>
+            <scope name="dart.storage.modifier">
+                <symbol type="keyword" />
+                <strings>
+                    <string>static</string>
+                    <string>final</string>
+                    <string>const</string>
+                    <string>required</string>
+                    <string>late</string>
+                </strings>
+            </scope>
+            <scope name="dart.storage.type.primitive">
+                <symbol type="keyword" />
+                <strings>
+                    <string>void</string>
+                    <string>var</string>
+                </strings>
+            </scope>
+        </collection>
+        
+        <!-- TODO: `string-interp` collection -->
+        <!-- TODO: `strings` collection -->
+        
+        <!-- Punctuation -->
+        <collection name="punctuation">
+            <scope name="dart.punctuation.comma">
+                <expression>,</expression>
+            </scope>
+            <scope name="dart.punctuation.terminator">
+                <expression>;</expression>
+            </scope>
+            <scope name="dart.punctuation.dot">
+                <expression>\.</expression>
+            </scope>
+        </collection>
+    </collections>
+</syntax>

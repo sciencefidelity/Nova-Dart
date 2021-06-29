@@ -1,0 +1,24 @@
+{
+    "identifier": "llc.snow.dart",
+    "name": "Dart",
+    "organization": "Snow Developments",
+    "description": "Advanced Dart language and Flutter support for Nova",
+    "version": "0.1",
+    "categories": ["completions", "languages"],
+    "license": "MIT",
+    "repository": "https://github.com/snow-developments/nova-dart",
+    "bugs": "https://github.com/snow-developments/nova-dart/issues",
+    "funding": "https://github.com/sponsors/chances",
+    
+    "min_runtime": "4.0",
+    
+    "activationEvents": [
+        "onLanguage:dart",
+        "onWorkspaceContains:pubspec.yaml"
+    ],
+    
+    "entitlements": {
+        "process": true,
+        "filesystem": "readonly"
+    }
+}
