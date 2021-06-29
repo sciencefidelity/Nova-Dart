@@ -44,6 +44,7 @@
         <pair open="{" close="}" />
         <pair open="[" close="]" />
         <pair open="(" close=")" />
+        <pair open="&lt;" close="&gt;" />
         <pair open="&apos;" close="&apos;" />
         <pair open="&quot;" close="&quot;" />
         <pair open="`" close="`" />
@@ -53,11 +54,11 @@
 
     <scopes>
         <include syntax="self" collection="comments" />
-        <include syntax="self" collection="decorators" />
+        <include syntax="self" collection="blocks" />
         <include syntax="self" collection="imports" />
+        <include syntax="self" collection="decorators" />
         <include syntax="self" collection="definitions" />
         <include syntax="self" collection="variables" />
-        <include syntax="self" collection="blocks" />
         <include syntax="self" collection="functions" />
         <include syntax="self" collection="keywords" />
         <include syntax="self" collection="values" />
@@ -65,6 +66,8 @@
         <include syntax="self" collection="blocks" />
         <include syntax="self" collection="syntax" />
     </scopes>
+
+    <!-- TODO completions -->
 
     <collections>
         <!-- !Comments -->
@@ -87,5 +90,388 @@
             </scope>
         </collection>
 
+        <!-- !Blocks -->
+        <collection name="blocks">
+            <scope name="dart.block">
+                <symbol type="block">
+                    <context behavior="subtree" />
+                </symbol>
+                <starts-with>
+                    <expression>\{</expression>
+                    <capture number="0" name="dart.block.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\}</expression>
+                    <capture number="0" name="dart.block.bracket" />
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- !Imports -->
+        <collection name="imports">
+            <scope name="dart.import">
+                <starts-with>
+                    <expression>\b(import)\b</expression>
+                    <capture number="1" name="dart.keyword.statement.import" />
+                </starts-with>
+                <ends-with />
+                <subscopes anchored="true">
+                    <include syntax="self" collection="comments" optional="true" repeat="true" />
+                    <include syntax="self" collection="import-references" optional="true" repeat="true" />
+                    <include syntax="self" collection="comments" optional="true" repeat="true" />
+                    <include syntax="self" collection="import-paths" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- !Import References -->
+        <!-- !Import As Expression -->
+        <!-- !Import Paths -->
+        <!-- !Definitions -->
+        <!-- !Interface -->
+        <!-- !Module -->
+        <!-- !Class -->
+        <!-- !Function -->
+        <!-- !Anonymous Function -->
+        <!-- !Variables -->
+
+        <!-- !Keywords -->
+        <collection name="keywords">
+            <scope name="dart.keyword.control.catch-exception">
+                <symbol type="keyword" />
+                <strings>
+                    <string>catch</string>
+                    <string>finally</string>
+                    <string>on</string>
+                    <string>rethrow</string>
+                    <string>throw</string>
+                    <string>try</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.control">
+                <symbol type="keyword" />
+                <strings>
+                    <string>break</string>
+                    <string>case</string>
+                    <string>continue</string>
+                    <string>default</string>
+                    <string>do</string>
+                    <string>else</string>
+                    <string>for</string>
+                    <string>if</string>
+                    <string>in</string>
+                    <string>return</string>
+                    <string>switch</string>
+                    <string>while</string>
+
+                    <string>async</string>
+                    <string>await</string>
+                    <string>sync</string>
+                    <string>yield</string>
+
+                    <string>assert</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.cast">
+                <symbol type="keyword" />
+                <expression>\b(as)\b</expression>
+            </scope>
+            <scope name="dart.keyword.control.new">
+                <symbol type="keyword" />
+                <expression>\b(new)\b</expression>
+            </scope>
+            <scope name="dart.keyword.declaration">
+                <symbol type="keyword" />
+                <strings>
+                    <string>abstract</string>
+                    <string>class</string>
+                    <string>covariant</string>
+                    <string>enum</string>
+                    <string>extends</string>
+                    <string>extension</string>
+                    <string>external</string>
+                    <string>factory</string>
+                    <string>get</string>
+                    <string>implements</string>
+                    <string>mixin</string>
+                    <string>operator</string>
+                    <string>set</string>
+                    <string>typedef</string>
+                    <string>with</string>
+                </strings>
+            </scope>
+        </collection>
+
+        <!-- !Values -->
+        <collection name="values">
+            <include syntax="self" collection="strings" />
+            <include syntax="self" collection="functions" />
+
+            <scope name="dart.object-literal">
+                <symbol type="block">
+                    <context behavior="subtree" />
+                </symbol>
+                <starts-with>
+                    <expression>
+                        (?&lt;=[=\-+:,\(\[])\s*(\{)
+                        | (\{)(?=\s*[A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]+\s*:|\})
+                    </expression>
+                    <capture number="1" name="dart.block.bracket" />
+                    <capture number="2" name="dart.block.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\}</expression>
+                    <capture number="0" name="dart.block.bracket" />
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="key-expressions" />
+                    <include syntax="self" />
+                </subscopes>
+            </scope>
+
+            <scope name="dart.value.null">
+                <strings>
+                    <string>null</string>
+                    <string>undefined</string>
+                    <string>NaN</string>
+                    <string>Infinity</string>
+                </strings>
+            </scope>
+
+            <scope name="dart.value.boolean">
+                <strings>
+                    <string>true</string>
+                    <string>false</string>
+                </strings>
+            </scope>
+
+            <scope name="dart.value.number.binary">
+                <expression>\b(0[bB])([01]+)\b</expression>
+                <capture number="1" name="dart.value.number.binary.prefix" />
+            </scope>
+            <scope name="dart.value.number.octal">
+                <expression>\b(0[oO])([0-7]+)\b</expression>
+                <capture number="1" name="dart.value.number.octal.prefix" />
+            </scope>
+            <scope name="dart.value.number.hexadecimal">
+                <expression>\b(0[xX])([a-fA-F0-9]+)\b</expression>
+                <capture number="1" name="dart.value.number.hexadecimal.prefix" />
+            </scope>
+            <scope name="dart.value.number.decimal">
+                <expression>
+                    (-)? # sign
+                    (
+                        \b\d+(\.\d*)? # 0, 0., 0.0
+                        | \.\d+ # .0
+                    )
+                    ((e|E)(\+|-)?\d+)? # exponent
+                    \b
+                </expression>
+                <capture number="1" name="dart.operator" />
+            </scope>
+
+            <scope name="dart.collection.array">
+                <starts-with>
+                    <expression>\[</expression>
+                    <capture number="0" name="dart.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\]</expression>
+                    <capture number="0" name="dart.bracket" />
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="expressions" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- !Strings -->
+        <collection name="strings">
+            <!-- triple double quote interpolated -->
+            <scope name="dart.string.string.interpolated.triple.double">
+                <starts-with>
+                    <expression>(?&lt;!r)&quot;&quot;&quot;</expression>
+                    <capture number="0" name="dart.string.interpolated.triple.double.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&quot;&quot;&quot;(?!&quot;)</expression>
+                    <capture number="0" name="dart.string.interpolated.triple.double.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.interpolated.triple.double.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+            <!-- triple single quote interpolated -->
+            <scope name="dart.string.string.interpolated.triple.single">
+                <starts-with>
+                    <expression>(?&lt;!r)&apos;&apos;&apos;</expression>
+                    <capture number="0" name="dart.string.interpolated.triple.single.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&apos;&apos;&apos;(?!&apos;)</expression>
+                    <capture number="0" name="dart.string.interpolated.triple.single.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.interpolated.triple.single.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+            <!-- triple double quote quoted -->
+            <scope name="dart.string.string.quoted.triple.double">
+                <starts-with>
+                    <expression>r&quot;&quot;&quot;</expression>
+                    <capture number="0" name="dart.string.quoted.triple.double.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&quot;&quot;&quot;(?!&quot;)</expression>
+                    <capture number="0" name="dart.string.quoted.triple.double.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.quoted.triple.double.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+            <!-- triple single quote quoted -->
+            <scope name="dart.string.string.quoted.triple.single">
+                <starts-with>
+                    <expression>r&apos;&apos;&apos;</expression>
+                    <capture number="0" name="dart.string.quoted.triple.single.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&apos;&apos;&apos;(?!&apos;)</expression>
+                    <capture number="0" name="dart.string.quoted.triple.single.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.quoted.triple.single.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+            <!-- double quote interpolated -->
+            <scope name="dart.string.interpolated.double">
+                <starts-with>
+                    <expression>(?&lt;!\|r)&quot;</expression>
+                    <capture number="0" name="dart.string.interpolated.double.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&quot;</expression>
+                    <capture number="0" name="dart.string.double.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.double.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+            <!-- double quote quoted -->
+            <scope name="dart.string.double.double">
+                <starts-with>
+                    <expression>r&quot;</expression>
+                    <capture number="0" name="dart.string.interpolated.double.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&quot;</expression>
+                    <capture number="0" name="dart.string.double.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.double.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+            <!-- single quote interpolated -->
+            <scope name="dart.string.interpolated.single">
+                <starts-with>
+                    <expression>(?&lt;!\|r)&apos;</expression>
+                    <capture number="0" name="dart.string.interpolated.single.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&apos;</expression>
+                    <capture number="0" name="dart.string.single.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.single.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+            <!-- single quote quoted -->
+            <scope name="dart.string.single.quoted">
+                <starts-with>
+                    <expression>r&apos;</expression>
+                    <capture number="0" name="dart.string.interpolated.single.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>&apos;</expression>
+                    <capture number="0" name="dart.string.single.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.single.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                </subscopes>
+            </scope>
+
+            <scope name="dart.string.regex">
+                <starts-with>
+                    <expression>(?&lt;=[\[=(?:+,!]|^|return|=&gt;|&amp;&amp;|\|\|)\s*(/)(?=[^/*+?].*/)</expression>
+                    <capture number="1" name="dart.string.regex.delimiter" />
+                </starts-with>
+                <ends-with>
+                    <expression>(/)([cgimosuxy]+\b)?</expression>
+                    <capture number="1" name="dart.string.regex.delimiter" />
+                </ends-with>
+                <subscopes>
+                    <scope name="dart.string.regex.escape">
+                        <expression>\\.</expression>
+                    </scope>
+                    <scope name="dart.string.regex.character-class">
+                        <starts-with>
+                            <expression>\[</expression>
+                        </starts-with>
+                        <ends-with>
+                            <expression>\]</expression>
+                        </ends-with>
+                        <subscopes>
+                            <scope name="dart.string.regex.escape">
+                                <expression>\\.</expression>
+                            </scope>
+                            <cut-off>
+                                <expression>(?=/)</expression>
+                            </cut-off>
+                        </subscopes>
+                    </scope>
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- !Syntax -->
+        <collection name="syntax">
+            <scope name="dart.operator">
+                <expression>(\+|\-|\*|/|%|\+\+|\-\-|\=|\=\=|!\=|\+\=|\-\=|\*\=|/\=|%\=|\&lt;|\&gt;|\&lt;\=|\&gt;=|\=\=\=|!\=\=|&amp;&amp;|\||\|\||!|\^|&amp;|\&lt;\&lt;|\&gt;\&gt;|~|:|\?)</expression>
+            </scope>
+            <scope name="dart.operator.spread">
+                <expression>\.\.\.</expression>
+            </scope>
+            <scope name="dart.dot">
+                <expression>\.</expression>
+            </scope>
+            <scope name="dart.bracket">
+                <expression>[\(\[\)\]]</expression>
+            </scope>
+            <scope name="dart.comma">
+                <expression>,</expression>
+            </scope>
+            <scope name="dart.semicolon">
+                <expression>;</expression>
+            </scope>
+        </collection>
     </collections>
 </syntax>
