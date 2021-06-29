@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syntax name="dart">
+    <meta>
+        <name>Dart</name>
+        <type>script</type>
+        <preferred-file-extension>dart</preferred-file-extension>
+        <scriptable shebang="#!/usr/bin/env dart" />
+    </meta>
+
+    <detectors>
+        <extension priority="1.0">dart</extension>
+    </detectors>
+
+    <indentation>
+        <increase>
+            <expression>(\{[^}\"']*$)|(\[[^\]\"']*$)|(\([^)\"']*$)</expression>
+        </increase>
+        <decrease>
+            <expression>^\s*(\s*/\*.*\*/\s*)*[\}\]\)\\]</expression>
+        </decrease>
+    </indentation>
+
+    <comments>
+        <single>
+            <expression>//</expression>
+        </single>
+        <multiline>
+            <starts-with>
+                <expression>/*</expression>
+            </starts-with>
+            <ends-with>
+                <expression>*/</expression>
+            </ends-with>
+        </multiline>
+    </comments>
+
+    <brackets>
+        <pair open="{" close="}" />
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+    </brackets>
+
+    <surrounding-pairs>
+        <pair open="{" close="}" />
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+        <pair open="&apos;" close="&apos;" />
+        <pair open="&quot;" close="&quot;" />
+        <pair open="`" close="`" />
+        <pair open="“" close="”" />
+        <pair open="‘" close="’" />
+    </surrounding-pairs>
+
+    <scopes>
+        <include syntax="self" collection="comments" />
+        <include syntax="self" collection="decorators" />
+        <include syntax="self" collection="imports" />
+        <include syntax="self" collection="definitions" />
+        <include syntax="self" collection="variables" />
+        <include syntax="self" collection="blocks" />
+        <include syntax="self" collection="functions" />
+        <include syntax="self" collection="keywords" />
+        <include syntax="self" collection="values" />
+        <include syntax="self" collection="identifiers" />
+        <include syntax="self" collection="blocks" />
+        <include syntax="self" collection="syntax" />
+    </scopes>
+
+    <collections>
+        <!-- !Comments -->
+        <collection name="comments">
+            <scope name="dart.comment.single.shebang">
+                <expression>^\#!(.*)$</expression>
+                <capture number="1" name="dart.comment.content" />
+            </scope>
+            <scope name="dart.comment.single" spell-check="true">
+                <expression>\/\/(.*)$</expression>
+                <capture number="1" name="dart.comment.content" />
+            </scope>
+            <scope name="dart.comment.block" spell-check="true">
+                <starts-with>
+                    <expression>\/\*</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>\*\/</expression>
+                </ends-with>
+            </scope>
+        </collection>
+    </collections>
