@@ -40,6 +40,18 @@
         <pair open="(" close=")" />
     </brackets>
 
+    <autoclosing-pairs>
+        <pair open="{" close="}" />
+        <pair open="[" close="]" />
+        <pair open="(" close=")" />
+        <pair open="&apos;" close="&apos;" skip="string,comment" />
+        <pair open="&quot;" close="&quot;" skip="string" />
+        <pair open="`" close="`" skip="string,comment" />
+        <pair open="\/\*\*" close=" \*\/" skip="string" />
+        <pair open="“" close="”" skip="string" />
+        <pair open="‘" close="’" skip="string,comment" />
+    </autoclosing-pairs>
+
     <surrounding-pairs>
         <pair open="{" close="}" />
         <pair open="[" close="]" />
@@ -115,7 +127,8 @@
         <collection name="imports">
             <scope name="dart.import">
                 <starts-with>
-                    <expression>\b(import)\b</expression>
+                    <!-- <expression>\b(import)\b</expression> -->
+                    <expression>^\w*\b(library|import|part\s of|part|export)\b</expression>
                     <capture number="1" name="dart.keyword.statement.import" />
                 </starts-with>
                 <ends-with />
@@ -205,10 +218,32 @@
             </scope>
         </collection>
 
+        <collection name="expressions">
+            <include syntax="self" collection="comments" />
+            <include syntax="self" collection="keywords" />
+            <include syntax="self" collection="values" />
+            <include syntax="self" collection="identifiers" />
+            <include syntax="self" collection="blocks" />
+            <scope name="dart.group">
+                <starts-with>
+                    <expression>\(</expression>
+                    <capture number="0" name="dart.bracket" />
+                </starts-with>
+                <ends-with>
+                    <expression>\)</expression>
+                    <capture number="0" name="dart.bracket" />
+                </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="expressions" />
+                </subscopes>
+            </scope>
+            <include syntax="self" collection="syntax" />
+        </collection>
+
         <!-- !Values -->
         <collection name="values">
             <include syntax="self" collection="strings" />
-            <include syntax="self" collection="functions" />
+            <!-- <include syntax="self" collection="functions" /> -->
 
             <scope name="dart.object-literal">
                 <symbol type="block">
