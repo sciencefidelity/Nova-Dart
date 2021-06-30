@@ -1,14 +1,15 @@
 {
-    "identifier": "matt.cook.dart",
+    "identifier": "sciencefidelity.dart",
     "name": "Dart",
     "organization": "Matt Cook",
-    "description": "Dart and Flutter support for Nova",
+    "description": "Dart Language Definition for Nova",
     "version": "0.0.2",
     "categories": ["completions", "languages"],
     "license": "MIT",
     "repository": "https://github.com/sciencefidelity/Dart.novaextension",
     "bugs": "https://github.com/sciencefidelity/Dart.novaextension/issues",
-    "min_runtime": "5.0",
+    "homepage": "https://mattcook.dev",
+    "keywords": ["dart", "flutter", "angulardart"],
     "activationEvents": [
         "onLanguage:dart",
         "onWorkspaceContains:pubspec.yaml"
