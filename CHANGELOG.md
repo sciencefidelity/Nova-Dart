@@ -1,3 +1,7 @@
+## Version 0.1.0
+
+Support added for clips. Syntax highlighting mostly works.
+
 ## Version 0.0.2
 
 Add support for identifiers and expressions, the syntax highlighting is almost usable.

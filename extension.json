@@ -4,7 +4,7 @@
     "organization": "Matt Cook",
     "description": "Dart Language Definition for Nova",
     "version": "0.0.2",
-    "categories": ["completions", "languages"],
+    "categories": ["clips", "completions", "languages"],
     "license": "MIT",
     "repository": "https://github.com/sciencefidelity/Dart.novaextension",
     "bugs": "https://github.com/sciencefidelity/Dart.novaextension/issues",
