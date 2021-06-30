@@ -1,7 +1,9 @@
 ## Version 0.0.2
 
-Add support for identifiers, the syntax highlighting is almost usable.
-TODO highlighting for variables inside objects and arrays.
+Add support for identifiers and expressions, the syntax highlighting is almost usable.
+TODO function declaration before arrow without perenthesis
+TODO dollarsign variables in strings
+TODO `this` and `super`
 
 ## Version 0.0.1
 
