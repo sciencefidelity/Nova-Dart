@@ -9,7 +9,7 @@ Currently syntax highlighting for Dart mostly works.
 ### TODO
 
 - Dart has an [LSP server](https://github.com/dart-lang/sdk/blob/master/pkg/analysis_server/tool/lsp_spec/README.md) - add support that can be turned enabled is extension preferences.
-- Dart has a Linter - add support that can be turned enabled is extension preferences.
+- Dart has a [Linter](https://dart-lang.github.io/linter/lints/) - add support that can be turned enabled is extension preferences.
 - When started from the command line a Flutter app can be [hot reloaded](https://flutter.dev/docs/development/tools/hot-reload) by pressing r in the terminal - investigate automating this.
 
 ### Credits
