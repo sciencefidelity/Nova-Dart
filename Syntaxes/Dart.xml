@@ -56,15 +56,16 @@
         <include syntax="self" collection="comments" />
         <include syntax="self" collection="blocks" />
         <include syntax="self" collection="imports" />
-        <include syntax="self" collection="decorators" />
-        <include syntax="self" collection="definitions" />
-        <include syntax="self" collection="variables" />
-        <include syntax="self" collection="functions" />
         <include syntax="self" collection="keywords" />
         <include syntax="self" collection="values" />
+        <include syntax="self" collection="strings" />
         <include syntax="self" collection="identifiers" />
-        <include syntax="self" collection="blocks" />
         <include syntax="self" collection="syntax" />
+
+        <!-- <include syntax="self" collection="decorators" />
+        <include syntax="self" collection="definitions" />
+        <include syntax="self" collection="variables" />
+        <include syntax="self" collection="functions" /> -->
     </scopes>
 
     <!-- TODO completions -->
@@ -127,16 +128,6 @@
             </scope>
         </collection>
 
-        <!-- !Import References -->
-        <!-- !Import As Expression -->
-        <!-- !Import Paths -->
-        <!-- !Definitions -->
-        <!-- !Interface -->
-        <!-- !Module -->
-        <!-- !Class -->
-        <!-- !Function -->
-        <!-- !Anonymous Function -->
-
         <!-- !Keywords -->
         <collection name="keywords">
             <scope name="dart.keyword.control.catch-exception">
@@ -162,6 +153,7 @@
                     <string>for</string>
                     <string>if</string>
                     <string>in</string>
+                    <string>is</string>
                     <string>return</string>
                     <string>switch</string>
                     <string>while</string>
@@ -200,6 +192,15 @@
                     <string>set</string>
                     <string>typedef</string>
                     <string>with</string>
+                </strings>
+            </scope>
+            <scope name="dart.keyword.modifier">
+                <strings prefix="(?&lt;!\.)">
+                    <string>static</string>
+                    <string>final</string>
+                    <string>const</string>
+                    <string>required</string>
+                    <string>late</string>
                 </strings>
             </scope>
         </collection>
@@ -282,7 +283,7 @@
         <!-- !Strings -->
         <collection name="strings">
             <!-- triple double quote interpolated -->
-            <scope name="dart.string.string.interpolated.triple.double">
+            <scope name="dart.string.interpolated.triple.double">
                 <starts-with>
                     <expression>(?&lt;!r)&quot;&quot;&quot;</expression>
                     <capture number="0" name="dart.string.interpolated.triple.double.delimiter" />
@@ -298,7 +299,7 @@
                 </subscopes>
             </scope>
             <!-- triple single quote interpolated -->
-            <scope name="dart.string.string.interpolated.triple.single">
+            <scope name="dart.string.interpolated.triple.single">
                 <starts-with>
                     <expression>(?&lt;!r)&apos;&apos;&apos;</expression>
                     <capture number="0" name="dart.string.interpolated.triple.single.delimiter" />
@@ -314,7 +315,7 @@
                 </subscopes>
             </scope>
             <!-- triple double quote quoted -->
-            <scope name="dart.string.string.quoted.triple.double">
+            <scope name="dart.string.quoted.triple.double">
                 <starts-with>
                     <expression>r&quot;&quot;&quot;</expression>
                     <capture number="0" name="dart.string.quoted.triple.double.delimiter" />
@@ -330,7 +331,7 @@
                 </subscopes>
             </scope>
             <!-- triple single quote quoted -->
-            <scope name="dart.string.string.quoted.triple.single">
+            <scope name="dart.string.quoted.triple.single">
                 <starts-with>
                     <expression>r&apos;&apos;&apos;</expression>
                     <capture number="0" name="dart.string.quoted.triple.single.delimiter" />
@@ -441,6 +442,37 @@
                     </scope>
                 </subscopes>
             </scope>
+        </collection>
+
+        <!-- !Identifiers -->
+        <collection name="identifiers">
+            <scope name="dart.identifier.constant.class">
+                <strings prefix="(?&lt;!\.)">
+                    <string>bool</string>
+                    <string>num</string>
+                    <string>int</string>
+                    <string>double</string>
+                    <string>dynamic</string>
+                </strings>
+            </scope>
+            <scope name="dart.identifier.constant.primitive">
+                <strings prefix="(?&lt;!\.)">
+                    <string>void</string>
+                    <string>var</string>
+                </strings>
+            </scope>
+            <scope name="dart.identifier.method">
+                <expression>([a-z_\$][A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*)(?=\()</expression>
+            </scope>
+            <!-- <scope name="dart.identifier.function">
+                <expression>(?&lt;!\.)((?:\b[a-zA-Z_]|\$)[A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*)(?=\()</expression>
+            </scope> -->
+            <scope name="dart.identifier.constant">
+                <expression>(?&lt;![a-z0-9_])(?:\b[A-Z]|\$)[A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*</expression>
+            </scope>
+            <!-- <scope name="dart.identifier">
+                <expression>(?:\b[a-zA-Z_]|\$)[A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*</expression>
+            </scope> -->
         </collection>
 
         <!-- !Syntax -->
