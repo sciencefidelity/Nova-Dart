@@ -1,6 +1,8 @@
 // Dart language test file
 // code examples copied from https://dart.dev/samples
 
+#!/usr/bin/env dart
+
 // Importing core libraries
 import 'dart:math';
 
@@ -17,7 +19,10 @@ void main() {
 var name = 'Voyager I';
 var year = 1977;
 var antennaDiameter = 3.7;
+bool truthy = true;
+bool falsy = false;
 var flybyObjects = ['Jupiter', 'Saturn', 'Uranus', 'Neptune'];
+const set = {if (list is List<int>) ...list};
 var image = {
   'tags': ['saturn'],
   'url': '//path/to/saturn.jpg'
@@ -177,4 +182,12 @@ try {
   flybyObjects.clear();
 }
 
+int a = -1;
+int b = 2;
+
+int minVal = (a < b) ? a : b;
+print(minVal);   //prints "-1"
+
+int absValue = (a < 0) ? -a : a;
+print(absValue);   //prints "1"
 

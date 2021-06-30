@@ -136,7 +136,6 @@
         <!-- !Class -->
         <!-- !Function -->
         <!-- !Anonymous Function -->
-        <!-- !Variables -->
 
         <!-- !Keywords -->
         <collection name="keywords">
@@ -232,19 +231,11 @@
                 </subscopes>
             </scope>
 
-            <scope name="dart.value.null">
-                <strings>
-                    <string>null</string>
-                    <string>undefined</string>
-                    <string>NaN</string>
-                    <string>Infinity</string>
-                </strings>
-            </scope>
-
-            <scope name="dart.value.boolean">
+            <scope name="dart.value.number.boolean">
                 <strings>
                     <string>true</string>
                     <string>false</string>
+                    <string>null</string>
                 </strings>
             </scope>
 
@@ -455,11 +446,42 @@
         <!-- !Syntax -->
         <collection name="syntax">
             <scope name="dart.operator">
-                <expression>(\+|\-|\*|/|%|\+\+|\-\-|\=|\=\=|!\=|\+\=|\-\=|\*\=|/\=|%\=|\&lt;|\&gt;|\&lt;\=|\&gt;=|\=\=\=|!\=\=|&amp;&amp;|\||\|\||!|\^|&amp;|\&lt;\&lt;|\&gt;\&gt;|~|:|\?)</expression>
+                <expression>(\?&lt;!\$)\b(is\!\?)\b(?!\$)</expression>
+            </scope>
+            <scope name="dart.operator.ternary">
+                <expression>\?|:</expression>
+            </scope>
+            <scope name="dart.operator.bitwise">
+                <expression>(&lt;&lt;|&gt;&gt;&gt;\?|~|\^|\||&amp;)</expression>
+            </scope>
+            <scope name="dart.operator.assignment.bitwise">
+                <expression>((&amp;|\^|\||&lt;&lt;|&gt;&gt;&gt;\?)\=)</expression>
+            </scope>
+            <scope name="dart.operator.closure">
+                <expression>(\=&gt;)</expression>
+            </scope>
+            <scope name="dart.operator.comparison">
+                <expression>(\=\=|!\=|&lt;\=|&gt;\=|&lt;|&gt;|)</expression>
+            </scope>
+            <scope name="dart.operator.assignment.arithmetic">
+                <expression>(([\+\*\/%\-]|\~)\=)</expression>
+            </scope>
+            <scope name="dart.operator.assignment">
+                <expression>(\=)</expression>
+            </scope>
+            <scope name="dart.operator.increment-decrement">
+                <expression>(\-\-|\+\+)</expression>
+            </scope>
+            <scope name="dart.operator.arithmetic">
+                <expression>(\-|\+|\*|\/|\~\/|%)</expression>
+            </scope>
+            <scope name="dart.operator.logical">
+                <expression>(!|&amp;&amp;|\|\|)</expression>
             </scope>
             <scope name="dart.operator.spread">
                 <expression>\.\.\.</expression>
             </scope>
+
             <scope name="dart.dot">
                 <expression>\.</expression>
             </scope>
