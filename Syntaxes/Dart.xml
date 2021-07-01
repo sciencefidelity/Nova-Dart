@@ -65,6 +65,7 @@
     </surrounding-pairs>
 
     <scopes>
+        <include syntax="self" collection="dartdoc" />
         <include syntax="self" collection="comments" />
         <include syntax="self" collection="blocks" />
         <include syntax="self" collection="imports" />
@@ -83,23 +84,91 @@
     <!-- TODO completions -->
 
     <collections>
+
+        <!-- !Dartdoc -->
+        <collection name="dartdoc">
+            <scope name="dart.variable.name.source" spell-check="true">
+                <expression>(\[.*?\])</expression>
+                <capture number="0" name="dart.variable.name.source" />
+            </scope>
+            <scope name="dart.variable.name.source" spell-check="true">
+                <expression>(^ {4,}(?![ \*]).*)</expression>
+                <capture number="0" name="dart.variable.name.source" />
+            </scope>
+            <scope name="dart.variable.other.source" spell-check="true">
+                <starts-with>
+                    <expression>```.*?$</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>```</expression>
+                </ends-with>
+            </scope>
+            <scope name="dart.variable.other.source" spell-check="true">
+                <expression>(`.*?`)</expression>
+                <capture number="0" name="dart.variable.other.source" />
+            </scope>
+            <scope name="dart.variable.other.source" spell-check="true">
+                <expression>(\* ((    ).*))$</expression>
+                <capture number="2" name="dart.variable.other.source" />
+            </scope>
+            <scope name="dart.variable.other.source" spell-check="true">
+                <expression>(\*    .*)$</expression>
+            </scope>
+        </collection>
+
         <!-- !Comments -->
         <collection name="comments">
+            <!-- shebang -->
             <scope name="dart.comment.single.shebang">
                 <expression>^\#!(.*)$</expression>
                 <capture number="1" name="dart.comment.content" />
             </scope>
-            <scope name="dart.comment.single" spell-check="true">
-                <expression>\/\/(.*)$</expression>
-                <capture number="1" name="dart.comment.content" />
+            <!-- comment block empty -->
+            <scope name="dart.comment.block.empty" spell-check="true">
+                <expression>/\*\*/</expression>
+                <capture number="0" name="dart.comment.punctuation.definition" />
+                <include syntax="self" collection="comments-doc-oldschool" />
+                <include syntax="self" collection="comments-doc" />
+                <include syntax="self" collection="comments-inline" />
             </scope>
-            <scope name="dart.comment.block" spell-check="true">
+            <!-- doc comment oldschool -->
+            <scope name="dart.comment.block.documentation" spell-check="true">
                 <starts-with>
-                    <expression>\/\*</expression>
+                    <expression>/\*\*</expression>
                 </starts-with>
                 <ends-with>
-                    <expression>\*\/</expression>
+                    <expression>\*/</expression>
                 </ends-with>
+                <include syntax="self" collection="comments-doc-oldschool" />
+                <include syntax="self" collection="comments-block" />
+                <include syntax="self" collection="dartdoc" />
+            </scope>
+            <!-- dartdoc block comment -->
+            <scope name="dart.comment.block.documentation" spell-check="true">
+                <starts-with>
+                    <expression>///</expression>
+                </starts-with>
+                <!-- Is there such thing as while? <expression>^\\s*///</expression> -->
+                <ends-with>
+                    <expression>.*</expression>
+                </ends-with>
+                <include syntax="self" collection="dartdoc" />
+            </scope>
+            <!-- inline comment -->
+            <scope name="dart.comment.line.double-slash" spell-check="true">
+                <expression>((//).*)$</expression>
+                <capture number="1" name="dart.comment.line.double-slash" />
+                <include syntax="self" collection="comments-block" />
+            </scope>
+            <!-- comment block -->
+            <scope name="dart.comment.block" spell-check="true">
+                <starts-with>
+                    <expression>/\*</expression>
+                </starts-with>
+                <ends-with>
+                    <expression>\*/</expression>
+                </ends-with>
+                <include syntax="self" collection="comments-block" />
             </scope>
         </collection>
 
@@ -127,7 +196,6 @@
         <collection name="imports">
             <scope name="dart.import">
                 <starts-with>
-                    <!-- <expression>\b(import)\b</expression> -->
                     <expression>^\w*\b(library|import|part\s of|part|export)\b</expression>
                     <capture number="1" name="dart.keyword.statement.import" />
                 </starts-with>
