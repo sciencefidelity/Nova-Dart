@@ -1,4 +1,4 @@
-# Dart / Flutter extension for Nova
+# Dart extension for Nova
 
 > This extension is in early development.
 
@@ -14,6 +14,6 @@ Currently syntax highlighting for Dart mostly works and support added for clips 
 
 ### Credits
 
-To learn syntax highlighting in Nova I used the built in TypeScript and JavaScript syntaxes as templates. The syntax of Dart was learnt from the Official [VSCode extension](https://github.com/Dart-Code/Dart-Code) via the [Dartlight](https://github.com/elMuso/Dartlight) extension for Sublime Text/Textastic, which helped me understand how to port it to Nova. Thanks go to the creators of those extensions!
+To learn syntax highlighting in Nova I used the built in TypeScript and JavaScript syntaxes as templates. The syntax of Dart was learnt from [Dart Code](https://github.com/Dart-Code/Dart-Code) via the [Dartlight](https://github.com/elMuso/Dartlight) extension for Sublime Text/Textastic, which helped me understand how to port it to Nova. Thanks go to the creators of those extensions!
 
-Clips are copied from the [VSCode extension](https://github.com/Dart-Code/Dart-Code) by Danny Tuppeny.
+Clips are borrowed from [Dart Code](https://github.com/Dart-Code/Dart-Code) by Danny Tuppeny.
