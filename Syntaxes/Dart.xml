@@ -86,16 +86,16 @@
     <collections>
 
         <!-- !Dartdoc -->
-        <collection name="dartdoc">
-            <scope name="dart.variable.name.source" spell-check="true">
+        <!-- <collection name="dartdoc">
+            <scope name="dart.variable.name.source">
                 <expression>(\[.*?\])</expression>
                 <capture number="0" name="dart.variable.name.source" />
             </scope>
-            <scope name="dart.variable.name.source" spell-check="true">
+            <scope name="dart.variable.name.source">
                 <expression>(^ {4,}(?![ \*]).*)</expression>
                 <capture number="0" name="dart.variable.name.source" />
             </scope>
-            <scope name="dart.variable.other.source" spell-check="true">
+            <scope name="dart.variable.other.source">
                 <starts-with>
                     <expression>```.*?$</expression>
                 </starts-with>
@@ -103,18 +103,18 @@
                     <expression>```</expression>
                 </ends-with>
             </scope>
-            <scope name="dart.variable.other.source" spell-check="true">
+            <scope name="dart.variable.other.source">
                 <expression>(`.*?`)</expression>
                 <capture number="0" name="dart.variable.other.source" />
             </scope>
-            <scope name="dart.variable.other.source" spell-check="true">
+            <scope name="dart.variable.other.source">
                 <expression>(\* ((    ).*))$</expression>
                 <capture number="2" name="dart.variable.other.source" />
             </scope>
-            <scope name="dart.variable.other.source" spell-check="true">
+            <scope name="dart.variable.other.source">
                 <expression>(\*    .*)$</expression>
             </scope>
-        </collection>
+        </collection> -->
 
         <!-- !Comments -->
         <collection name="comments">
@@ -197,7 +197,7 @@
             <scope name="dart.import">
                 <starts-with>
                     <expression>^\w*\b(library|import|part\s of|part|export)\b</expression>
-                    <capture number="1" name="dart.keyword.statement.import" />
+                    <capture number="0" name="dart.keyword.statement.import" />
                 </starts-with>
                 <ends-with />
                 <subscopes anchored="true">
