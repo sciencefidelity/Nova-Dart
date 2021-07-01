@@ -207,6 +207,12 @@
                     <include syntax="self" collection="import-paths" />
                 </subscopes>
             </scope>
+            <!-- <scope name="dart.import.other">
+                <expression>\b(as|show|hide)\b</expression>
+            </scope>
+            <scope name="dart.keyword.control">
+                <expression>\b(if)\b</expression>
+            </scope> -->
         </collection>
 
         <!-- !Keywords -->
