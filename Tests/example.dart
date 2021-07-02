@@ -6,6 +6,9 @@
 // Importing core libraries
 import 'dart:math';
 
+(employee as Person).firstName = 'Bob';
+var list = json['images'] as List;
+
 // Importing libraries from external packages
 import 'package:test/test.dart';
 
