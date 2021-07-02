@@ -570,6 +570,9 @@
                     <string>var</string>
                 </strings>
             </scope>
+            <scope name="dart.identifier.constant.annotation">
+                <expression>@[a-zA-Z]+</expression>
+            </scope>
             <scope name="dart.identifier.method">
                 <expression>([a-z_\$][A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*)(?=\()</expression>
             </scope>
