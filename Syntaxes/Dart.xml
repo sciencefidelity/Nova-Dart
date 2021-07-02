@@ -402,9 +402,6 @@
                     <capture number="0" name="dart.string.interpolated.triple.double.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.interpolated.triple.double.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -419,9 +416,6 @@
                     <capture number="0" name="dart.string.interpolated.triple.single.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.interpolated.triple.single.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -436,9 +430,6 @@
                     <capture number="0" name="dart.string.quoted.triple.double.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.quoted.triple.double.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -453,9 +444,6 @@
                     <capture number="0" name="dart.string.quoted.triple.single.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.quoted.triple.single.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -470,9 +458,6 @@
                     <capture number="0" name="dart.string.double.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.double.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -487,9 +472,6 @@
                     <capture number="0" name="dart.string.double.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.double.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -504,9 +486,6 @@
                     <capture number="0" name="dart.string.single.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.single.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -521,9 +500,6 @@
                     <capture number="0" name="dart.string.single.delimiter" />
                 </ends-with>
                 <subscopes>
-                    <scope name="dart.string.single.escape">
-                        <expression>\\.</expression>
-                    </scope>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
@@ -566,6 +542,9 @@
             <scope name="dart.identifier.argument.name">
                 <!-- <expression>\$((\w+)|\{([^{}]+)\})</expression> -->
                 <expression>\$(([a-zA-Z0-9_]+)|\{([^{}]+)\})</expression>
+            </scope>
+            <scope name="dart.string.single.escape">
+                <expression>\\.</expression>
             </scope>
             <subscopes>
                 <include syntax="self" collection="expressions" />
