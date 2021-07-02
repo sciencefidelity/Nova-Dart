@@ -6,9 +6,6 @@
 // Importing core libraries
 import 'dart:math';
 
-(employee as Person).firstName = 'Bob';
-var list = json['images'] as List;
-
 // Importing libraries from external packages
 import 'package:test/test.dart';
 
@@ -18,6 +15,9 @@ import 'path/to/my_other_file.dart';
 void main() {
   print('Hello, World!');
 }
+
+(employee as Person).firstName = 'Bob';
+var list = json['images'] as List;
 
 var name = 'Voyager I';
 var year = 1977;
