@@ -5,9 +5,9 @@ Support added for clips. Syntax highlighting mostly works.
 ## Version 0.1.1
 
 Add support for identifiers and expressions, the syntax highlighting is almost usable.
-TODO function declaration before arrow without perenthesis
-TODO dollarsign variables in strings
-TODO `this` and `super`
+<br>TODO function declaration before arrow without perenthesis
+<br>TODO dollarsign variables in strings
+<br>TODO `this` and `super`
 
 ## Version 0.1.0
 
