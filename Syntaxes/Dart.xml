@@ -389,6 +389,22 @@
             </scope>
         </collection>
 
+        <!-- !String interp -->
+        <collection name="string-interp">
+            <scope name="dart.identifier">
+                <!-- <expression>\$((\w+)|\{([^{}]+)\})</expression> -->
+                <expression>\$(([a-zA-Z0-9_]+)|\{([^{}]+)\})</expression>
+                <capture number="2" name="dart.identifier.argument.name" />
+                <capture number="3" name="dart.identifier.argument.name" />
+            </scope>
+            <scope name="dart.string.single.escape">
+                <expression>\\.</expression>
+            </scope>
+            <subscopes>
+                <include syntax="self" collection="expressions" />
+            </subscopes>
+        </collection>
+
         <!-- !Strings -->
         <collection name="strings">
             <!-- triple double quote interpolated -->
@@ -535,20 +551,6 @@
                     </scope>
                 </subscopes>
             </scope>
-        </collection>
-
-        <!-- !String interp -->
-        <collection name="string-interp">
-            <scope name="dart.identifier.argument.name">
-                <!-- <expression>\$((\w+)|\{([^{}]+)\})</expression> -->
-                <expression>\$(([a-zA-Z0-9_]+)|\{([^{}]+)\})</expression>
-            </scope>
-            <scope name="dart.string.single.escape">
-                <expression>\\.</expression>
-            </scope>
-            <subscopes>
-                <include syntax="self" collection="expressions" />
-            </subscopes>
         </collection>
 
         <!-- !Identifiers -->
