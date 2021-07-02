@@ -576,6 +576,9 @@
             <scope name="dart.identifier.method">
                 <expression>([a-z_\$][A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*)(?=\()</expression>
             </scope>
+            <scope name="dart.identifier.method.arrow-function">
+                <expression>([a-z_\$][A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*)(?=\s =>)</expression>
+            </scope>
             <!-- <scope name="dart.identifier.function">
                 <expression>(?&lt;!\.)((?:\b[a-zA-Z_]|\$)[A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*)(?=\()</expression>
             </scope> -->
