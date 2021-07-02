@@ -405,6 +405,7 @@
                     <scope name="dart.string.interpolated.triple.double.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- triple single quote interpolated -->
@@ -421,6 +422,7 @@
                     <scope name="dart.string.interpolated.triple.single.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- triple double quote quoted -->
@@ -437,6 +439,7 @@
                     <scope name="dart.string.quoted.triple.double.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- triple single quote quoted -->
@@ -453,6 +456,7 @@
                     <scope name="dart.string.quoted.triple.single.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- double quote interpolated -->
@@ -469,6 +473,7 @@
                     <scope name="dart.string.double.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- double quote quoted -->
@@ -485,6 +490,7 @@
                     <scope name="dart.string.double.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- single quote interpolated -->
@@ -501,6 +507,7 @@
                     <scope name="dart.string.single.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- single quote quoted -->
@@ -517,6 +524,7 @@
                     <scope name="dart.string.single.escape">
                         <expression>\\.</expression>
                     </scope>
+                    <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
 
@@ -551,6 +559,17 @@
                     </scope>
                 </subscopes>
             </scope>
+        </collection>
+
+        <!-- !String interp -->
+        <collection name="string-interp">
+            <scope name="dart.identifier.argument.name">
+                <!-- <expression>\$((\w+)|\{([^{}]+)\})</expression> -->
+                <expression>\$(([a-zA-Z0-9_]+)|\{([^{}]+)\})</expression>
+            </scope>
+            <subscopes>
+                <include syntax="self" collection="expressions" />
+            </subscopes>
         </collection>
 
         <!-- !Identifiers -->
