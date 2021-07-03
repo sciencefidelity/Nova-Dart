@@ -40,18 +40,6 @@
         <pair open="(" close=")" />
     </brackets>
 
-    <autoclosing-pairs>
-        <pair open="{" close="}" />
-        <pair open="[" close="]" />
-        <pair open="(" close=")" />
-        <pair open="&apos;" close="&apos;" skip="string,comment" />
-        <pair open="&quot;" close="&quot;" skip="string" />
-        <pair open="`" close="`" skip="string,comment" />
-        <pair open="\/\*\*" close=" \*\/" skip="string" />
-        <pair open="“" close="”" skip="string" />
-        <pair open="‘" close="’" skip="string,comment" />
-    </autoclosing-pairs>
-
     <surrounding-pairs>
         <pair open="{" close="}" />
         <pair open="[" close="]" />
@@ -162,6 +150,7 @@
         </collection>
         <!-- !Comments-doc -->
         <collection name="comments-doc">
+            <symbol type="comment" />
             <scope name="dart.comment.block.documentation" spell-check="true">
                 <starts-with>
                     <expression>///</expression>
@@ -220,8 +209,13 @@
                 <expression>(?&lt;![a-zA-Z0-9_$])([_$]*[A-Z][a-zA-Z0-9_$]*|bool\b|num\b|int\b|double\b|dynamic\b)</expression>
             </scope>
             <scope name="dart.function.name">
-                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(&lt;|\(|\s+)</expression>
+                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(&lt;|\()</expression>
                 <capture number="1" name="dart.identifier.method" />
+            </scope>
+            <scope name="dart.function.name">
+                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(\s+=&gt;)</expression>
+                <capture number="1" name="dart.identifier.method" />
+                <capture number="2" name="dart.operator.closure" />
             </scope>
         </collection>
 
