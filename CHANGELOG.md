@@ -1,3 +1,7 @@
+## Version 0.2.1
+
+Syntax mostly rewritten and is now more readable and intuitive.
+
 ## Version 0.2.0
 
 Support added for clips. Syntax highlighting mostly works.
