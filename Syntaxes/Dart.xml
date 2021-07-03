@@ -210,7 +210,7 @@
             <scope name="dart.value.number.boolean">
                 <expression>(?&lt;!\$)\b(true|false|null)\b(?!\$)</expression>
             </scope>
-            <scope name="dart.identifier.variable.language">
+            <scope name="dart.keyword.self">
                 <expression>(?&lt;!\$)\b(this|super)\b(?!\$)</expression>
             </scope>
             <scope name="dart.value.number">
@@ -220,7 +220,7 @@
                 <expression>(?&lt;![a-zA-Z0-9_$])([_$]*[A-Z][a-zA-Z0-9_$]*|bool\b|num\b|int\b|double\b|dynamic\b)</expression>
             </scope>
             <scope name="dart.function.name">
-                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(&lt;|\(|\s+=&gt;)</expression>
+                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(&lt;|\(|\s+)</expression>
                 <capture number="1" name="dart.identifier.method" />
             </scope>
         </collection>
