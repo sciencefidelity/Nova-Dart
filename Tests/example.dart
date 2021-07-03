@@ -16,6 +16,8 @@ void main() {
   print('Hello, World!');
 }
 
+/* */
+
 (employee as Person).firstName = 'Bob';
 var list = json['images'] as List;
 
@@ -61,7 +63,7 @@ flybyObjects.where((name) => name.contains('turn')).forEach(print);
 // This is a normal, one-line comment.
 
 /// This is a documentation comment, used to document libraries,
-/// classes, and their members. Tools like IDEs and dartdoc treat
+/// classes, and their members. [Tools] like IDEs and dartdoc treat
 /// doc comments specially.
 
 /* Comments like these are also supported. */
