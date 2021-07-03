@@ -78,7 +78,6 @@
         </scope>
 
         <include syntax="self" collection="comments" />
-        <include syntax="self" collection="puntuation" />
         <include syntax="self" collection="annotations" />
         <include syntax="self" collection="keywords" />
         <include syntax="self" collection="constants-and-special-vars" />
@@ -314,7 +313,6 @@
                 <!-- <capture number="2" name="dart.identifier.argument.name" /> -->
                 <subscopes>
                     <include syntax="self" collection="comments" />
-                    <include syntax="self" collection="puntuation" />
                     <include syntax="self" collection="annotations" />
                     <include syntax="self" collection="keywords" />
                     <include syntax="self" collection="constants-and-special-vars" />
