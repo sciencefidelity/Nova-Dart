@@ -94,13 +94,13 @@
         <collection name="dartdoc">
             <scope name="dart.identifier.dartdoc">
                 <expression>(\[.*?\])</expression>
-                <capture number="0" name="dart.identifier.type.class" />
+                <capture number="0" name="dart.identifier.key" />
             </scope>
             <scope name="dart.identifier.dartdoc">
                 <expression>(^ {4,}(?![ \*]).*)</expression>
-                <capture number="0" name="dart.identifier.name.source" />
+                <capture number="0" name="dart.identifier.source" />
             </scope>
-            <scope name="dart.identifier.other.source">
+            <scope name="dart.identifier.source">
                 <starts-with>
                     <expression>```.*?$</expression>
                 </starts-with>
@@ -110,13 +110,13 @@
             </scope>
             <scope name="dart.identifier.dartdoc">
                 <expression>(`.*?`)</expression>
-                <capture number="0" name="dart.identifier.other.source" />
+                <capture number="0" name="dart.identifier.string.source" />
             </scope>
             <scope name="dart.identifier.dartdoc">
                 <expression>(\* ((    ).*))$</expression>
-                <capture number="2" name="dart.identifier.other.source" />
+                <capture number="2" name="dart.identifier.variable.other.source" />
             </scope>
-            <scope name="dart.identifier.other.source">
+            <scope name="dart.identifier.variable.other.source">
                 <expression>(\*    .*)$</expression>
             </scope>
         </collection>
