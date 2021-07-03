@@ -20,7 +20,7 @@
     "entitlements": {
         "process": true,
         "filesystem": "readonly"
-    }
+    },
 
     "config": [
       {
