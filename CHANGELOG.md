@@ -1,6 +1,6 @@
 ## Version 0.2.1
 
-Syntax mostly rewritten and is now more readable and intuitive.
+Syntax rewritten and is now readable and intuitive, and the syntax is usable.
 
 ## Version 0.2.0
 
