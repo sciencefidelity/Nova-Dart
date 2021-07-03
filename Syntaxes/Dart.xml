@@ -154,7 +154,8 @@
                 <starts-with>
                     <expression>///</expression>
                 </starts-with>
-                <!-- Is there such thing as while? <expression>^\\s*///</expression> -->
+                <!-- It's this ends-with that is preventing dartdoc from working -->
+                <!-- Is there such thing as while? <expression>^\s*///</expression> -->
                 <ends-with>
                     <expression>.*</expression>
                 </ends-with>
@@ -299,7 +300,6 @@
             <scope name="dart.identifier">
                 <expression>\$([a-zA-Z0-9_]+)</expression>
                 <capture number="1" name="dart.identifier.argument.name" />
-                <!-- <capture number="3" name="dart.identifier.argument.name" /> -->
             </scope>
             <scope name="dart.identifier" reset-styles="true">
                 <starts-with>
@@ -310,7 +310,6 @@
                     <expression>(\})</expression>
                     <capture number="1" name="dart.identifier.string" />
                 </ends-with>
-                <!-- <capture number="2" name="dart.identifier.argument.name" /> -->
                 <subscopes>
                     <include syntax="self" collection="comments" />
                     <include syntax="self" collection="annotations" />
