@@ -10,6 +10,9 @@
     "bugs": "https://github.com/sciencefidelity/Dart.novaextension/issues",
     "homepage": "https://mattcook.dev",
     "keywords": ["dart", "flutter", "angulardart"],
+
+    "main": "main.js",
+
     "activationEvents": [
         "onLanguage:dart",
         "onWorkspaceContains:pubspec.yaml"
@@ -18,4 +21,13 @@
         "process": true,
         "filesystem": "readonly"
     }
+
+    "config": [
+      {
+          "key": "dart.language-server-path",
+          "title": "Language Server Path",
+          "type": "path",
+          "placeholder": "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots"
+      }
+  ]
 }
