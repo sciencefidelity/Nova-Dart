@@ -24,8 +24,9 @@
 
     "config": [
       {
-          "key": "dart.language-server-path",
-          "title": "Language Server Path",
+          "key": "sciencefidelity.config.dart.analyzerPath",
+          "title": "Dart Analyzer Path",
+          "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
           "type": "path",
           "placeholder": "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots"
       }
