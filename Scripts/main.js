@@ -14,11 +14,10 @@ exports.deactivate = function() {
     }
 }
 
-
 class DartLanguageServer {
     constructor() {
         // Observe the configuration setting for the server's location, and restart the server on change
-        nova.config.observe('dart.language-server-path', function(path) {
+        nova.config.observe('sciencefidelity.config.dart.analyzerPath', function(path) {
             this.start(path);
         }, this);
     }
@@ -34,7 +33,7 @@ class DartLanguageServer {
         }
 
         // Use the default server path
-        // /usr/local/flutter/bin/cache/dart-sdk/bin/snapshots/snapshotsanalysis_server.dart.snapshot
+        // /usr/local/flutter/bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot
         if (!path) {
             // path = '/usr/local/bin/example';
             path = '/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots';
@@ -42,18 +41,25 @@ class DartLanguageServer {
 
         // Create the client
         var serverOptions = {
-            path: path
+            path: path,
+            args: ['--lsp']
         };
         var clientOptions = {
             // The set of document syntaxes for which the server is valid
-            syntaxes: ['dart']
+            syntaxes: ['dart'],
         };
-        var client = new LanguageClient('dart-langserver', 'Dart Language Server', serverOptions, clientOptions);
+        var client = new LanguageClient(
+          'analysis_server.dart.snapshot',
+          'Dart Language Server',
+          serverOptions,
+          clientOptions
+        );
+        console.log(JSON.stringify(serverOptions));
 
         try {
             // Start the client
             client.start();
-
+            console.log('Client started');
             // Add the client to the subscriptions to be cleaned up
             nova.subscriptions.add(client);
             this.languageClient = client;
