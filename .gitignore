@@ -5,3 +5,4 @@ node_modules/
 /dart.novaextension/Scripts
 logs/
 coverage/
+*.log
