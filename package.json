@@ -1,0 +1,9 @@
+{
+  "name": "nova-dart",
+  "version": "0.2.1",
+  "description": "Dart Language Tools for Nova",
+  "main": "src/main.ts",
+  "repository": "https://github.com/sciencefidelity/Nova-Dart",
+  "author": "sciencefidelity <32623301+sciencefidelity@users.noreply.github.com>",
+  "license": "MIT"
+}
