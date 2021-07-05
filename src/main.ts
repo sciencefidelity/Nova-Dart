@@ -64,7 +64,6 @@ async function asyncActivate() {
     "sciencefidelity.dart",
     "Dart Language Server",
     {
-      type: "stdio",
       ...serviceArgs,
     },
     {
