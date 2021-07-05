@@ -21,6 +21,16 @@ async function makeFileExecutable(file: string) {
   });
 }
 
+nova.config.onDidChange('sciencefidelity.enableAnalyzer',
+  async function (current) {
+    if (current) {
+      activate();
+    } else {
+      deactivate()
+    }
+  }
+);
+
 async function reload() {
   deactivate();
   console.log("reloading...");
@@ -119,15 +129,17 @@ export async function activate() {
     notification.body = "Dart extension is loading";
     nova.notifications.add(notification);
   }
-  return asyncActivate()
-    .catch((err) => {
-      console.error("Failed to activate");
-      console.error(err);
-      nova.workspace.showErrorMessage(err);
-    })
-    .then(() => {
-      console.log("activated");
-    });
+  if (nova.config.get('sciencefidelity.enableAnalyzer', 'boolean')) {
+    return asyncActivate()
+      .catch((err) => {
+        console.error("Failed to activate");
+        console.error(err);
+        nova.workspace.showErrorMessage(err);
+      })
+      .then(() => {
+        console.log("activated");
+      });
+    }
 }
 
 export function deactivate() {

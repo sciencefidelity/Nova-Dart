@@ -29,6 +29,12 @@
           "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
           "type": "path",
           "placeholder": "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots"
+      },
+      {
+          "key": "sciencefidelity.enableAnalyzer",
+          "title": "Enable Language Server",
+          "type": "boolean",
+          "default": false
       }
   ]
 }
