@@ -1,4 +1,6 @@
-import { InformationView } from "./informationView";
+// import { InformationView } from "./informationView";
+
+nova.commands.register("sciencefidelity.dart.reload", reload);
 
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
@@ -19,17 +21,17 @@ async function makeFileExecutable(file: string) {
   });
 }
 
-// async function reload() {
-//   deactivate();
-//   console.log("reloading...");
-//   await asyncActivate();
-// }
+async function reload() {
+  deactivate();
+  console.log("reloading...");
+  await asyncActivate();
+}
 
 async function asyncActivate() {
-  const informationView = new InformationView();
-  compositeDisposable.add(informationView);
+  // const informationView = new InformationView();
+  // compositeDisposable.add(informationView);
 
-  informationView.status = "Activating...";
+  // informationView.status = "Activating...";
 
   const runFile = nova.path.join(nova.extension.path, "run.sh");
 
@@ -52,6 +54,7 @@ async function asyncActivate() {
     const outLog = nova.path.join(logDir, "languageServer-out.log");
     serviceArgs = {
       path: "/usr/bin/env",
+      // args: ["bash", "-c", `tee "${inLog}" | "${runFile}" | tee "${outLog}"`],
       args: ["bash", "-c", `"${runFile}" | tee "${outLog}"`],
     };
   } else {
@@ -65,6 +68,7 @@ async function asyncActivate() {
     "sciencefidelity.dart",
     "Dart Language Server",
     {
+      type: "stdio",
       ...serviceArgs,
       env: {
         INSTALL_DIR: "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots",
@@ -75,11 +79,37 @@ async function asyncActivate() {
     }
   );
 
+  compositeDisposable.add(
+    client.onDidStop((err) => {
+      // informationView.status = "Stopped";
+
+      let message = "Dart Language Server stopped unexpectedly";
+      if (err) {
+        message += `:\n\n${err.toString()}`;
+      } else {
+        message += ".";
+      }
+      message +=
+        "\n\nPlease report this, along with any output in the Extension Console.";
+      nova.workspace.showActionPanel(
+        message,
+        {
+          buttons: ["Restart", "Ignore"],
+        },
+        (index) => {
+          if (index == 0) {
+            nova.commands.invoke("sciencefidelity.dart.reload");
+          }
+        }
+      );
+    })
+  );
+
   client.start();
 
-  informationView.status = "Running";
+  // informationView.status = "Running";
 
-  informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
+  // informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 }
 
 export async function activate() {
