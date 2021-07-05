@@ -321,54 +321,63 @@
             <scope name="dart.string.single.escape">
                 <expression>\\.</expression>
             </scope>
+            <include syntax="self" collection="strings" />
             <include syntax="html" />
         </collection>
 
         <!-- !Strings -->
         <collection name="strings">
             <!-- triple double quote interpolated -->
-            <scope name="dart.string.interpolated.triple.double">
+            <scope name="dart.interpolated.triple.double" reset-styles="true">
                 <starts-with>
                     <expression>(?&lt;!r)&quot;&quot;&quot;</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </starts-with>
                 <ends-with>
                     <expression>&quot;&quot;&quot;(?!&quot;)</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- triple single quote interpolated -->
-            <scope name="dart.string.interpolated.triple.single">
+            <scope name="dart.interpolated.triple.single" reset-styles="true">
                 <starts-with>
                     <expression>(?&lt;!r)&apos;&apos;&apos;</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </starts-with>
                 <ends-with>
                     <expression>&apos;&apos;&apos;(?!&apos;)</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- triple double quote quoted -->
-            <scope name="dart.string.quoted.triple.double">
+            <scope name="dart.quoted.triple.double" reset-styles="true">
                 <starts-with>
                     <expression>r&quot;&quot;&quot;</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </starts-with>
                 <ends-with>
                     <expression>&quot;&quot;&quot;(?!&quot;)</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="string-interp" />
                 </subscopes>
             </scope>
             <!-- triple single quote quoted -->
-            <scope name="dart.string.quoted.triple.single">
+            <scope name="dart.quoted.triple.single" reset-styles="true">
                 <starts-with>
                     <expression>r&apos;&apos;&apos;</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </starts-with>
                 <ends-with>
                     <expression>&apos;&apos;&apos;(?!&apos;)</expression>
+                    <capture number="0" name="dart.identifier.string" />
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="string-interp" />
