@@ -4,7 +4,7 @@
 
 [Nova](https://nova.app) support for [Dart](https://dart.dev), [Flutter](https://flutter.dev) and [AngularDart](https://angualardart.dev).
 
-Currently syntax highlighting for Dart mostly works and support added for clips used in the official VSCode extension.
+Currently syntax highlighting for Dart mostly works and support added for clips.
 
 ### TODO
 
