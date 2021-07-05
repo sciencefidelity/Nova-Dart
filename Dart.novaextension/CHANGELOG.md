@@ -1,3 +1,7 @@
+## Upcoming version
+
+Add syntax highlighting for html strings.
+
 ## Version 0.2.1
 
 Syntax rewritten and is now readable and intuitive, and the syntax is usable.
