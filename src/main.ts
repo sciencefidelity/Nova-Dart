@@ -123,13 +123,13 @@ async function asyncActivate() {
 }
 
 export async function activate() {
-  console.log("activating...");
-  if (nova.inDevMode()) {
-    const notification = new NotificationRequest("activated");
-    notification.body = "Dart extension is loading";
-    nova.notifications.add(notification);
-  }
   if (nova.config.get('sciencefidelity.enableAnalyzer', 'boolean')) {
+    console.log("activating...");
+    if (nova.inDevMode()) {
+      const notification = new NotificationRequest("activated");
+      notification.body = "Dart extension is loading";
+      nova.notifications.add(notification);
+    }
     return asyncActivate()
       .catch((err) => {
         console.error("Failed to activate");
@@ -139,7 +139,7 @@ export async function activate() {
       .then(() => {
         console.log("activated");
       });
-    }
+  }
 }
 
 export function deactivate() {
