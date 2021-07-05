@@ -1,84 +1,103 @@
 
-var langserver = null;
+let client: LanguageClient | null = null;
+const compositeDisposable = new CompositeDisposable();
 
-exports.activate = function() {
-    // Do work when the extension is activated
-    langserver = new DartLanguageServer();
+async function makeFileExecutable(file: string) {
+  return new Promise<void>((resolve, reject) => {
+    const process = new Process("/usr/bin/env", {
+      args: ["chmod", "u+x", file],
+    });
+    process.onDidExit((status) => {
+      if (status === 0) {
+        resolve();
+      } else {
+        reject(status);
+      }
+    });
+    process.start();
+  });
 }
 
-exports.deactivate = function() {
-    // Clean up state before the extension is deactivated
-    if (langserver) {
-        langserver.deactivate();
-        langserver = null;
+// async function reload() {
+//   deactivate();
+//   console.log("reloading...");
+//   await asyncActivate();
+// }
+
+async function asyncActivate() {
+  // const informationView = new InformationView();
+  // compositeDisposable.add(informationView);
+
+  // informationView.status = "Activating...";
+
+  const runFile = nova.path.join(nova.extension.path, "run.sh");
+
+  // Uploading to the extension library makes this file not executable, so fix that
+  await makeFileExecutable(runFile);
+
+  let serviceArgs;
+  if (nova.inDevMode() && nova.workspace.path) {
+    const logDir = nova.path.join(nova.workspace.path, "logs");
+    await new Promise<void>((resolve, reject) => {
+      const p = new Process("/usr/bin/env", {
+        args: ["mkdir", "-p", logDir],
+      });
+      p.onDidExit((status) => (status === 0 ? resolve() : reject()));
+      p.start();
+    });
+    console.log("logging to", logDir);
+    // passing inLog breaks some requests for an unknown reason
+    // const inLog = nova.path.join(logDir, "languageServer-in.log");
+    const outLog = nova.path.join(logDir, "languageServer-out.log");
+    serviceArgs = {
+      path: "/usr/bin/env",
+      args: ["bash", "-c", `"${runFile}" | tee "${outLog}"`],
+    };
+  } else {
+    serviceArgs = {
+      path: runFile,
+    };
+  }
+
+  const syntaxes = ["dart"];
+  client = new LanguageClient(
+    "sciencefidelity.dart",
+    "Dart Language Server",
+    {
+      type: "stdio",
+      ...serviceArgs,
+    },
+    {
+      syntaxes,
     }
+  );
+
+  client.start();
+
+  // informationView.status = "Running";
+
+  // informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 }
 
-class DartLanguageServer {
-    constructor() {
-        // Observe the configuration setting for the server's location, and restart the server on change
-        nova.config.observe('sciencefidelity.config.dart.analyzerPath', function(path) {
-            this.start(path);
-        }, this);
-    }
-
-    deactivate() {
-        this.stop();
-    }
-
-    start(path) {
-        if (this.languageClient) {
-            this.languageClient.stop();
-            nova.subscriptions.remove(this.languageClient);
-        }
-
-        // Use the default server path
-        // /usr/local/flutter/bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot
-        if (!path) {
-            // path = '/usr/local/bin/example';
-            path = '/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots';
-        }
-
-        // Create the client
-        var serverOptions = {
-            path: path,
-            args: ['--lsp']
-        };
-        var clientOptions = {
-            // The set of document syntaxes for which the server is valid
-            syntaxes: ['dart'],
-        };
-        var client = new LanguageClient(
-          'analysis_server.dart.snapshot',
-          'Dart Language Server',
-          serverOptions,
-          clientOptions
-        );
-        console.log(JSON.stringify(serverOptions));
-
-        try {
-            // Start the client
-            client.start();
-            console.log('Client started');
-            // Add the client to the subscriptions to be cleaned up
-            nova.subscriptions.add(client);
-            this.languageClient = client;
-        }
-        catch (err) {
-            // If the .start() method throws, it's likely because the path to the language server is invalid
-
-            if (nova.inDevMode()) {
-                console.error(err);
-            }
-        }
-    }
-
-    stop() {
-        if (this.languageClient) {
-            this.languageClient.stop();
-            nova.subscriptions.remove(this.languageClient);
-            this.languageClient = null;
-        }
-    }
+export async function activate() {
+  console.log("activating...");
+  if (nova.inDevMode()) {
+    const notification = new NotificationRequest("activated");
+    notification.body = "Dart extension is loading";
+    nova.notifications.add(notification);
+  }
+  return asyncActivate()
+    .catch((err) => {
+      console.error("Failed to activate");
+      console.error(err);
+      nova.workspace.showErrorMessage(err);
+    })
+    .then(() => {
+      console.log("activated");
+    });
 }
 
+export function deactivate() {
+  client?.stop();
+  compositeDisposable.dispose();
+}

@@ -5,6 +5,7 @@
   "main": "",
   "private": true,
   "scripts": {
+    "build": "rollup -c rollup.config.main.js && rm -rf Dart.novaextension/node_modules",
     "watch": "onchange -i \"src/**\" \"rollup.*.js\" -- npm run build"
   },
   "repository": "https://github.com/sciencefidelity/Nova-Dart",
