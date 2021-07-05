@@ -1,3 +1,4 @@
+import { InformationView } from "./informationView";
 
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
@@ -25,10 +26,10 @@ async function makeFileExecutable(file: string) {
 // }
 
 async function asyncActivate() {
-  // const informationView = new InformationView();
-  // compositeDisposable.add(informationView);
+  const informationView = new InformationView();
+  compositeDisposable.add(informationView);
 
-  // informationView.status = "Activating...";
+  informationView.status = "Activating...";
 
   const runFile = nova.path.join(nova.extension.path, "run.sh");
 
@@ -65,6 +66,9 @@ async function asyncActivate() {
     "Dart Language Server",
     {
       ...serviceArgs,
+      env: {
+        INSTALL_DIR: "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots",
+      },
     },
     {
       syntaxes,
@@ -73,9 +77,9 @@ async function asyncActivate() {
 
   client.start();
 
-  // informationView.status = "Running";
+  informationView.status = "Running";
 
-  // informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
+  informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 }
 
 export async function activate() {
