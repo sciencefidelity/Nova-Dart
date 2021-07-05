@@ -321,6 +321,7 @@
             <scope name="dart.string.single.escape">
                 <expression>\\.</expression>
             </scope>
+            <include syntax="html" />
         </collection>
 
         <!-- !Strings -->
@@ -357,6 +358,9 @@
                 <ends-with>
                     <expression>&quot;&quot;&quot;(?!&quot;)</expression>
                 </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="string-interp" />
+                </subscopes>
             </scope>
             <!-- triple single quote quoted -->
             <scope name="dart.string.quoted.triple.single">
@@ -366,6 +370,9 @@
                 <ends-with>
                     <expression>&apos;&apos;&apos;(?!&apos;)</expression>
                 </ends-with>
+                <subscopes>
+                    <include syntax="self" collection="string-interp" />
+                </subscopes>
             </scope>
             <!-- double quote interpolated -->
             <scope name="dart.string.interpolated.double">
