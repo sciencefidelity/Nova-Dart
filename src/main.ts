@@ -42,7 +42,6 @@ async function asyncActivate() {
   // compositeDisposable.add(informationView);
 
   // informationView.status = "Activating...";
-
   const runFile = nova.path.join(nova.extension.path, "run.sh");
 
   // Uploading to the extension library makes this file not executable, so fix that
@@ -81,7 +80,8 @@ async function asyncActivate() {
       type: "stdio",
       ...serviceArgs,
       env: {
-        INSTALL_DIR: "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots",
+        INSTALL_DIR: // nova.config.get("sciencefidelity.dart.config.analyzerPath") ||
+        "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots",
       },
     },
     {
@@ -123,7 +123,7 @@ async function asyncActivate() {
 }
 
 export async function activate() {
-  if (nova.config.get('sciencefidelity.enableAnalyzer', 'boolean')) {
+  if (nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")) {
     console.log("activating...");
     if (nova.inDevMode()) {
       const notification = new NotificationRequest("activated");
