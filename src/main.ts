@@ -21,7 +21,7 @@ async function makeFileExecutable(file: string) {
   });
 }
 
-nova.config.onDidChange('sciencefidelity.enableAnalyzer',
+nova.config.onDidChange("sciencefidelity.enableAnalyzer",
   async function (current) {
     if (current) {
       activate();
@@ -80,8 +80,8 @@ async function asyncActivate() {
       type: "stdio",
       ...serviceArgs,
       env: {
-        INSTALL_DIR: // nova.config.get("sciencefidelity.dart.config.analyzerPath") ||
-        "/usr/local/flutter/bin/cache/dart-sdk/bin/snapshots",
+        INSTALL_DIR: nova.config.get("sciencefidelity.dart.config.analyzerPath", "string") ||
+        "~/flutter/bin/cache/dart-sdk/bin/snapshots",
       },
     },
     {
