@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<completions>
+    <provider name="dart.meta">
+        <syntax>dart</syntax>
+        <selector>*:not(string,comment)</selector>
+        <expression>\b[a-zA-Z0-9-_]*</expression>
+
+        <symbols type="property" />
+
+        <set>dart.meta</set>
+    </provider>
+
+    <set name="dart.meta" symbol="property">
+        <completion string="library" />
+        <completion string="import" />
+        <completion string="part of" />
+        <completion string="part" />
+        <completion string="export" />
+    </set>
+</completions>
