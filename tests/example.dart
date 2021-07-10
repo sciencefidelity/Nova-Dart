@@ -4,7 +4,15 @@
 #!/usr/bin/env dart
 
 // Importing core libraries
-import 'dart:math';
+import 'dart:convert';
+import 'dart:math' as math;
+import 'dart:async' show Stream;
+import 'my_library.dart' hide myLib if 'dart:math';
+import 'key_finder_stub.dart'
+  // ignore: uri_does_not_exist
+  if (dart.library.io) 'package:flutter_conditional_dependencies_example/storage/shared_pref_key_finder.dart'
+  // ignore: uri_does_not_exist
+  if (dart.library.html) 'package:flutter_conditional_dependencies_example/storage/web_key_finder.dart';
 
 // Importing libraries from external packages
 import 'package:test/test.dart';
@@ -63,8 +71,12 @@ flybyObjects.where((name) => name.contains('turn')).forEach(print);
 // This is a normal, one-line comment.
 
 /// This is a documentation comment, used to document libraries,
-/// classes, and their members. [Tools] like IDEs and dartdoc treat
+/// classes, and their members. [Tools] like `IDEs` and dartdoc treat
 /// doc comments specially.
+
+/** This is a documentation comment, used to document libraries,
+classes, and their members. [Tools] like IDEs and dartdoc treat
+doc comments specially. */
 
 /* Comments like these are also supported. */
 

@@ -53,30 +53,9 @@
     </surrounding-pairs>
 
     <scopes>
-        <!-- shebang -->
-        <scope name="dart.comment.single.shebang">
-            <expression>^\#!(.*)$</expression>
-            <capture number="1" name="dart.comment.content" />
-        </scope>
-        <!-- imports -->
-        <scope name="dart.meta.declaration">
-            <starts-with>
-                <expression>^\w*\b(library|import|part\s of|part|export)\b</expression>
-                <capture number="0" name="dart.keyword.statement.import" />
-            </starts-with>
-            <ends-with />
-            <subscopes anchored="true">
-                <include syntax="self" collection="strings" />
-                <include syntax="self" collection="comments" />
-                <scope name="dart.keyword.other.import">
-                    <expression>\b(as|show|hide)\b</expression>
-                </scope>
-                <scope name="dart.keyword.control">
-                    <expression>\b(if)\b</expression>
-                </scope>
-            </subscopes>
-        </scope>
+        <include syntax="self" collection="shebang" />
         <include syntax="self" collection="comments" />
+        <include syntax="self" collection="imports" />
         <include syntax="self" collection="annotations" />
         <include syntax="self" collection="keywords" />
         <include syntax="self" collection="constants-and-special-vars" />
@@ -85,6 +64,7 @@
 
     <collections>
         <!-- !Dartdoc -->
+        <!-- TODO - Choose colors for dartdoc identifiers -->
         <collection name="dartdoc">
             <scope name="dart.identifier.dartdoc">
                 <expression>(\[.*?\])</expression>
@@ -112,6 +92,14 @@
             </scope>
             <scope name="dart.identifier.variable.other.source">
                 <expression>(\*    .*)$</expression>
+            </scope>
+        </collection>
+
+        <!-- shebang -->
+        <collection name="shebang">
+            <scope name="dart.comment.single.shebang">
+                <expression>^\#!(.*)$</expression>
+                <capture number="1" name="dart.comment.content" />
             </scope>
         </collection>
 
@@ -149,10 +137,8 @@
                 <starts-with>
                     <expression>///</expression>
                 </starts-with>
-                <!-- It's this ends-with that is preventing dartdoc from working -->
-                <!-- Is there such thing as while? <expression>^\s*///</expression> -->
                 <ends-with>
-                    <expression>.*</expression>
+                    <expression>$</expression>
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="dartdoc" />
@@ -178,6 +164,38 @@
                 </ends-with>
                 <subscopes>
                     <include syntax="self" collection="comments-block" />
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- imports -->
+        <collection name="imports">
+            <scope name="dart.meta.declaration">
+                <starts-with>
+                    <expression>^\w*\b(library|import|part\s of|part|export)\b</expression>
+                    <capture number="1" name="dart.keyword.statement.import" />
+                </starts-with>
+                <ends-with />
+                <subscopes anchored="true">
+                    <include syntax="self" collection="strings" />
+                    <include syntax="self" collection="import-as-expression" optional="true"/>
+                    <include syntax="self" collection="comments" optional="true"/>
+                </subscopes>
+            </scope>
+        </collection>
+
+        <!-- !Import As Expression -->
+        <collection name="import-as-expression">
+            <scope name="dart.import-as-expression" reset-styles="true">
+                <starts-with>
+                    <expression>\b(as|show|hide)\b</expression>
+                    <capture number="1" name="dart.keyword.other.import" />
+                </starts-with>
+                <ends-with />
+                <subscopes anchored="true">
+                    <scope name="dart.identifier">
+                        <expression>(?:\b[a-zA-Z_]|\$)[A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*</expression>
+                    </scope>
                 </subscopes>
             </scope>
         </collection>
