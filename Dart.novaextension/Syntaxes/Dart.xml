@@ -76,19 +76,14 @@
                 </scope>
             </subscopes>
         </scope>
-
         <include syntax="self" collection="comments" />
         <include syntax="self" collection="annotations" />
         <include syntax="self" collection="keywords" />
         <include syntax="self" collection="constants-and-special-vars" />
         <include syntax="self" collection="strings" />
-
     </scopes>
 
-    <!-- TODO completions -->
-
     <collections>
-
         <!-- !Dartdoc -->
         <collection name="dartdoc">
             <scope name="dart.identifier.dartdoc">
