@@ -1,6 +1,9 @@
-## Upcoming version
+## Version 0.2.2
 
-Add syntax highlighting for html strings.
+Added syntax highlighting for html strings.
+Highlighting inside dartdoc comments now works.
+Improved highlighting for imports.
+Started to add support for completions.
 
 ## Version 0.2.1
 
