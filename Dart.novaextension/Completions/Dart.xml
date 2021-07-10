@@ -54,15 +54,18 @@
         <completion string="dart:developer" />
         <completion string="dart:math" />
         <completion string="dart:typed_data" />
+        <completion string="dart:ffi" />
         <completion string="dart:io" />
         <completion string="dart:isolate" />
         <completion string="dart:mirrors" />
         <completion string="dart:html" />
         <completion string="dart:indexed_db" />
-        <completion string="dart:web_audio" />
-        <completion string="dart:web_gl" />
         <completion string="dart:js" />
         <completion string="dart:js_util" deprecated="true" />
+        <completion string="dart:svg" />
+        <completion string="dart:web_audio" />
+        <completion string="dart:web_gl" />
+        <completion string="dart:web_sql" />
     </set>
     <set name="dart.keyword.import" symbol="property">
         <completion string="as" />
