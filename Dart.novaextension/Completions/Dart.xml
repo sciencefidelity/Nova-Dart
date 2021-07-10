@@ -3,18 +3,35 @@
     <provider name="dart.meta">
         <syntax>dart</syntax>
         <selector>*:not(string,comment)</selector>
-        <expression>\b[a-zA-Z0-9-_]*</expression>
-
+        <expression>^\w*\b[a-zA-Z0-9-_]*</expression>
         <symbols type="property" />
-
-        <set>dart.meta</set>
+        <set>dart.meta.declaration</set>
+    </provider>
+    <provider name="dart.keyword">
+        <syntax>dart</syntax>
+        <selector>*:not(string,comment)</selector>
+        <expression>\b[a-zA-Z0-9-_]*</expression>
+        <symbols type="property" />
+        <set>dart.keyword.other.import</set>
+        <set>dart.keyword.control</set>
     </provider>
 
-    <set name="dart.meta" symbol="property">
+    <set name="dart.meta.declaration" symbol="property">
+        <behavior>
+            <append> &apos;$[]&apos;;</append>
+        </behavior>
         <completion string="library" />
         <completion string="import" />
         <completion string="part of" />
         <completion string="part" />
         <completion string="export" />
+    </set>
+    <set name="dart.keyword.other.import" symbol="property">
+        <completion string="as" />
+        <completion string="show" />
+        <completion string="hide" />
+    </set>
+    <set name="dart.keyword.control" symbol="property">
+        <completion string="if" />
     </set>
 </completions>
