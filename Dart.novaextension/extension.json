@@ -6,8 +6,8 @@
     "version": "0.2.2",
     "categories": ["clips", "completions", "languages"],
     "license": "MIT",
-    "repository": "https://github.com/sciencefidelity/Dart.novaextension",
-    "bugs": "https://github.com/sciencefidelity/Dart.novaextension/issues",
+    "repository": "https://github.com/sciencefidelity/Nova-Dart",
+    "bugs": "https://github.com/sciencefidelity/Nova-Dart/issues",
     "homepage": "https://mattcook.dev",
     "keywords": ["dart", "flutter", "angulardart"],
 

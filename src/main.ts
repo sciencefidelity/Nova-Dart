@@ -1,3 +1,4 @@
+import { cleanPath } from "nova-extension-utils"
 // import { InformationView } from "./informationView";
 
 nova.commands.register("sciencefidelity.dart.reload", reload);
@@ -72,6 +73,7 @@ async function asyncActivate() {
     };
   }
 
+  const normalizedPath = !!nova.workspace.path && cleanPath(nova.workspace.path);
   const syntaxes = ["dart"];
   client = new LanguageClient(
     "sciencefidelity.dart",
@@ -80,11 +82,15 @@ async function asyncActivate() {
       type: "stdio",
       ...serviceArgs,
       env: {
+        WORKSPACE_DIR: `${normalizedPath}/tests`,
         INSTALL_DIR: nova.config.get("sciencefidelity.dart.config.analyzerPath", "string") ||
         "~/flutter/bin/cache/dart-sdk/bin/snapshots",
       },
     },
     {
+      initializationOptions: {
+        "onlyAnalyzeProjectsWithOpenFiles": true
+      },
       syntaxes,
     }
   );
