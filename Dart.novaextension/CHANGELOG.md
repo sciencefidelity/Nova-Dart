@@ -1,3 +1,7 @@
+## Version 0.3.0
+
+Extension now connects to the LSP and hover tips are shown in the editor.
+
 ## Version 0.2.2
 
 Added syntax highlighting for html strings.

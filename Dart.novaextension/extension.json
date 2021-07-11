@@ -3,7 +3,7 @@
     "name": "Dart",
     "organization": "Matt Cook",
     "description": "Dart Language Definition for Nova",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "categories": ["clips", "completions", "languages"],
     "license": "MIT",
     "repository": "https://github.com/sciencefidelity/Nova-Dart",
