@@ -82,7 +82,7 @@ async function asyncActivate() {
       type: "stdio",
       ...serviceArgs,
       env: {
-        WORKSPACE_DIR: `${normalizedPath}/tests`,
+        WORKSPACE_DIR: `${normalizedPath}`,
         INSTALL_DIR: nova.config.get("sciencefidelity.dart.config.analyzerPath", "string") ||
         "~/flutter/bin/cache/dart-sdk/bin/snapshots",
       },
