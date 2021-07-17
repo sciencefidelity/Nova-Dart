@@ -22,7 +22,7 @@ async function makeFileExecutable(file: string) {
   });
 }
 
-nova.config.onDidChange("sciencefidelity.enableAnalyzer",
+nova.config.onDidChange("sciencefidelity.dart.config.enableAnalyzer",
   async function (current) {
     if (current) {
       activate();
@@ -91,7 +91,7 @@ async function asyncActivate() {
       initializationOptions: {
         "onlyAnalyzeProjectsWithOpenFiles": true
       },
-      syntaxes,
+      syntaxes
     }
   );
 
@@ -145,7 +145,7 @@ export async function activate() {
       .then(() => {
         console.log("activated");
       });
-  }
+  };
 }
 
 export function deactivate() {
