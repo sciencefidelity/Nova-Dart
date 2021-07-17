@@ -1,6 +1,5 @@
 .DS_Store
 *.bak
-.nova
 node_modules/
 /dart.novaextension/Scripts
 logs/
