@@ -1,5 +1,12 @@
 import { cleanPath } from "nova-extension-utils"
-// import { InformationView } from "./informationView";
+import { wrapCommand } from "./novaUtils";
+
+nova.commands.register(
+  "sciencefidelity.dart.openWorkspaceConfig",
+  wrapCommand(function openWorkspaceConfig(workspace: Workspace) {
+    workspace.openConfig();
+  })
+);
 
 nova.commands.register("sciencefidelity.dart.reload", reload);
 
@@ -39,10 +46,7 @@ async function reload() {
 }
 
 async function asyncActivate() {
-  // const informationView = new InformationView();
-  // compositeDisposable.add(informationView);
 
-  // informationView.status = "Activating...";
   const runFile = nova.path.join(nova.extension.path, "run.sh");
 
   // Uploading to the extension library makes this file not executable, so fix that
@@ -73,7 +77,12 @@ async function asyncActivate() {
     };
   }
 
-  const normalizedPath = !!nova.workspace.path && cleanPath(nova.workspace.path);
+  let path;
+  if (nova.inDevMode() && nova.workspace.path) {
+    path = `${cleanPath(nova.workspace.path)}/test-workspace`
+  } else if (nova.workspace.path) {
+    path = cleanPath(nova.workspace.path)
+  }
   const syntaxes = ["dart"];
   client = new LanguageClient(
     "sciencefidelity.dart",
@@ -82,7 +91,7 @@ async function asyncActivate() {
       type: "stdio",
       ...serviceArgs,
       env: {
-        WORKSPACE_DIR: `${normalizedPath}`,
+        WORKSPACE_DIR: path || "",
         INSTALL_DIR: nova.config.get("sciencefidelity.dart.config.analyzerPath", "string") ||
         "~/flutter/bin/cache/dart-sdk/bin/snapshots",
       },
@@ -97,7 +106,6 @@ async function asyncActivate() {
 
   compositeDisposable.add(
     client.onDidStop((err) => {
-      // informationView.status = "Stopped";
 
       let message = "Dart Language Server stopped unexpectedly";
       if (err) {
@@ -123,9 +131,6 @@ async function asyncActivate() {
 
   client.start();
 
-  // informationView.status = "Running";
-
-  // informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 }
 
 export async function activate() {

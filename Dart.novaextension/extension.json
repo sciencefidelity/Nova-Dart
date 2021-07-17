@@ -23,18 +23,31 @@
     },
 
     "config": [
-      {
-          "key": "sciencefidelity.dart.config.analyzerPath",
-          "title": "Dart Analyzer Path",
-          "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
-          "type": "path",
-          "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots"
-      },
-      {
-          "key": "sciencefidelity.dart.config.enableAnalyzer",
-          "title": "Enable Language Server",
-          "type": "boolean",
-          "default": false
-      }
-  ]
+        {
+            "key": "sciencefidelity.dart.config.analyzerPath",
+            "title": "Dart Analyzer Path",
+            "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
+            "type": "path",
+            "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots"
+        },
+        {
+            "key": "sciencefidelity.dart.config.enableAnalyzer",
+            "title": "Enable Language Server",
+            "type": "boolean",
+            "default": false
+        }
+    ],
+
+    "commands": {
+        "extensions": [
+            {
+                "title": "Preferences",
+                "command": "sciencefidelity.dart.openWorkspaceConfig"
+            },
+            {
+                "title": "Restart Server",
+                "command": "sciencefidelity.dart.reload"
+            }
+        ]
+    }
 }
