@@ -1,12 +1,8 @@
-# Dart Tools for Nova
-
 ![](https://github.com/sciencefidelity/Nova-Dart/blob/dac53d2d255276b77d8bce1af8125aba4cc1a38a/Dart.novaextension/Images/README/readme-header.png)
 
 [Nova](https://nova.app) support for [Dart](https://dart.dev), [Flutter](https://flutter.dev) and [AngularDart](https://angualardart.dev).
 
-This extension supports syntax highlighting, language server protocol and clips.
-
-<br/>
+This extension supports syntax highlighting, language server protocol and clips.\
 
 ![](https://github.com/sciencefidelity/Nova-Dart/blob/6c30cffc980d8d3c5a8289d269662bd7d85d51fe/Dart.novaextension/Images/README/screenshot.png)
 
