@@ -2,7 +2,9 @@
 
 [Nova](https://nova.app) support for [Dart](https://dart.dev), [Flutter](https://flutter.dev) and [AngularDart](https://angualardart.dev).
 
-This extension supports syntax highlighting, language server protocol and clips.\
+This extension supports syntax highlighting, language server protocol and clips.
+
+<br />
 
 ![](https://github.com/sciencefidelity/Nova-Dart/blob/6c30cffc980d8d3c5a8289d269662bd7d85d51fe/Dart.novaextension/Images/README/screenshot.png)
 
