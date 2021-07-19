@@ -1,6 +1,11 @@
 import { cleanPath } from "nova-extension-utils";
 import { InformationView } from "./informationView";
 import { wrapCommand } from "./novaUtils";
+import { DartColorAssistant } from "./colors"
+
+// Colors
+const Colors = new DartColorAssistant();
+nova.assistants.registerColorAssistant("dart", Colors);
 
 nova.commands.register(
   "sciencefidelity.dart.openWorkspaceConfig",
@@ -30,22 +35,14 @@ async function makeFileExecutable(file: string) {
   });
 }
 
+// Launches the Вфке executable to determine its current version
 async function getDartVersion() {
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<string>(() => {
     const process = new Process("/usr/bin/env", {
-      args: ["dart", "--version"],
-      stdio: ["ignore", "pipe", "ignore"],
+      args: ["dart --version"]
     });
-    let str = "";
-    process.onStdout((versionString) => {
-      str += versionString.trim();
-    });
-    process.onDidExit((status) => {
-      if (status === 0) {
-        resolve(str);
-      } else {
-        reject(status);
-      }
+    process.onStdout(function(line) {
+      console.log("Running " + line);
     });
     process.start();
   });
