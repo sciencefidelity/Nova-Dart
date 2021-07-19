@@ -16,8 +16,14 @@ This extension supports syntax highlighting, language server protocol and clips.
 - Enable HTML syntax highlighting inside Dart strings, allow user to enable/disable. ([Dart Vim Plugin](https://github.com/dart-lang/dart-vim-plugin) does this)
 - Information on [Dart's devtools](https://dart.dev/tools/dart-devtools).
 
+### Contributing
+
+Clone this repo, run `yarn` or `npm install` in the top level directory to install dependencies. Open in Nova `nova .` then run the custom task to build the extension scripts before activating the project as extension from the the Extensions menu.
+
+Thank you!
+
 ### Credits
 
-To learn syntax highlighting in Nova I used the built in TypeScript and JavaScript syntaxes as templates. The syntax of Dart was learnt from [Dart Code](https://github.com/Dart-Code/Dart-Code) via the [Dartlight](https://github.com/elMuso/Dartlight) extension for Sublime Text/Textastic, which helped me understand how to port it to Nova. Thanks go to the creators of those extensions!
+To learn syntax highlighting in Nova I used the built in TypeScript and JavaScript syntaxes as templates. The syntax of Dart was learnt from [Dart Code](https://github.com/Dart-Code/Dart-Code) via the [Dartlight](https://github.com/elMuso/Dartlight) extension for Sublime Text/Textastic, which helped me understand how to port it to Nova. Many thanks to the creators of those extensions!
 
 Clips are borrowed from [Dart Code](https://github.com/Dart-Code/Dart-Code) by Danny Tuppeny.
