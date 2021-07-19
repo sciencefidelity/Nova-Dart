@@ -1,6 +1,7 @@
 # Dart Tools for Nova
 
 ![](https://github.com/sciencefidelity/Nova-Dart/blob/adc72aa8f38110bcc259f6b05c3d34349e0811b4/Dart.novaextension/Images/README/readme-header.png)
+<img src="https://github.com/sciencefidelity/Nova-Dart/blob/adc72aa8f38110bcc259f6b05c3d34349e0811b4/Dart.novaextension/Images/README/readme-header.png">
 
 [Nova](https://nova.app) support for [Dart](https://dart.dev), [Flutter](https://flutter.dev) and [AngularDart](https://angualardart.dev).
 
