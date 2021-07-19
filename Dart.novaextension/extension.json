@@ -4,7 +4,14 @@
     "organization": "Matt Cook",
     "description": "Dart Language Definition for Nova",
     "version": "0.3.0",
-    "categories": ["clips", "completions", "languages"],
+    "categories": [
+        "clips",
+        "completions",
+        "formatters",
+        "issues",
+        "languages",
+        "sidebars"
+    ],
     "license": "MIT",
     "repository": "https://github.com/sciencefidelity/Nova-Dart",
     "bugs": "https://github.com/sciencefidelity/Nova-Dart/issues",
@@ -35,6 +42,42 @@
             "title": "Enable Language Server",
             "type": "boolean",
             "default": false
+        }
+    ],
+
+    "sidebars": [
+        {
+            "id": "sciencefidelity.dart.sidebar",
+            "name": "Dart",
+            "smallImage": "SidebarSmall",
+            "largeImage": "SidebarLarge",
+            "sections": [
+                {
+                    "id": "sciencefidelity.dart.sidebar.info",
+                    "name": "Information",
+                    "placeholderText": "Dart Extension Information",
+                    "headerCommands": [
+                        {
+                            "title": "Refresh",
+                            "image": "__builtin.refresh",
+                            "command": "sciencefidelity.dart.reload"
+                        }
+                    ]
+                },
+                {
+                    "id": "sciencefidelity.dart.sidebar.symbols",
+                    "name": "Results",
+                    "placeholderText": "Results from “Find Symbol”, “Find Reference” and “Go to Definition” will show here.",
+                    "headerCommands": [
+                        {
+                            "title": "Find Symbol",
+                            "image": "Search",
+                            "tooltip": "Open the Find Symbol palette",
+                            "command": "sciencefidelity.dart.findSymbol"
+                        }
+                    ]
+                }
+            ]
         }
     ],
 
