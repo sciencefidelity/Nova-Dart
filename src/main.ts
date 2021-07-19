@@ -1,4 +1,5 @@
-import { cleanPath } from "nova-extension-utils"
+import { cleanPath } from "nova-extension-utils";
+import { InformationView } from "./informationView";
 import { wrapCommand } from "./novaUtils";
 
 nova.commands.register(
@@ -29,6 +30,27 @@ async function makeFileExecutable(file: string) {
   });
 }
 
+async function getDartVersion() {
+  return new Promise<string>((resolve, reject) => {
+    const process = new Process("/usr/bin/env", {
+      args: ["dart", "--version"],
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    let str = "";
+    process.onStdout((versionString) => {
+      str += versionString.trim();
+    });
+    process.onDidExit((status) => {
+      if (status === 0) {
+        resolve(str);
+      } else {
+        reject(status);
+      }
+    });
+    process.start();
+  });
+}
+
 nova.config.onDidChange("sciencefidelity.dart.config.enableAnalyzer",
   async function (current) {
     if (current) {
@@ -40,12 +62,18 @@ nova.config.onDidChange("sciencefidelity.dart.config.enableAnalyzer",
 );
 
 async function reload() {
-  deactivate();
-  console.log("reloading...");
-  await asyncActivate();
+  if (nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")) {
+    deactivate();
+    console.log("reloading...");
+    await asyncActivate();
+  }
 }
 
 async function asyncActivate() {
+  const informationView = new InformationView();
+  compositeDisposable.add(informationView);
+
+  informationView.status = "Activating...";
 
   const runFile = nova.path.join(nova.extension.path, "run.sh");
 
@@ -130,6 +158,14 @@ async function asyncActivate() {
   );
 
   client.start();
+
+  getDartVersion().then((version) => {
+    informationView.dartVersion = version;
+  });
+
+  informationView.status = "Running";
+
+  informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 
 }
 
