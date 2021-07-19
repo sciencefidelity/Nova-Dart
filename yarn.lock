@@ -651,10 +651,17 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.0.0.tgz#067a6c49dc7a5c2412a505628e26902ae967bf6f"
   integrity sha512-TmCW5HoZ2o2/z2EYi109jLqIaPIi9y/lc2LmDCWzuCi35bcaQ+OtUh6nwBiFK7SOu25FAU5+YKdqFZUwtqGSdg==
 
-"@types/nova-editor-node@^4.1.3":
+"@types/nova-editor-node@*", "@types/nova-editor-node@^4.1.3":
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/@types/nova-editor-node/-/nova-editor-node-4.1.3.tgz#d56280b23c0b7874111f0ac3fcb9cc88775b717f"
   integrity sha512-MDwY3qAv0HVFEP1uE8Ku6RjMmLW2Acl/EvDjxUofbLkvFup3sdZW+uVFLRtMCpZwTn/qu6Yc1hDIdjVytvfokQ==
+
+"@types/nova-editor@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/nova-editor/-/nova-editor-1.0.0.tgz#a44a1097bd506a68d7bfa72894b1d09d5c59e368"
+  integrity sha512-Xke+goq1r5GhAoYwXyGzugOuT7f1fSdTx/IR18UE6K7XUFUBirDbW0Onx7makn9RgNUlSH+sEqyh8chDgfWcpg==
+  dependencies:
+    "@types/nova-editor-node" "*"
 
 "@types/prettier@^2.1.5":
   version "2.3.2"
