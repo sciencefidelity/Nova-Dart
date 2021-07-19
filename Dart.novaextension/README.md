@@ -6,6 +6,8 @@
 
 This extension supports syntax highlighting, language server protocol and clips.
 
+![](https://github.com/sciencefidelity/Nova-Dart/blob/6c30cffc980d8d3c5a8289d269662bd7d85d51fe/Dart.novaextension/Images/README/screenshot.png)
+
 ### Installation
 
 To use this extension you will need to have the [Flutter SDK](https://flutter.dev/docs/get-started/install/macos) or the [Dart SDK](https://dart.dev/get-dart) installed on your system.
