@@ -5,7 +5,7 @@ import { DartColorAssistant } from "./colors"
 
 // Colors
 const Colors = new DartColorAssistant();
-nova.assistants.registerColorAssistant("dart", Colors);
+nova.assistants.registerColorAssistant(["dart"], Colors);
 
 nova.commands.register(
   "sciencefidelity.dart.openWorkspaceConfig",
@@ -18,6 +18,8 @@ nova.commands.register("sciencefidelity.dart.reload", reload);
 
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
+const informationView = new InformationView();
+compositeDisposable.add(informationView);
 
 async function makeFileExecutable(file: string) {
   return new Promise<void>((resolve, reject) => {
@@ -35,7 +37,7 @@ async function makeFileExecutable(file: string) {
   });
 }
 
-// Launches the Вфке executable to determine its current version
+// Launches the Dart executable to determine its current version
 async function getDartVersion() {
   return new Promise<string>(() => {
     const process = new Process("/usr/bin/env", {
@@ -67,8 +69,6 @@ async function reload() {
 }
 
 async function asyncActivate() {
-  const informationView = new InformationView();
-  compositeDisposable.add(informationView);
 
   informationView.status = "Activating...";
 
@@ -156,15 +156,16 @@ async function asyncActivate() {
 
   client.start();
 
-  getDartVersion().then((version) => {
-    informationView.dartVersion = version;
-  });
-
   informationView.status = "Running";
 
   informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 
 }
+
+getDartVersion().then((version) => {
+  console.log(version);
+  informationView.dartVersion = version;
+});
 
 export async function activate() {
   if (nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")) {
