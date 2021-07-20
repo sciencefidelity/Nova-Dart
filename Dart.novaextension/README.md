@@ -10,7 +10,7 @@ Support for syntax highlighting, language server protocol and clips.
 
 ### Installation
 
-To use this extension you will need to have the [Flutter SDK](https://flutter.dev/docs/get-started/install/macos) or the [Dart SDK](https://dart.dev/get-dart) installed on your system.
+To use this extension you will need to have the [Flutter<sup>TM</sup> SDK](https://flutter.dev/docs/get-started/install/macos) or the [Dart<sup>TM</sup> SDK](https://dart.dev/get-dart) installed on your system.
 
 You will need to specify the location of the Dart Language Server in the plugin preferences. If you have installed the Flutter SDK in your home directory then the extension should connect automatically, otherwise specify the full path to the language server executable (`analysis_server.dart.snapshot`) which if using Flutter will be `<path to Flutter SDK>/flutter/bin/cache/dart-sdk/bin/snapshots`, if using the Dart SDK the path will be `<path to Dart SDK>/dart-sdk/bin/snapshots`.
 
