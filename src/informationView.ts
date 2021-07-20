@@ -27,7 +27,7 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
   }
 
   private readonly _dartVersionElement: Element = {
-    title: "Dart Version",
+    title: "Dart",
     value: "",
     identifier: "dartVersion",
   };

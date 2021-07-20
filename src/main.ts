@@ -5,7 +5,6 @@ import { DartColorAssistant } from "./colors"
 
 // Colors
 const Colors = new DartColorAssistant();
-nova.assistants.registerColorAssistant(["dart"], Colors);
 
 nova.commands.register(
   "sciencefidelity.dart.openWorkspaceConfig",
@@ -19,7 +18,6 @@ nova.commands.register("sciencefidelity.dart.reload", reload);
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
 const informationView = new InformationView();
-compositeDisposable.add(informationView);
 
 async function makeFileExecutable(file: string) {
   return new Promise<void>((resolve, reject) => {
@@ -39,12 +37,23 @@ async function makeFileExecutable(file: string) {
 
 // Launches the Dart executable to determine its current version
 async function getDartVersion() {
-  return new Promise<string>(() => {
+  return new Promise<string>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
-      args: ["dart --version"]
+      args: ["dart", "--version"],
+      stdio: ["pipe", "pipe", "pipe"],
+      shell: true
     });
-    process.onStdout(function(line) {
-      console.log("Running " + line);
+    let str = "";
+    process.onStderr(function(line) {
+      str += line.trim();
+      console.log(line);
+    });
+    process.onDidExit((status) => {
+      if (status === 0) {
+        resolve(str);
+      } else {
+        reject(status);
+      }
     });
     process.start();
   });
@@ -162,17 +171,22 @@ async function asyncActivate() {
 
 }
 
-getDartVersion().then((version) => {
-  console.log(version);
-  informationView.dartVersion = version;
-});
-
 export async function activate() {
+  console.log("activating...");
+
+  compositeDisposable.add(informationView);
+
+  getDartVersion().then((version) => {
+    console.log(version);
+    informationView.dartVersion = version;
+  });
+
+  nova.assistants.registerColorAssistant(["dart"], Colors);
+
   if (nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")) {
-    console.log("activating...");
     if (nova.inDevMode()) {
       const notification = new NotificationRequest("activated");
-      notification.body = "Dart extension is loading";
+      notification.body = "Dart LSP is loading";
       nova.notifications.add(notification);
     }
     return asyncActivate()
@@ -185,6 +199,9 @@ export async function activate() {
         console.log("activated");
       });
   };
+
+  console.log("This code runs");
+
 }
 
 export function deactivate() {
