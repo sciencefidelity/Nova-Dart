@@ -87,9 +87,9 @@ export class DartColorAssistant implements ColorAssistant {
 
     let colors = [];
     let candidates = context.candidates;
-    console.log(`candidates: ${candidates}`);
+    console.log(`candidates: ${JSON.stringify(candidates)}`);
     for (let candidate of candidates) {
-      console.log(`candidate: ${candidate}`);
+      console.log(`candidate: ${JSON.stringify(candidate)}`);
       let string = candidate.text;
       let range = candidate.range;
 
@@ -114,7 +114,7 @@ export class DartColorAssistant implements ColorAssistant {
         }
       }
     }
-    console.log(`colors: ${colors}`);
+    console.log(`colors: ${JSON.stringify(colors)}`);
     return colors;
   }
 
