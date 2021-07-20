@@ -29,7 +29,7 @@ const namedColorStrings = {
   white: "FFFFFF",
 } as NamedStrings;
 
-export class DartColorAssistant {
+export class DartColorAssistant implements ColorAssistant {
   attributeBlockChars: Charset;
   stringDoubleQuotedChars: Charset;
   stringSingleQuotedChars: Charset;
@@ -77,24 +77,26 @@ export class DartColorAssistant {
 
       let color = Color.rgb(red, green, blue, 1.0);
       namedColors[key] = color;
-      console.log(red)
     }
+    console.log(`namedColors: ${JSON.stringify(namedColors)}`);
     this.namedColors = namedColors;
   }
 
-  provideColors(editor: TextEditor, context: any) {
+  provideColors(editor: TextEditor, context: ColorInformationContext) {
     let regexes = [this.hexRegex, this.rgbaRegex, this.rgbRegex, this.hslaRegex, this.hslRegex, this.srgbRegex, this.srgbaRegex, this.displayP3Regex, this.displayP3ARegex];
 
     let colors = [];
-
     let candidates = context.candidates;
+    console.log(`candidates: ${candidates}`);
     for (let candidate of candidates) {
+      console.log(`candidate: ${candidate}`);
       let string = candidate.text;
       let range = candidate.range;
 
       let namedColor = this.namedColors[string];
       if (namedColor) {
         // Named color
+        console.log(`namedColor: ${namedColor}`);
         let infoRange = new Range(range.start, range.start + string.length);
         let colorInfo = new ColorInformation(infoRange, namedColor, "named");
         colors.push(colorInfo);
@@ -112,19 +114,20 @@ export class DartColorAssistant {
         }
       }
     }
-
+    console.log(`colors: ${colors}`);
     return colors;
   }
 
-  parseColorMatch(match: any, regex: RegExp, range: any) {
-    // Parses a CSS color string into an color object
+  parseColorMatch(match: any, regex: RegExp, range: Range) {
+    console.log("parseColorMatch");
+    // Parses a Dart color string into an color object
     let position = range.start + match.index;
     let matchStr = match[0];
-    if (regex == this.hexRegex) {
-      if (matchStr.length == 7) {
-        let red = parseInt(matchStr.substring(1, 3), 16);
-        let green = parseInt(matchStr.substring(3, 5), 16);
-        let blue = parseInt(matchStr.substring(5, 7), 16);
+    if (regex === this.hexRegex) {
+      if (matchStr.length === 10) {
+        let red = parseInt(matchStr.substring(4, 6), 16);
+        let green = parseInt(matchStr.substring(6, 8), 16);
+        let blue = parseInt(matchStr.substring(8, 10), 16);
 
         red = red / 255.0;
         green = green / 255.0;
@@ -136,7 +139,7 @@ export class DartColorAssistant {
         info.format = ColorFormat.rgb;
         return info;
       }
-      else if (matchStr.length == 4) {
+      else if (matchStr.length === 4) {
         let redStr = matchStr.substring(1, 2);
         let greenStr = matchStr.substring(2, 3);
         let blueStr = matchStr.substring(3, 4);
@@ -268,15 +271,16 @@ export class DartColorAssistant {
       info.usesFloats = true;
       return info;
     }
+    console.log("parse color match");
     return null;
   }
 
   provideColorPresentations(color: any, context: any) {
     // Converts a color object into an array of color presentations
     let format = color.format;
-    let presentations = []
+    let presentations = [];
 
-    if (format == ColorFormat.displayP3) {
+    if (format === ColorFormat.displayP3) {
       // Display P3
       let components = color.components;
 
@@ -287,7 +291,7 @@ export class DartColorAssistant {
       let alpha = Math.round(components[3] * 1000.0) / 1000.0;
 
       // color(display-p3 r g b)
-      if (alpha == 1.0) {
+      if (alpha === 1.0) {
         let string = 'color(display-p3 ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ')';
 
         let presentation = new ColorPresentation(string, "p3");
@@ -319,7 +323,7 @@ export class DartColorAssistant {
         let alpha = Math.round(components[3] * 1000.0) / 1000.0;
 
         // color(srgb r g b)
-        if (alpha == 1.0) {
+        if (alpha === 1.0) {
           let string = 'color(srgb ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ')';
 
           let presentation = new ColorPresentation(string, "srgb");
@@ -387,7 +391,7 @@ export class DartColorAssistant {
         lum = lum * 100.0;
 
         // hsl()
-        if (alpha == 1.0) {
+        if (alpha === 1.0) {
           let string = 'hsl(' + hue.toFixed() + ', ' + sat.toFixed() + '%, ' + lum.toFixed() + '%)';
 
           let presentation = new ColorPresentation(string, "hsl");
@@ -419,15 +423,15 @@ export class DartColorAssistant {
         blue = blue * 255.0;
 
         let redHex = Math.floor(red).toString(16);
-        if (redHex.length == 1) {
+        if (redHex.length === 1) {
             redHex = '0' + redHex;
         }
         let greenHex = Math.floor(green).toString(16);
-        if (greenHex.length == 1) {
+        if (greenHex.length === 1) {
             greenHex = '0' + greenHex;
         }
         let blueHex = Math.floor(blue).toString(16);
-        if (blueHex.length == 1) {
+        if (blueHex.length === 1) {
             blueHex = '0' + blueHex;
         }
 
@@ -438,7 +442,7 @@ export class DartColorAssistant {
         presentations.push(presentation);
       }
     }
-
+    console.log("presentations");
     return presentations;
   }
 }
