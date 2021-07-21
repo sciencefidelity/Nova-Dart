@@ -40,13 +40,35 @@ async function getDartVersion() {
   return new Promise<string>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["dart", "--version"],
-      stdio: ["pipe", "pipe", "pipe"],
-      shell: true
+      stdio: ["ignore", "ignore", "pipe"]
     });
     let str = "";
     process.onStderr(function(line) {
-      str += line.trim();
-      console.log(line);
+      str = line.slice(18, 25);
+      // console.log(line);
+    });
+    process.onDidExit((status) => {
+      if (status === 0) {
+        resolve(str);
+      } else {
+        reject(status);
+      }
+    });
+    process.start();
+  });
+}
+
+// Launches the Flutter executable to determine its current version
+async function getFlutterVersion() {
+  return new Promise<string>((resolve, reject) => {
+    const process = new Process("/usr/bin/env", {
+      args: ["flutter", "--version"],
+      stdio: ["ignore", "pipe", "ignore"]
+    });
+    let str = "";
+    process.onStdout(function(line) {
+      // str = line.slice(8, 13);
+      // console.log(line);
     });
     process.onDidExit((status) => {
       if (status === 0) {
@@ -176,9 +198,12 @@ export async function activate() {
 
   compositeDisposable.add(informationView);
 
-  getDartVersion().then((version) => {
-    console.log(version);
-    informationView.dartVersion = version;
+  getDartVersion().then((dartVersion) => {
+    informationView.dartVersion = dartVersion;
+  });
+
+  getFlutterVersion().then((flutterVersion) => {
+    informationView.flutterVersion = flutterVersion;
   });
 
   nova.assistants.registerColorAssistant(["dart"], Colors);
@@ -199,9 +224,6 @@ export async function activate() {
         console.log("activated");
       });
   };
-
-  console.log("This code runs");
-
 }
 
 export function deactivate() {

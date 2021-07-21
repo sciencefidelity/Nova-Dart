@@ -16,18 +16,8 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
 
   private _treeView: TreeView<{ title: string; value: string }>;
 
-  private readonly _statusElement: Element = {
-    title: "Status",
-    value: "Inactive",
-    identifier: "status",
-  };
-  public set status(value: string) {
-    this._statusElement.value = value;
-    this._treeView.reload(this._statusElement);
-  }
-
   private readonly _dartVersionElement: Element = {
-    title: "Dart",
+    title: "Dart SDK",
     value: "",
     identifier: "dartVersion",
   };
@@ -36,13 +26,33 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
     this._treeView.reload(this._dartVersionElement);
   }
 
+  private readonly _flutterVersionElement: Element = {
+    title: "Flutter SDK",
+    value: "",
+    identifier: "flutterVersion",
+  };
+  public set flutterVersion(value: string) {
+    this._dartVersionElement.value = value;
+    this._treeView.reload(this._flutterVersionElement);
+  }
+
+  private readonly _statusElement: Element = {
+    title: "LSP Status",
+    value: "Inactive",
+    identifier: "status",
+  };
+  public set status(value: string) {
+    this._statusElement.value = value;
+    this._treeView.reload(this._statusElement);
+  }
+
   reload() {
     this._treeView.reload();
   }
 
   getChildren(element: Element | null): Array<Element> {
-    if (element == null) {
-      return [this._statusElement, this._dartVersionElement];
+    if (element === null) {
+      return [this._dartVersionElement, this._flutterVersionElement, this._statusElement];
     }
     return [];
   }
