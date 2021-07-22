@@ -66,8 +66,8 @@ export class DartColorAssistant implements ColorAssistant {
     this.displayP3ARegex = new RegExp("\\bcolor\\(\\s*display-p3\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s*(?:/\\s*([0-9]*\.?[0-9]+)\\s*)\\)", "i");
 
     // Named colors
-    let namedColors: ColorStrings = {};
-    let keys = Object.keys(namedColorStrings);
+    const namedColors: ColorStrings = {};
+    const keys = Object.keys(namedColorStrings);
     for (let key of keys) {
       let string = namedColorStrings[key];
 
@@ -78,25 +78,24 @@ export class DartColorAssistant implements ColorAssistant {
       let color = Color.rgb(red, green, blue, 1.0);
       namedColors[key] = color;
     }
-    console.log(`namedColors: ${JSON.stringify(namedColors)}`);
     this.namedColors = namedColors;
   }
 
-  provideColors(editor: TextEditor, context: ColorInformationContext) {
-    let regexes = [this.hexRegex, this.rgbaRegex, this.rgbRegex, this.hslaRegex, this.hslRegex, this.srgbRegex, this.srgbaRegex, this.displayP3Regex, this.displayP3ARegex];
+  provideColors(textEditor: TextEditor, context: ColorInformationContext) {
+    const regexes = [this.hexRegex, this.rgbaRegex, this.rgbRegex, this.hslaRegex, this.hslRegex, this.srgbRegex, this.srgbaRegex, this.displayP3Regex, this.displayP3ARegex];
 
     let colors = [];
-    let candidates = context.candidates;
-    console.log(`candidates: ${JSON.stringify(candidates)}`);
+    const candidates = context.candidates;
+
     for (let candidate of candidates) {
-      console.log(`candidate: ${JSON.stringify(candidate)}`);
+
       let string = candidate.text;
       let range = candidate.range;
 
       let namedColor = this.namedColors[string];
       if (namedColor) {
         // Named color
-        console.log(`namedColor: ${namedColor}`);
+
         let infoRange = new Range(range.start, range.start + string.length);
         let colorInfo = new ColorInformation(infoRange, namedColor, "named");
         colors.push(colorInfo);
@@ -114,12 +113,12 @@ export class DartColorAssistant implements ColorAssistant {
         }
       }
     }
-    console.log(`colors: ${JSON.stringify(colors)}`);
+
     return colors;
   }
 
   parseColorMatch(match: any, regex: RegExp, range: Range) {
-    console.log("parseColorMatch");
+
     // Parses a Dart color string into an color object
     let position = range.start + match.index;
     let matchStr = match[0];
@@ -271,7 +270,7 @@ export class DartColorAssistant implements ColorAssistant {
       info.usesFloats = true;
       return info;
     }
-    console.log("parse color match");
+
     return null;
   }
 
@@ -442,7 +441,7 @@ export class DartColorAssistant implements ColorAssistant {
         presentations.push(presentation);
       }
     }
-    console.log("presentations");
+
     return presentations;
   }
 }
