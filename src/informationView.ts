@@ -32,7 +32,7 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
     identifier: "flutterVersion",
   };
   public set flutterVersion(value: string) {
-    this._dartVersionElement.value = value;
+    this._flutterVersionElement.value = value;
     this._treeView.reload(this._flutterVersionElement);
   }
 

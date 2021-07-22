@@ -44,8 +44,9 @@ async function getDartVersion() {
     });
     let str = "";
     process.onStderr(function(line) {
-      str = line.slice(18, 25);
-      // console.log(line);
+      const arr = line.split(" ");
+      str = arr[3];
+      console.log(line);
     });
     process.onDidExit((status) => {
       if (status === 0) {
@@ -61,14 +62,17 @@ async function getDartVersion() {
 // Launches the Flutter executable to determine its current version
 async function getFlutterVersion() {
   return new Promise<string>((resolve, reject) => {
+    const versionFile = nova.path.join(nova.extension.path, "version.sh");
+    makeFileExecutable(versionFile);
     const process = new Process("/usr/bin/env", {
-      args: ["flutter", "--version"],
+      args: ["bash", "-c",`"${versionFile}"`],
       stdio: ["ignore", "pipe", "ignore"]
     });
     let str = "";
     process.onStdout(function(line) {
-      // str = line.slice(8, 13);
-      // console.log(line);
+      const arr = line.split(" ");
+      str = arr[1];
+      console.log(line);
     });
     process.onDidExit((status) => {
       if (status === 0) {
