@@ -2,7 +2,7 @@
 
 [Dart](https://dart.dev), [Flutter](https://flutter.dev) and [AngularDart](https://angualardart.dev) tools for [Nova](https://nova.app).
 
-Support for syntax highlighting, language server protocol and clips.
+Supports syntax highlighting, intelligent code completion, auto formatting and clips.
 
 <br />
 
@@ -12,7 +12,7 @@ Support for syntax highlighting, language server protocol and clips.
 
 To use this extension you will need to have the [Flutter SDK](https://flutter.dev/docs/get-started/install/macos) or the [Dart SDK](https://dart.dev/get-dart) installed on your system.
 
-You will need to specify the location of the Dart Language Server in the plugin preferences. If you have installed the Flutter SDK in your home directory then the extension should connect automatically, otherwise specify the full path to the language server executable (`analysis_server.dart.snapshot`) which if using Flutter will be `<path to Flutter SDK>/flutter/bin/cache/dart-sdk/bin/snapshots`, if using the Dart SDK the path will be `<path to Dart SDK>/dart-sdk/bin/snapshots`.
+To use the built in language server, specify the location of the Dart Language Server in the plugin preferences. If you have installed the Flutter SDK in your home directory then the extension should connect automatically, otherwise specify the full path to the language server executable (`analysis_server.dart.snapshot`), which if using Flutter will be `<path to Flutter SDK>/flutter/bin/cache/dart-sdk/bin/snapshots`, or if using the Dart SDK the path will be `<path to Dart SDK>/dart-sdk/bin/snapshots`.
 
 ### Credits
 
