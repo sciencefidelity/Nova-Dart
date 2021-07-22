@@ -25,7 +25,7 @@ export function registerFormatDocument(client: LanguageClient) {
     const documentFormatting: lspTypes.DocumentFormattingParams = {
       textDocument: { uri: editor.document.uri },
       options: {
-        insertSpaces: editor.softTabs,
+        insertSpaces: true,
         tabSize: editor.tabLength,
       },
     };
