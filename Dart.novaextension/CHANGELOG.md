@@ -1,3 +1,7 @@
+## Version 0.3.1
+
+Register sidebar with information view listing Dart and Flutter versions installed.
+
 ## Version 0.3.0
 
 Extension now connects to the LSP and hover tips are shown in the editor.

@@ -3,7 +3,7 @@
     "name": "Dart",
     "organization": "Matt Cook",
     "description": "Dart Language Definition for Nova",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "categories": [
         "clips",
         "completions",
