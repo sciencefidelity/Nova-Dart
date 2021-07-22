@@ -1,10 +1,12 @@
-import { cleanPath } from "nova-extension-utils";
+import { cleanPath, preferences } from "nova-extension-utils";
+import { DartColorAssistant } from "./colors";
 import { InformationView } from "./informationView";
+import { registerFormatDocument } from "./commands/formatDocument";
 import { wrapCommand } from "./novaUtils";
-import { DartColorAssistant } from "./colors"
 
 // Colors
 const Colors = new DartColorAssistant();
+const formatOnSaveKey = "sciencefidelity.dart.config.formatDocumentOnSave";
 
 nova.commands.register(
   "sciencefidelity.dart.openWorkspaceConfig",
@@ -164,6 +166,9 @@ async function asyncActivate() {
     }
   );
 
+  // register nova commands
+  compositeDisposable.add(registerFormatDocument(client));
+
   compositeDisposable.add(
     client.onDidStop((err) => {
 
@@ -190,6 +195,58 @@ async function asyncActivate() {
   );
 
   client.start();
+
+  compositeDisposable.add(
+    nova.workspace.onDidAddTextEditor((editor) => {
+      const editorDisposable = new CompositeDisposable();
+      compositeDisposable.add(editorDisposable);
+      compositeDisposable.add(
+        editor.onDidDestroy(() => editorDisposable.dispose())
+      );
+
+      // watch things that might change if this needs to happen or not
+      editorDisposable.add(editor.document.onDidChangeSyntax(refreshListener));
+      editorDisposable.add(
+        nova.config.onDidChange(formatOnSaveKey, refreshListener)
+      );
+      editorDisposable.add(
+        nova.workspace.config.onDidChange(formatOnSaveKey, refreshListener)
+      );
+
+      let willSaveListener = setupListener();
+      compositeDisposable.add({
+        dispose() {
+          willSaveListener?.dispose();
+        },
+      });
+
+      function refreshListener() {
+        willSaveListener?.dispose();
+        willSaveListener = setupListener();
+      }
+
+      function setupListener() {
+        if (
+          !(syntaxes as Array<string | null>).includes(editor.document.syntax)
+        ) {
+          return;
+        }
+        const formatDocumentOnSave =
+          preferences.getOverridableBoolean(formatOnSaveKey);
+        if (!formatDocumentOnSave) {
+          return;
+        }
+        return editor.onWillSave(async (editor) => {
+          if (formatDocumentOnSave) {
+            await nova.commands.invoke(
+              "sciencefidelity.dart.commands.formatDocument",
+              editor
+            );
+          }
+        });
+      }
+    })
+  );
 
   informationView.status = "Running";
 
@@ -228,6 +285,9 @@ export async function activate() {
         console.log("activated");
       });
   };
+
+  informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
+
 }
 
 export function deactivate() {

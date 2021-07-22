@@ -2,7 +2,7 @@
     "identifier": "sciencefidelity.dart",
     "name": "Dart",
     "organization": "Matt Cook",
-    "description": "Dart Language Definition for Nova",
+    "description": "Dart language tools for Nova",
     "version": "0.3.1",
     "categories": [
         "clips",
@@ -42,22 +42,39 @@
             "title": "Enable Language Server",
             "type": "boolean",
             "default": false
+        },
+        {
+            "key": "sciencefidelity.dart.config.formatDocumentOnSave",
+            "title": "Format document on save",
+            "description": "Run Format Document command on file save.",
+            "type": "boolean",
+            "default": false
         }
     ],
 
     "configWorkspace": [
         {
-            "key": "sciencefidelity.dart.config.analyzerPath",
-            "title": "Dart Analyzer Path",
-            "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
-            "type": "path",
-            "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots"
-        },
-        {
             "key": "sciencefidelity.dart.config.enableAnalyzer",
             "title": "Enable Language Server",
-            "type": "boolean",
-            "default": false
+            "type": "enum",
+            "values": [
+                ["null", "Inherit from Global Settings"],
+                ["false", "Disable"],
+                ["true", "Enable"]
+            ],
+            "default": "null"
+        },
+        {
+            "key": "apexskier.typescript.config.formatDocumentOnSave",
+            "title": "Format document on save",
+            "description": "Run Format Document command on file save.",
+            "type": "enum",
+            "values": [
+                ["null", "Inherit from Global Settings"],
+                ["false", "Disable"],
+                ["true", "Enable"]
+            ],
+            "default": "null"
         }
     ],
 
@@ -106,6 +123,15 @@
             {
                 "title": "Restart Server",
                 "command": "sciencefidelity.dart.reload"
+            }
+        ],
+        "editor": [
+            {
+                "title": "Organize Imports",
+                "command": "sciencefidelity.dart.commands.organizeImports",
+                "filters": {
+                    "syntaxes": ["dart"]
+                }
             }
         ]
     }
