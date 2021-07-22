@@ -1,3 +1,7 @@
+## Version 0.4.0
+
+Implemented document formatting on save.
+
 ## Version 0.3.1
 
 Register sidebar with information view listing Dart and Flutter versions installed.
