@@ -95,8 +95,8 @@ export class DartColorAssistant implements ColorAssistant {
 
       const namedColor = this.namedColors[string];
       if (namedColor) {
-        // Named color
 
+        // Named color
         const infoRange = new Range(range.start, range.start + string.length);
         const colorInfo = new ColorInformation(infoRange, namedColor, "named");
         colors.push(colorInfo);

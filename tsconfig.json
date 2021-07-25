@@ -4,9 +4,28 @@
     "sourceMap": true,
     "noEmit": true,
     "strict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "types": [
+    "jest",
+    "nova-editor-node"
+  ],
+  "paths": {
+    "~/*": ["./src/*"],
+    "@/*": ["./src/*"]
+  },
+  "include": ["src/*", "src/**/*"],
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts"
+  ]
 }
