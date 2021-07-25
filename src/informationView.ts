@@ -52,7 +52,11 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
 
   getChildren(element: Element | null): Array<Element> {
     if (element === null) {
-      return [this._dartVersionElement, this._flutterVersionElement, this._statusElement];
+      return [
+        this._dartVersionElement,
+        this._flutterVersionElement,
+        this._statusElement,
+      ];
     }
     return [];
   }

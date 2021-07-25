@@ -42,10 +42,10 @@ async function getDartVersion() {
   return new Promise<string>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["dart", "--version"],
-      stdio: ["ignore", "ignore", "pipe"]
+      stdio: ["ignore", "ignore", "pipe"],
     });
     let str = "";
-    process.onStderr(function(line) {
+    process.onStderr(function (line) {
       const arr = line.split(" ");
       str = arr[3];
       console.log(line);
@@ -67,11 +67,11 @@ async function getFlutterVersion() {
     const versionFile = nova.path.join(nova.extension.path, "version.sh");
     makeFileExecutable(versionFile);
     const process = new Process("/usr/bin/env", {
-      args: ["bash", "-c",`"${versionFile}"`],
-      stdio: ["ignore", "pipe", "ignore"]
+      args: ["bash", "-c", `"${versionFile}"`],
+      stdio: ["ignore", "pipe", "ignore"],
     });
     let str = "";
-    process.onStdout(function(line) {
+    process.onStdout(function (line) {
       const arr = line.split(" ");
       str = arr[1];
       console.log(line);
@@ -87,18 +87,21 @@ async function getFlutterVersion() {
   });
 }
 
-nova.config.onDidChange("sciencefidelity.dart.config.enableAnalyzer",
+nova.config.onDidChange(
+  "sciencefidelity.dart.config.enableAnalyzer",
   async function (current) {
     if (current) {
       activate();
     } else {
-      deactivate()
+      deactivate();
     }
   }
 );
 
 async function reload() {
-  if (nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")) {
+  if (
+    nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
+  ) {
     deactivate();
     console.log("reloading...");
     await asyncActivate();
@@ -106,7 +109,6 @@ async function reload() {
 }
 
 async function asyncActivate() {
-
   informationView.status = "Activating...";
 
   const runFile = nova.path.join(nova.extension.path, "run.sh");
@@ -141,9 +143,9 @@ async function asyncActivate() {
 
   let path;
   if (nova.inDevMode() && nova.workspace.path) {
-    path = `${cleanPath(nova.workspace.path)}/test-workspace`
+    path = `${cleanPath(nova.workspace.path)}/test-workspace`;
   } else if (nova.workspace.path) {
-    path = cleanPath(nova.workspace.path)
+    path = cleanPath(nova.workspace.path);
   }
   const syntaxes = ["dart"];
   client = new LanguageClient(
@@ -154,15 +156,18 @@ async function asyncActivate() {
       ...serviceArgs,
       env: {
         WORKSPACE_DIR: path || "",
-        INSTALL_DIR: nova.config.get("sciencefidelity.dart.config.analyzerPath", "string") ||
-        "~/flutter/bin/cache/dart-sdk/bin/snapshots",
+        INSTALL_DIR:
+          nova.config.get(
+            "sciencefidelity.dart.config.analyzerPath",
+            "string"
+          ) || "~/flutter/bin/cache/dart-sdk/bin/snapshots",
       },
     },
     {
       initializationOptions: {
-        "onlyAnalyzeProjectsWithOpenFiles": true
+        onlyAnalyzeProjectsWithOpenFiles: true,
       },
-      syntaxes
+      syntaxes,
     }
   );
 
@@ -171,7 +176,6 @@ async function asyncActivate() {
 
   compositeDisposable.add(
     client.onDidStop((err) => {
-
       let message = "Dart Language Server stopped unexpectedly";
       if (err) {
         message += `:\n\n${err.toString()}`;
@@ -251,7 +255,6 @@ async function asyncActivate() {
   informationView.status = "Running";
 
   informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
-
 }
 
 export async function activate() {
@@ -269,7 +272,9 @@ export async function activate() {
 
   nova.assistants.registerColorAssistant(["dart"], Colors);
 
-  if (nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")) {
+  if (
+    nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
+  ) {
     if (nova.inDevMode()) {
       const notification = new NotificationRequest("activated");
       notification.body = "Dart LSP is loading";
@@ -284,10 +289,9 @@ export async function activate() {
       .then(() => {
         console.log("activated");
       });
-  };
+  }
 
   informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
-
 }
 
 export function deactivate() {

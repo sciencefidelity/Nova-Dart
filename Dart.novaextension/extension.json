@@ -1,138 +1,135 @@
 {
-    "identifier": "sciencefidelity.dart",
-    "name": "Dart",
-    "organization": "Matt Cook",
-    "description": "Dart language tools for Nova",
-    "version": "0.4.0",
-    "categories": [
-        "clips",
-        "completions",
-        "formatters",
-        "issues",
-        "languages",
-        "sidebars"
-    ],
-    "license": "MIT",
-    "repository": "https://github.com/sciencefidelity/Nova-Dart",
-    "bugs": "https://github.com/sciencefidelity/Nova-Dart/issues",
-    "homepage": "https://mattcook.dev",
-    "keywords": ["dart", "flutter", "angulardart"],
+  "identifier": "sciencefidelity.dart",
+  "name": "Dart",
+  "organization": "Matt Cook",
+  "description": "Dart language tools for Nova",
+  "version": "0.4.0",
+  "categories": [
+    "clips",
+    "completions",
+    "formatters",
+    "issues",
+    "languages",
+    "sidebars"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/sciencefidelity/Nova-Dart",
+  "bugs": "https://github.com/sciencefidelity/Nova-Dart/issues",
+  "homepage": "https://mattcook.dev",
+  "keywords": ["dart", "flutter", "angulardart"],
 
-    "main": "main.dist.js",
+  "main": "main.dist.js",
 
-    "activationEvents": [
-        "onLanguage:dart",
-        "onWorkspaceContains:pubspec.yaml"
-    ],
-    "entitlements": {
-        "process": true,
-        "filesystem": "readwrite"
+  "activationEvents": ["onLanguage:dart", "onWorkspaceContains:pubspec.yaml"],
+  "entitlements": {
+    "process": true,
+    "filesystem": "readwrite"
+  },
+
+  "config": [
+    {
+      "key": "sciencefidelity.dart.config.analyzerPath",
+      "title": "Dart Analyzer Path",
+      "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
+      "type": "path",
+      "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots"
     },
-
-    "config": [
-        {
-            "key": "sciencefidelity.dart.config.analyzerPath",
-            "title": "Dart Analyzer Path",
-            "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
-            "type": "path",
-            "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots"
-        },
-        {
-            "key": "sciencefidelity.dart.config.enableAnalyzer",
-            "title": "Enable Language Server",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "key": "sciencefidelity.dart.config.formatDocumentOnSave",
-            "title": "Format document on save",
-            "description": "Run Format Document command on file save.",
-            "type": "boolean",
-            "default": false
-        }
-    ],
-
-    "configWorkspace": [
-        {
-            "key": "sciencefidelity.dart.config.enableAnalyzer",
-            "title": "Enable Language Server",
-            "type": "enum",
-            "values": [
-                ["null", "Inherit from Global Settings"],
-                ["false", "Disable"],
-                ["true", "Enable"]
-            ],
-            "default": "null"
-        },
-        {
-            "key": "apexskier.typescript.config.formatDocumentOnSave",
-            "title": "Format document on save",
-            "description": "Run Format Document command on file save.",
-            "type": "enum",
-            "values": [
-                ["null", "Inherit from Global Settings"],
-                ["false", "Disable"],
-                ["true", "Enable"]
-            ],
-            "default": "null"
-        }
-    ],
-
-    "sidebars": [
-        {
-            "id": "sciencefidelity.dart.sidebar",
-            "name": "Dart",
-            "smallImage": "SidebarSmall",
-            "largeImage": "SidebarLarge",
-            "sections": [
-                {
-                    "id": "sciencefidelity.dart.sidebar.info",
-                    "name": "Information",
-                    "placeholderText": "Dart Extension Information",
-                    "headerCommands": [
-                        {
-                            "title": "Refresh",
-                            "image": "__builtin.refresh",
-                            "command": "sciencefidelity.dart.reload"
-                        }
-                    ]
-                },
-                {
-                    "id": "sciencefidelity.dart.sidebar.symbols",
-                    "name": "Results",
-                    "placeholderText": "Results from “Find Symbol”, “Find Reference” and “Go to Definition” will show here.",
-                    "headerCommands": [
-                        {
-                            "title": "Find Symbol",
-                            "image": "Search",
-                            "tooltip": "Open the Find Symbol palette",
-                            "command": "sciencefidelity.dart.findSymbol"
-                        }
-                    ]
-                }
-            ]
-        }
-    ],
-
-    "commands": {
-        "extensions": [
-            {
-                "title": "Preferences",
-                "command": "sciencefidelity.dart.openWorkspaceConfig"
-            },
-            {
-                "title": "Restart Server",
-                "command": "sciencefidelity.dart.reload"
-            }
-        ],
-        "editor": [
-            {
-                "title": "Organize Imports",
-                "command": "sciencefidelity.dart.commands.organizeImports",
-                "filters": {
-                    "syntaxes": ["dart"]
-                }
-            }
-        ]
+    {
+      "key": "sciencefidelity.dart.config.enableAnalyzer",
+      "title": "Enable Language Server",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "sciencefidelity.dart.config.formatDocumentOnSave",
+      "title": "Format document on save",
+      "description": "Run Format Document command on file save.",
+      "type": "boolean",
+      "default": false
     }
+  ],
+
+  "configWorkspace": [
+    {
+      "key": "sciencefidelity.dart.config.enableAnalyzer",
+      "title": "Enable Language Server",
+      "type": "enum",
+      "values": [
+        ["null", "Inherit from Global Settings"],
+        ["false", "Disable"],
+        ["true", "Enable"]
+      ],
+      "default": "null"
+    },
+    {
+      "key": "apexskier.typescript.config.formatDocumentOnSave",
+      "title": "Format document on save",
+      "description": "Run Format Document command on file save.",
+      "type": "enum",
+      "values": [
+        ["null", "Inherit from Global Settings"],
+        ["false", "Disable"],
+        ["true", "Enable"]
+      ],
+      "default": "null"
+    }
+  ],
+
+  "sidebars": [
+    {
+      "id": "sciencefidelity.dart.sidebar",
+      "name": "Dart",
+      "smallImage": "SidebarSmall",
+      "largeImage": "SidebarLarge",
+      "sections": [
+        {
+          "id": "sciencefidelity.dart.sidebar.info",
+          "name": "Information",
+          "placeholderText": "Dart Extension Information",
+          "headerCommands": [
+            {
+              "title": "Refresh",
+              "image": "__builtin.refresh",
+              "command": "sciencefidelity.dart.reload"
+            }
+          ]
+        },
+        {
+          "id": "sciencefidelity.dart.sidebar.symbols",
+          "name": "Results",
+          "placeholderText": "Results from “Find Symbol”, “Find Reference” and “Go to Definition” will show here.",
+          "headerCommands": [
+            {
+              "title": "Find Symbol",
+              "image": "Search",
+              "tooltip": "Open the Find Symbol palette",
+              "command": "sciencefidelity.dart.findSymbol"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "commands": {
+    "extensions": [
+      {
+        "title": "Preferences",
+        "command": "sciencefidelity.dart.openWorkspaceConfig"
+      },
+      {
+        "title": "Restart Server",
+        "command": "sciencefidelity.dart.reload"
+      }
+    ],
+    "editor": [
+      {
+        "title": "Organize Imports",
+        "command": "sciencefidelity.dart.commands.organizeImports",
+        "filters": {
+          "syntaxes": ["dart"]
+        }
+      }
+    ]
+  }
 }

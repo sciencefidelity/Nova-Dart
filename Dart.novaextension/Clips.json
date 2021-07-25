@@ -1,134 +1,133 @@
 {
-  "clips" : [
+  "clips": [
     {
-      "name" : "Dart",
-      "children" : [
+      "name": "Dart",
+      "children": [
         {
-          "content" : "main(List<String> args) {\n\t$0\n}",
-          "name" : "Insert a main function, used as an entry point.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "main"
+          "content": "main(List<String> args) {\n\t$0\n}",
+          "name": "Insert a main function, used as an entry point.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "main"
         },
         {
-          "content" : "try {\n\t$0\n} catch (${1:e}) {\n\t\n}",
-          "name" : "Insert a try/catch block.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "try"
+          "content": "try {\n\t$0\n} catch (${1:e}) {\n\t\n}",
+          "name": "Insert a try/catch block.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "try"
         },
         {
-          "content" : "if ($1) {\n\t$0\n}",
-          "name" : "Insert an if statement.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "if"
+          "content": "if ($1) {\n\t$0\n}",
+          "name": "Insert an if statement.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "if"
         },
         {
-          "content" : "if ($1) {\n\t$0\n} else {\n\t\n}",
-          "name" : "Insert an if statement with an else block.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "ife"
+          "content": "if ($1) {\n\t$0\n} else {\n\t\n}",
+          "name": "Insert an if statement with an else block.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "ife"
         },
         {
-          "content" : "switch ($1) {\n\tcase $2:\n\t\t$0\n\t\tbreak;\n\tdefault:\n}",
-          "name" : "Insert a switch statement.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "switch"
+          "content": "switch ($1) {\n\tcase $2:\n\t\t$0\n\t\tbreak;\n\tdefault:\n}",
+          "name": "Insert a switch statement.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "switch"
         },
         {
-          "content" : "for (var i = 0; i < ${1:count}; i++) {\n\t$0\n}",
-          "name" : "Insert a for loop.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "for"
+          "content": "for (var i = 0; i < ${1:count}; i++) {\n\t$0\n}",
+          "name": "Insert a for loop.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "for"
         },
         {
-          "content" : "for (var ${1:item} in ${2:items}) {\n\t$0\n}",
-          "name" : "Insert a for-in loop.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "fori"
+          "content": "for (var ${1:item} in ${2:items}) {\n\t$0\n}",
+          "name": "Insert a for-in loop.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "fori"
         },
         {
-          "content" : "while ($1) {\n\t$0\n}",
-          "name" : "Insert a while loop.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "while"
+          "content": "while ($1) {\n\t$0\n}",
+          "name": "Insert a while loop.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "while"
         },
         {
-          "content" : "do {\n\t$0\n} while ($1);",
-          "name" : "Insert a do-while loop.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "do"
+          "content": "do {\n\t$0\n} while ($1);",
+          "name": "Insert a do-while loop.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "do"
         },
         {
-          "content" : "${3:void} ${1:name}(${2:args}) {\n\t$0\n}",
-          "name" : "Insert a function definition.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "fun"
+          "content": "${3:void} ${1:name}(${2:args}) {\n\t$0\n}",
+          "name": "Insert a function definition.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "fun"
         },
         {
-          "content" : "class ${1:Name} {\n\t$0\n}",
-          "name" : "Insert a class definition.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "class"
+          "content": "class ${1:Name} {\n\t$0\n}",
+          "name": "Insert a class definition.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "class"
         },
         {
-          "content" : "typedef ${1:Type} ${2:Name}(${3:params});",
-          "name" : "Insert a typedef.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "typedef"
+          "content": "typedef ${1:Type} ${2:Name}(${3:params});",
+          "name": "Insert a typedef.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "typedef"
         },
         {
-          "content" : "test('$1', () {\n\t$0\n});",
-          "name" : "Insert a test block.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "test"
+          "content": "test('$1', () {\n\t$0\n});",
+          "name": "Insert a test block.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "test"
         },
         {
-          "content" : "group('$1', () {\n\t$0\n});",
-          "name" : "Insert a test group block.",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "group"
+          "content": "group('$1', () {\n\t$0\n});",
+          "name": "Insert a test group block.",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "group"
         }
       ]
     },
     {
-
-      "children" : [
+      "children": [
         {
-          "content" : "class $1 extends StatelessWidget {\n\tconst $1({ Key? key }) : super(key: key);\n\n\t@override\n\tWidget build(BuildContext context) {\n\t\treturn Container(\n\t\t\t$2\n\t\t);\n\t}\n}",
-          "name" : "Insert a StatelessWidget",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "stless"
+          "content": "class $1 extends StatelessWidget {\n\tconst $1({ Key? key }) : super(key: key);\n\n\t@override\n\tWidget build(BuildContext context) {\n\t\treturn Container(\n\t\t\t$2\n\t\t);\n\t}\n}",
+          "name": "Insert a StatelessWidget",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "stless"
         },
         {
-          "content" : "class $1 extends StatefulWidget {\n\tconst $1({ Key? key }) : super(key: key);\n\n\t@override\n\t_$1State createState() => _$1State();\n}\n\nclass _$1State extends State<$1> {\n\t@override\n\tWidget build(BuildContext context) {\n\t\treturn Container(\n\t\t\t$2\n\t\t);\n\t}\n}",
-          "name" : "Insert a StatefulWidget",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "stful"
+          "content": "class $1 extends StatefulWidget {\n\tconst $1({ Key? key }) : super(key: key);\n\n\t@override\n\t_$1State createState() => _$1State();\n}\n\nclass _$1State extends State<$1> {\n\t@override\n\tWidget build(BuildContext context) {\n\t\treturn Container(\n\t\t\t$2\n\t\t);\n\t}\n}",
+          "name": "Insert a StatefulWidget",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "stful"
         },
         {
-          "content" : "class $1 extends StatefulWidget {\n\tconst $1({ Key? key }) : super(key: key);\n\n\t@override\n\t_$1State createState() => _$1State();\n}\n\n\tclass _$1State extends State<$1>\n\t\twith SingleTickerProviderStateMixin {\n\tlate AnimationController _controller;\n\n\t@override\n\tvoid initState() {\n\t\tsuper.initState();\n\t\t_controller = AnimationController(vsync: this);\n\t}\n\n\t@override\n\tvoid dispose() {\n\t\tsuper.dispose();\n\t\t_controller.dispose();\n\t}\n\n\t@override\n\tWidget build(BuildContext context) {\n\t\treturn Container(\n\t\t\t$2\n\t\t);\n\t}\n}",
-          "name" : "Insert a StatefulWidget with an AnimationController",
-          "scope" : "editor",
-          "syntax" : ["dart"],
-          "trigger" : "stanim"
+          "content": "class $1 extends StatefulWidget {\n\tconst $1({ Key? key }) : super(key: key);\n\n\t@override\n\t_$1State createState() => _$1State();\n}\n\n\tclass _$1State extends State<$1>\n\t\twith SingleTickerProviderStateMixin {\n\tlate AnimationController _controller;\n\n\t@override\n\tvoid initState() {\n\t\tsuper.initState();\n\t\t_controller = AnimationController(vsync: this);\n\t}\n\n\t@override\n\tvoid dispose() {\n\t\tsuper.dispose();\n\t\t_controller.dispose();\n\t}\n\n\t@override\n\tWidget build(BuildContext context) {\n\t\treturn Container(\n\t\t\t$2\n\t\t);\n\t}\n}",
+          "name": "Insert a StatefulWidget with an AnimationController",
+          "scope": "editor",
+          "syntax": ["dart"],
+          "trigger": "stanim"
         }
       ],
-      "name" : "Flutter"
+      "name": "Flutter"
     }
   ]
 }
