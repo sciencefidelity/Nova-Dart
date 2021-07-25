@@ -57,54 +57,55 @@ export class DartColorAssistant implements ColorAssistant {
     // Regexes
     this.hexRegex = new RegExp("#\\s*(?:(([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|))\\s*", "i");
     this.rgbRegex = new RegExp("\\brgb\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*\\)", "i");
-    this.rgbaRegex = new RegExp("\\brgba\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]*\.?[0-9]+)\\s*\\)", "i");
-    this.hslRegex = new RegExp("\\bhsl\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]*\.?[0-9]+)%\\s*,\\s*([0-9]*\.?[0-9]+)%\\s*\\)", "i");
-    this.hslaRegex = new RegExp("\\bhsla\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]*\.?[0-9]+)%\\s*,\\s*([0-9]*\.?[0-9]+)%\\s*,\\s*([0-9]*\.?[0-9]+)\\s*\\)", "i");
-    this.srgbRegex = new RegExp("\\bcolor\\(\\s*srgb\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s*\\)", "i");
-    this.srgbaRegex = new RegExp("\\bcolor\\(\\s*srgb\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s*(?:/\\s*([0-9]*\.?[0-9]+)\\s*)\\)", "i");
-    this.displayP3Regex = new RegExp("\\bcolor\\(\\s*display-p3\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s*\\)", "i");
-    this.displayP3ARegex = new RegExp("\\bcolor\\(\\s*display-p3\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s+([0-9]*\.?[0-9]+)\\s*(?:/\\s*([0-9]*\.?[0-9]+)\\s*)\\)", "i");
+    this.rgbaRegex = new RegExp("\\brgba\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]*.?[0-9]+)\\s*\\)", "i");
+    this.hslRegex = new RegExp("\\bhsl\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]*.?[0-9]+)%\\s*,\\s*([0-9]*.?[0-9]+)%\\s*\\)", "i");
+    this.hslaRegex = new RegExp("\\bhsla\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]*.?[0-9]+)%\\s*,\\s*([0-9]*.?[0-9]+)%\\s*,\\s*([0-9]*.?[0-9]+)\\s*\\)", "i");
+    this.srgbRegex = new RegExp("\\bcolor\\(\\s*srgb\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*\\)", "i");
+    this.srgbaRegex = new RegExp("\\bcolor\\(\\s*srgb\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*(?:/\\s*([0-9]*.?[0-9]+)\\s*)\\)", "i");
+    this.displayP3Regex = new RegExp("\\bcolor\\(\\s*display-p3\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*\\)", "i");
+    this.displayP3ARegex = new RegExp("\\bcolor\\(\\s*display-p3\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*(?:/\\s*([0-9]*.?[0-9]+)\\s*)\\)", "i");
 
     // Named colors
     const namedColors: ColorStrings = {};
     const keys = Object.keys(namedColorStrings);
-    for (let key of keys) {
-      let string = namedColorStrings[key];
+    for (const key of keys) {
+      const string = namedColorStrings[key];
 
-      let red = parseInt(string.substring(0, 2), 16) / 255.0;
-      let green = parseInt(string.substring(2, 4), 16) / 255.0;
-      let blue = parseInt(string.substring(4, 6), 16) / 255.0;
+      const red = parseInt(string.substring(0, 2), 16) / 255.0;
+      const green = parseInt(string.substring(2, 4), 16) / 255.0;
+      const blue = parseInt(string.substring(4, 6), 16) / 255.0;
 
-      let color = Color.rgb(red, green, blue, 1.0);
+      const color = Color.rgb(red, green, blue, 1.0);
       namedColors[key] = color;
     }
     this.namedColors = namedColors;
   }
 
+  // eslint-disable-next-line no-unused-vars
   provideColors(textEditor: TextEditor, context: ColorInformationContext) {
     const regexes = [this.hexRegex, this.rgbaRegex, this.rgbRegex, this.hslaRegex, this.hslRegex, this.srgbRegex, this.srgbaRegex, this.displayP3Regex, this.displayP3ARegex];
 
-    let colors = [];
+    const colors = [];
     const candidates = context.candidates;
 
-    for (let candidate of candidates) {
+    for (const candidate of candidates) {
 
-      let string = candidate.text;
-      let range = candidate.range;
+      const string = candidate.text;
+      const range = candidate.range;
 
-      let namedColor = this.namedColors[string];
+      const namedColor = this.namedColors[string];
       if (namedColor) {
         // Named color
 
-        let infoRange = new Range(range.start, range.start + string.length);
-        let colorInfo = new ColorInformation(infoRange, namedColor, "named");
+        const infoRange = new Range(range.start, range.start + string.length);
+        const colorInfo = new ColorInformation(infoRange, namedColor, "named");
         colors.push(colorInfo);
       }
       else {
-        for (let regex of regexes) {
-          let match = string.match(regex);
+        for (const regex of regexes) {
+          const match = string.match(regex);
           if (match) {
-            let color = this.parseColorMatch(match, regex, range);
+            const color = this.parseColorMatch(match, regex, range);
             if (color) {
               colors.push(color);
               break;
@@ -120,8 +121,8 @@ export class DartColorAssistant implements ColorAssistant {
   parseColorMatch(match: any, regex: RegExp, range: Range) {
 
     // Parses a Dart color string into an color object
-    let position = range.start + match.index;
-    let matchStr = match[0];
+    const position = range.start + match.index;
+    const matchStr = match[0];
     if (regex === this.hexRegex) {
       if (matchStr.length === 10) {
         let red = parseInt(matchStr.substring(4, 6), 16);
@@ -132,16 +133,16 @@ export class DartColorAssistant implements ColorAssistant {
         green = green / 255.0;
         blue = blue / 255.0;
 
-        let color = Color.rgb(red, green, blue, 1.0);
-        let range = new Range(position, position + matchStr.length);
-        let info = new ColorInformation(range, color, "hex");
+        const color = Color.rgb(red, green, blue, 1.0);
+        const range = new Range(position, position + matchStr.length);
+        const info = new ColorInformation(range, color, "hex");
         info.format = ColorFormat.rgb;
         return info;
       }
       else if (matchStr.length === 4) {
-        let redStr = matchStr.substring(1, 2);
-        let greenStr = matchStr.substring(2, 3);
-        let blueStr = matchStr.substring(3, 4);
+        const redStr = matchStr.substring(1, 2);
+        const greenStr = matchStr.substring(2, 3);
+        const blueStr = matchStr.substring(3, 4);
 
         let red = parseInt(redStr + redStr, 16);
         let green = parseInt(greenStr + greenStr, 16);
@@ -151,9 +152,9 @@ export class DartColorAssistant implements ColorAssistant {
         green = green / 255.0;
         blue = blue / 255.0;
 
-        let color = Color.rgb(red, green, blue, 1.0);
-        let range = new Range(position, position + matchStr.length);
-        let info = new ColorInformation(range, color, "hex");
+        const color = Color.rgb(red, green, blue, 1.0);
+        const range = new Range(position, position + matchStr.length);
+        const info = new ColorInformation(range, color, "hex");
         info.format = ColorFormat.rgb;
         return info;
       }
@@ -162,15 +163,15 @@ export class DartColorAssistant implements ColorAssistant {
       let red = parseInt(match[1]);
       let green = parseInt(match[2]);
       let blue = parseInt(match[3]);
-      let alpha = parseFloat(match[4]);
+      const alpha = parseFloat(match[4]);
 
       red = red / 255.0;
       green = green / 255.0;
       blue = blue / 255.0;
 
-      let color = Color.rgb(red, green, blue, alpha);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "rgba");
+      const color = Color.rgb(red, green, blue, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "rgba");
       info.format = ColorFormat.rgb;
       return info;
     }
@@ -183,9 +184,9 @@ export class DartColorAssistant implements ColorAssistant {
       green = green / 255.0;
       blue = blue / 255.0;
 
-      let color = Color.rgb(red, green, blue, 1.0);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "rgb");
+      const color = Color.rgb(red, green, blue, 1.0);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "rgb");
       info.format = ColorFormat.rgb;
       return info;
     }
@@ -193,15 +194,15 @@ export class DartColorAssistant implements ColorAssistant {
       let hue = parseInt(match[1]);
       let sat = parseFloat(match[2]);
       let lum = parseFloat(match[3]);
-      let alpha = parseFloat(match[4]);
+      const alpha = parseFloat(match[4]);
 
       hue = hue / 360.0;
       sat = sat / 100.0;
       lum = lum / 100.0;
 
-      let color = Color.hsl(hue, sat, lum, alpha);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "hsla");
+      const color = Color.hsl(hue, sat, lum, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "hsla");
       info.format = ColorFormat.hsl;
       return info;
     }
@@ -214,58 +215,58 @@ export class DartColorAssistant implements ColorAssistant {
       sat = sat / 100.0;
       lum = lum / 100.0;
 
-      let color = Color.hsl(hue, sat, lum, 1.0);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "hsl");
+      const color = Color.hsl(hue, sat, lum, 1.0);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "hsl");
       info.format = ColorFormat.hsl;
       return info;
     }
     else if (regex == this.srgbRegex) {
-      let red = parseFloat(match[1]);
-      let green = parseFloat(match[2]);
-      let blue = parseFloat(match[3]);
+      const red = parseFloat(match[1]);
+      const green = parseFloat(match[2]);
+      const blue = parseFloat(match[3]);
 
-      let color = Color.rgb(red, green, blue);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "srgb");
+      const color = Color.rgb(red, green, blue);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "srgb");
       info.format = ColorFormat.rgb;
       info.usesFloats = true;
       return info;
     }
     else if (regex == this.srgbaRegex) {
-      let red = parseFloat(match[1]);
-      let green = parseFloat(match[2]);
-      let blue = parseFloat(match[3]);
-      let alpha = parseFloat(match[4]);
+      const red = parseFloat(match[1]);
+      const green = parseFloat(match[2]);
+      const blue = parseFloat(match[3]);
+      const alpha = parseFloat(match[4]);
 
-      let color = Color.rgb(red, green, blue, alpha);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "srgba");
+      const color = Color.rgb(red, green, blue, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "srgba");
       info.format = ColorFormat.rgb;
       info.usesFloats = true;
       return info;
     }
     else if (regex == this.displayP3Regex) {
-      let red = parseFloat(match[1]);
-      let green = parseFloat(match[2]);
-      let blue = parseFloat(match[3]);
+      const red = parseFloat(match[1]);
+      const green = parseFloat(match[2]);
+      const blue = parseFloat(match[3]);
 
-      let color = Color.displayP3(red, green, blue);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "p3");
+      const color = Color.displayP3(red, green, blue);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "p3");
       info.format = ColorFormat.displayP3;
       info.usesFloats = true;
       return info;
     }
     else if (regex == this.displayP3ARegex) {
-      let red = parseFloat(match[1]);
-      let green = parseFloat(match[2]);
-      let blue = parseFloat(match[3]);
-      let alpha = parseFloat(match[4]);
+      const red = parseFloat(match[1]);
+      const green = parseFloat(match[2]);
+      const blue = parseFloat(match[3]);
+      const alpha = parseFloat(match[4]);
 
-      let color = Color.displayP3(red, green, blue, alpha);
-      let range = new Range(position, position + matchStr.length);
-      let info = new ColorInformation(range, color, "p3a");
+      const color = Color.displayP3(red, green, blue, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "p3a");
       info.format = ColorFormat.displayP3;
       info.usesFloats = true;
       return info;
@@ -273,27 +274,27 @@ export class DartColorAssistant implements ColorAssistant {
 
     return null;
   }
-
+  // eslint-disable-next-line no-unused-vars
   provideColorPresentations(color: any, context: any) {
     // Converts a color object into an array of color presentations
-    let format = color.format;
-    let presentations = [];
+    const format = color.format;
+    const presentations = [];
 
     if (format === ColorFormat.displayP3) {
       // Display P3
-      let components = color.components;
+      const components = color.components;
 
       // Ensure a certain amount of rounding precision, to prevent very small exponent floats
-      let red = Math.round(components[0] * 1000.0) / 1000.0;
-      let green = Math.round(components[1] * 1000.0) / 1000.0;
-      let blue = Math.round(components[2] * 1000.0) / 1000.0;
-      let alpha = Math.round(components[3] * 1000.0) / 1000.0;
+      const red = Math.round(components[0] * 1000.0) / 1000.0;
+      const green = Math.round(components[1] * 1000.0) / 1000.0;
+      const blue = Math.round(components[2] * 1000.0) / 1000.0;
+      const alpha = Math.round(components[3] * 1000.0) / 1000.0;
 
       // color(display-p3 r g b)
       if (alpha === 1.0) {
-        let string = 'color(display-p3 ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ')';
+        const string = 'color(display-p3 ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ')';
 
-        let presentation = new ColorPresentation(string, "p3");
+        const presentation = new ColorPresentation(string, "p3");
         presentation.format = ColorFormat.displayP3;
         presentation.usesFloats = true;
         presentations.push(presentation);
@@ -301,9 +302,9 @@ export class DartColorAssistant implements ColorAssistant {
 
       // color(display-p3 r g b / a)
       {
-        let string = 'color(display-p3 ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ' / ' + alpha.toString() + ')';
+        const string = 'color(display-p3 ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ' / ' + alpha.toString() + ')';
 
-        let presentation = new ColorPresentation(string, "p3a");
+        const presentation = new ColorPresentation(string, "p3a");
         presentation.format = ColorFormat.displayP3;
         presentation.usesFloats = true;
         presentations.push(presentation);
@@ -312,20 +313,20 @@ export class DartColorAssistant implements ColorAssistant {
     else {
       // color()
       {
-        let rgbColor = color.convert(ColorFormat.rgb);
-        let components = rgbColor.components;
+        const rgbColor = color.convert(ColorFormat.rgb);
+        const components = rgbColor.components;
 
         // Ensure a certain amount of rounding precision, to prevent very small exponent floats
-        let red = Math.round(components[0] * 1000.0) / 1000.0;
-        let green = Math.round(components[1] * 1000.0) / 1000.0;
-        let blue = Math.round(components[2] * 1000.0) / 1000.0;
-        let alpha = Math.round(components[3] * 1000.0) / 1000.0;
+        const red = Math.round(components[0] * 1000.0) / 1000.0;
+        const green = Math.round(components[1] * 1000.0) / 1000.0;
+        const blue = Math.round(components[2] * 1000.0) / 1000.0;
+        const alpha = Math.round(components[3] * 1000.0) / 1000.0;
 
         // color(srgb r g b)
         if (alpha === 1.0) {
-          let string = 'color(srgb ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ')';
+          const string = 'color(srgb ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ')';
 
-          let presentation = new ColorPresentation(string, "srgb");
+          const presentation = new ColorPresentation(string, "srgb");
           presentation.format = ColorFormat.rgb;
           presentation.usesFloats = true;
           presentations.push(presentation);
@@ -333,9 +334,9 @@ export class DartColorAssistant implements ColorAssistant {
 
         // color(srgb r g b / a)
         {
-          let string = 'color(srgb ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ' / ' + alpha.toString() + ')';
+          const string = 'color(srgb ' + red.toString() + ' ' + green.toString() + ' ' + blue.toString() + ' / ' + alpha.toString() + ')';
 
-          let presentation = new ColorPresentation(string, "srgba");
+          const presentation = new ColorPresentation(string, "srgba");
           presentation.format = ColorFormat.rgb;
           presentation.usesFloats = true;
           presentations.push(presentation);
@@ -344,13 +345,13 @@ export class DartColorAssistant implements ColorAssistant {
 
       // RGB
       {
-        let rgbColor = color.convert(ColorFormat.rgb);
-        let components = rgbColor.components;
+        const rgbColor = color.convert(ColorFormat.rgb);
+        const components = rgbColor.components;
 
         let red = Math.round(components[0] * 1000.0) / 1000.0;
         let green = Math.round(components[1] * 1000.0) / 1000.0;
         let blue = Math.round(components[2] * 1000.0) / 1000.0;
-        let alpha = Math.round(components[3] * 1000.0) / 1000.0;
+        const alpha = Math.round(components[3] * 1000.0) / 1000.0;
 
         red = red * 255.0;
         green = green * 255.0;
@@ -358,18 +359,18 @@ export class DartColorAssistant implements ColorAssistant {
 
         // rgb()
         if (alpha == 1.0) {
-          let string = 'rgb(' + red.toFixed() + ', ' + green.toFixed() + ', ' + blue.toFixed() + ')';
+          const string = 'rgb(' + red.toFixed() + ', ' + green.toFixed() + ', ' + blue.toFixed() + ')';
 
-          let presentation = new ColorPresentation(string, "rgb");
+          const presentation = new ColorPresentation(string, "rgb");
           presentation.format = ColorFormat.rgb;
           presentations.push(presentation);
         }
 
         // rgba()
         {
-          let string = 'rgba(' + red.toFixed() + ', ' + green.toFixed() + ', ' + blue.toFixed() + ', ' + alpha.toString() + ')';
+          const string = 'rgba(' + red.toFixed() + ', ' + green.toFixed() + ', ' + blue.toFixed() + ', ' + alpha.toString() + ')';
 
-          let presentation = new ColorPresentation(string, "rgba");
+          const presentation = new ColorPresentation(string, "rgba");
           presentation.format = ColorFormat.rgb;
           presentations.push(presentation);
         }
@@ -377,13 +378,13 @@ export class DartColorAssistant implements ColorAssistant {
 
       // HSL
       {
-        let hslColor = color.convert(ColorFormat.hsl);
-        let components = hslColor.components;
+        const hslColor = color.convert(ColorFormat.hsl);
+        const components = hslColor.components;
 
         let hue = Math.round(components[0] * 1000.0) / 1000.0;
         let sat = Math.round(components[1] * 1000.0) / 1000.0;
         let lum = Math.round(components[2] * 1000.0) / 1000.0;
-        let alpha = Math.round(components[3] * 1000.0) / 1000.0;
+        const alpha = Math.round(components[3] * 1000.0) / 1000.0;
 
         hue = hue * 360.0;
         sat = sat * 100.0;
@@ -391,18 +392,18 @@ export class DartColorAssistant implements ColorAssistant {
 
         // hsl()
         if (alpha === 1.0) {
-          let string = 'hsl(' + hue.toFixed() + ', ' + sat.toFixed() + '%, ' + lum.toFixed() + '%)';
+          const string = 'hsl(' + hue.toFixed() + ', ' + sat.toFixed() + '%, ' + lum.toFixed() + '%)';
 
-          let presentation = new ColorPresentation(string, "hsl");
+          const presentation = new ColorPresentation(string, "hsl");
           presentation.format = ColorFormat.hsl;
           presentations.push(presentation);
         }
 
         // hsla()
         {
-          let string = 'hsla(' + hue.toFixed() + ', ' + sat.toFixed() + '%, ' + lum.toFixed() + '%, ' + alpha.toString() + ')';
+          const string = 'hsla(' + hue.toFixed() + ', ' + sat.toFixed() + '%, ' + lum.toFixed() + '%, ' + alpha.toString() + ')';
 
-          let presentation = new ColorPresentation(string, "hsla");
+          const presentation = new ColorPresentation(string, "hsla");
           presentation.format = ColorFormat.hsl;
           presentations.push(presentation);
         }
@@ -410,8 +411,8 @@ export class DartColorAssistant implements ColorAssistant {
 
       // Hex
       {
-        let rgbColor = color.convert(ColorFormat.rgb);
-        let components = rgbColor.components;
+        const rgbColor = color.convert(ColorFormat.rgb);
+        const components = rgbColor.components;
 
         let red = Math.round(components[0] * 1000.0) / 1000.0;
         let green = Math.round(components[1] * 1000.0) / 1000.0;
@@ -434,9 +435,9 @@ export class DartColorAssistant implements ColorAssistant {
             blueHex = '0' + blueHex;
         }
 
-        let string = '#' + redHex + greenHex + blueHex;
+        const string = '#' + redHex + greenHex + blueHex;
 
-        let presentation = new ColorPresentation(string, "hex");
+        const presentation = new ColorPresentation(string, "hex");
         presentation.format = ColorFormat.rgb;
         presentations.push(presentation);
       }
