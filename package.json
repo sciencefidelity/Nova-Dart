@@ -6,9 +6,20 @@
   "private": true,
   "scripts": {
     "build": "rollup -c rollup.config.main.js && rm -rf Dart.novaextension/node_modules",
+    "test": "jest",
+    "lint": "concurrently 'yarn:lint:*'",
+    "lint:eslint": "eslint --ignore-path .gitignore \"**/*.{ts,js}\"",
+    "lint:prettier": "prettier --ignore-path .gitignore --check \"**/*.{ts,js,json,md,yml}\"",
+    "lint:json": "find . -name node_modules -prune -false -o -type f -name '*.json' -exec node -e 'require(\"{}\")' \\;",
+    "fix": "concurrently 'yarn:fix:*'",
+    "fix:eslint": "eslint --fix --ignore-path .gitignore \"**/*.{ts,js}\"",
+    "fix:prettier": "prettier --ignore-path .gitignore --write \"**/*.{ts,js,json,md,yml}\"",
     "watch": "onchange -i \"src/**\" \"rollup.*.js\" -- npm run build"
   },
-  "repository": "https://github.com/sciencefidelity/Nova-Dart",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sciencefidelity/Nova-Dart.git"
+  },
   "author": "Matt Cook",
   "license": "MIT",
   "bugs": {
@@ -19,16 +30,25 @@
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/jest": "^26.0.24",
-    "@types/nova-editor": "^1.0.0",
     "@types/nova-editor-node": "^4.1.3",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "concurrently": "^6.2.0",
+    "eslint": "^7.31.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-nova": "^1.5.0",
     "jest": "^27.0.6",
     "nova-extension-utils": "^1.4.0",
     "onchange": "^7.1.0",
+    "prettier": "^2.3.2",
     "rollup": "^2.52.7",
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.5",
     "vscode-languageserver-protocol": "^3.16.0",
     "vscode-languageserver-types": "^3.16.0"
+  },
+  "resolutions": {
+    "tslib": "^2.1.0"
   }
 }
