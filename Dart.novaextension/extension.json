@@ -173,6 +173,11 @@
         }
       },
       {
+        "title": "Open iOS Simulator",
+        "command": "sciencefidelity.dart.commands.openSimulator",
+        "shortcut": "option-shift-o"
+      },
+      {
         "title": "Organize Imports",
         "command": "sciencefidelity.dart.commands.organizeImports",
         "filters": {

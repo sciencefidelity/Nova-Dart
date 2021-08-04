@@ -2,7 +2,9 @@ import { cleanPath, preferences } from "nova-extension-utils";
 import { DartColorAssistant } from "./colors";
 import { InformationView } from "./informationView";
 import { registerFormatDocument } from "./commands/formatDocument";
-import { wrapCommand } from "./novaUtils";
+import { registerHotReload } from "./commands/hotReload";
+import { registerOpenSimulator } from "./commands/openSimulartor";
+import { wrapCommand, makeFileExecutable } from "./novaUtils";
 
 // Colors
 const Colors = new DartColorAssistant();
@@ -20,22 +22,6 @@ nova.commands.register("sciencefidelity.dart.reload", reload);
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
 const informationView = new InformationView();
-
-async function makeFileExecutable(file: string) {
-  return new Promise<void>((resolve, reject) => {
-    const process = new Process("/usr/bin/env", {
-      args: ["chmod", "u+x", file],
-    });
-    process.onDidExit((status) => {
-      if (status === 0) {
-        resolve();
-      } else {
-        reject(status);
-      }
-    });
-    process.start();
-  });
-}
 
 // Launches the Dart executable to determine its current version
 async function getDartVersion() {
@@ -173,6 +159,8 @@ async function asyncActivate() {
 
   // register nova commands
   compositeDisposable.add(registerFormatDocument(client));
+  compositeDisposable.add(registerHotReload(client));
+  compositeDisposable.add(registerOpenSimulator());
 
   compositeDisposable.add(
     client.onDidStop((err) => {

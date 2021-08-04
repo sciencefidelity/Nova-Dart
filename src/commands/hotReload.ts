@@ -2,7 +2,7 @@ import type * as lspTypes from "vscode-languageserver-protocol";
 import { applyLSPEdits } from "../applyLSPEdits";
 import { wrapCommand } from "../novaUtils";
 
-export function registerFormatDocument(client: LanguageClient) {
+export function registerHotReload(client: LanguageClient) {
   return nova.commands.register(
     "sciencefidelity.dart.commands.hotReload",
     wrapCommand(hotReload)
