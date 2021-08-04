@@ -4,6 +4,7 @@ import { InformationView } from "./informationView";
 import { registerFormatDocument } from "./commands/formatDocument";
 import { registerHotReload } from "./commands/hotReload";
 import { registerOpenSimulator } from "./commands/openSimulartor";
+import { registerOpenEmulator } from "./commands/openEmulator";
 import { wrapCommand, makeFileExecutable } from "./novaUtils";
 
 // Colors
@@ -18,6 +19,7 @@ nova.commands.register(
 );
 
 nova.commands.register("sciencefidelity.dart.reload", reload);
+nova.commands.register("sciencefidelity.dart.hotReload", registerHotReload);
 
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
@@ -161,6 +163,7 @@ async function asyncActivate() {
   compositeDisposable.add(registerFormatDocument(client));
   compositeDisposable.add(registerHotReload(client));
   compositeDisposable.add(registerOpenSimulator());
+  compositeDisposable.add(registerOpenEmulator());
 
   compositeDisposable.add(
     client.onDidStop((err) => {

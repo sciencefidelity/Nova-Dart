@@ -178,6 +178,11 @@
         "shortcut": "option-shift-o"
       },
       {
+        "title": "Open Android Emulator",
+        "command": "sciencefidelity.dart.commands.openEmulator",
+        "shortcut": "option-shift-a"
+      },
+      {
         "title": "Organize Imports",
         "command": "sciencefidelity.dart.commands.organizeImports",
         "filters": {
