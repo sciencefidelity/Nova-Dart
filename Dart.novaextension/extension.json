@@ -38,14 +38,14 @@
       "key": "sciencefidelity.dart.config.enableAnalyzer",
       "title": "Enable Language Server",
       "type": "boolean",
-      "default": false
+      "default": true
     },
     {
       "key": "sciencefidelity.dart.config.formatDocumentOnSave",
       "title": "Format document on save",
       "description": "Run Format Document command on file save.",
       "type": "boolean",
-      "default": false
+      "default": true
     }
   ],
 
@@ -83,6 +83,19 @@
       "largeImage": "SidebarLarge",
       "sections": [
         {
+          "id": "sciencefidelity.dart.sidebar.reload",
+          "name": "Hot Reload",
+          "placeholderText": "Dart Hot Reload",
+          "headerCommands": [
+            {
+              "title": "Hot Reload",
+              "image": "HotReload",
+              "tooltip": "Hot reload your running app",
+              "command": "sciencefidelity.dart.hotReload"
+            }
+          ]
+        },
+        {
           "id": "sciencefidelity.dart.sidebar.info",
           "name": "Information",
           "placeholderText": "Dart Extension Information",
@@ -90,6 +103,7 @@
             {
               "title": "Refresh",
               "image": "__builtin.refresh",
+              "tooltip": "Reload the Dart LSP",
               "command": "sciencefidelity.dart.reload"
             }
           ]
