@@ -41,6 +41,13 @@
       "default": true
     },
     {
+      "key": "sciencefidelity.dart.config.hotReloadOnSave",
+      "title": "Format document on save",
+      "description": "Run Hot Reload command on file save.",
+      "type": "boolean",
+      "default": true
+    },
+    {
       "key": "sciencefidelity.dart.config.formatDocumentOnSave",
       "title": "Format document on save",
       "description": "Run Format Document command on file save.",
@@ -53,6 +60,18 @@
     {
       "key": "sciencefidelity.dart.config.enableAnalyzer",
       "title": "Enable Language Server",
+      "type": "enum",
+      "values": [
+        ["null", "Inherit from Global Settings"],
+        ["false", "Disable"],
+        ["true", "Enable"]
+      ],
+      "default": "null"
+    },
+    {
+      "key": "sciencefidelity.dart.config.hotReloadOnSave",
+      "title": "Hot reload on save",
+      "description": "Run Format Document command on file save.",
       "type": "enum",
       "values": [
         ["null", "Inherit from Global Settings"],
@@ -137,6 +156,14 @@
       }
     ],
     "editor": [
+      {
+        "title": "Hot Reload",
+        "command": "sciencefidelity.dart.commands.hotReload",
+        "shortcut": "option-shift-r",
+        "filters": {
+          "syntaxes": ["dart"]
+        }
+      },
       {
         "title": "Format",
         "command": "sciencefidelity.dart.commands.formatDocument",

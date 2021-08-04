@@ -18,6 +18,6 @@ export async function openFile(uri: string) {
     return newEditor;
   }
   console.warn("failed first open attempt, retrying once", uri);
-  // try one more time, this doesn't resolve if the file isn't already open. Need to file a bug
+  // try one more time, this doesn't resolve if the file isn't already open
   return await nova.workspace.openFile(uri);
 }
