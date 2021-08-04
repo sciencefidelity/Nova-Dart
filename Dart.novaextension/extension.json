@@ -62,7 +62,7 @@
       "default": "null"
     },
     {
-      "key": "apexskier.typescript.config.formatDocumentOnSave",
+      "key": "sciencefidelity.dart.config.formatDocumentOnSave",
       "title": "Format document on save",
       "description": "Run Format Document command on file save.",
       "type": "enum",
@@ -123,6 +123,13 @@
       }
     ],
     "editor": [
+      {
+        "title": "Format",
+        "command": "sciencefidelity.dart.commands.formatDocument",
+        "filters": {
+          "syntaxes": ["dart"]
+        }
+      },
       {
         "title": "Organize Imports",
         "command": "sciencefidelity.dart.commands.organizeImports",

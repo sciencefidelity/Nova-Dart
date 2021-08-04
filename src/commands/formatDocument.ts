@@ -26,8 +26,8 @@ export function registerFormatDocument(client: LanguageClient) {
       textDocument: { uri: editor.document.uri },
       options: {
         insertSpaces: true,
-        tabSize: editor.tabLength,
-      },
+        tabSize: editor.tabLength
+      }
     };
     const changes = (await client.sendRequest(
       "textDocument/formatting",
