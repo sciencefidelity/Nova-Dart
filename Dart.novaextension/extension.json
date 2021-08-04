@@ -126,6 +126,7 @@
       {
         "title": "Format",
         "command": "sciencefidelity.dart.commands.formatDocument",
+        "shortcut": "option-shift-f",
         "filters": {
           "syntaxes": ["dart"]
         }
