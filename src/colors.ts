@@ -95,7 +95,7 @@ export class DartColorAssistant implements ColorAssistant {
 
       const namedColor = this.namedColors[string];
       if (namedColor) {
-        // TODO Find out why named colors don't show the color picker
+        // TODO: Find out why named colors don't show the color picker
         // Named color
         const infoRange = new Range(range.start, range.start + string.length);
         const colorInfo = new ColorInformation(infoRange, namedColor, "named");
