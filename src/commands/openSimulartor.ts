@@ -7,9 +7,7 @@ export function registerOpenSimulator() {
   );
 
   // Opens the iOS Simulator
-  // eslint-disable-next-line no-unused-vars
   async function openSimulator(): Promise<void>;
-
   async function openSimulator() {
     return new Promise((resolve, reject) => {
       const process = new Process("/usr/bin/env", {

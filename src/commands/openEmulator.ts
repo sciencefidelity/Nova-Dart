@@ -29,9 +29,8 @@ async function openAvd(line: string) {
     const avdName = line.trim();
     const process = new Process("/usr/bin/env", {
       args: ["emulator", "-avd", avdName],
-      stdio: ["pipe", "pipe", "pipe"]
+      stdio: ["ignore", "ignore", "pipe"]
     });
-    console.log(process.args);
     const str = "";
     process.onDidExit(status => {
       if (status === 0) {
