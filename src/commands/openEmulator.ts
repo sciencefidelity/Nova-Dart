@@ -6,25 +6,40 @@ export function registerOpenEmulator() {
     wrapCommand(openEmulator)
   );
 
-  // Opens the iOS Simulator
-  // eslint-disable-next-line no-unused-vars
+  // Find the name of the avd
   async function openEmulator(): Promise<void>;
   // TODO: Open an alert to let the user choose an avd
   async function openEmulator() {
-    return new Promise((resolve, reject) => {
+    return new Promise(() => {
       const process = new Process("/usr/bin/env", {
-        args: ["emulator", "-avd", "Pixel_3a_API_30_x86"],
-        stdio: ["ignore", "ignore", "pipe"]
+        args: ["emulator", "-list-avds"],
+        stdio: ["ignore", "pipe", "ignore"]
       });
-      const str = "";
-      process.onDidExit(status => {
-        if (status === 0) {
-          resolve(str);
-        } else {
-          reject(status);
-        }
+      process.onStdout(async function (line) {
+        await openAvd(line);
       });
       process.start();
     });
   }
+}
+
+// Opens the Android Emulator
+async function openAvd(line: string) {
+  return new Promise((resolve, reject) => {
+    const avdName = line.trim();
+    const process = new Process("/usr/bin/env", {
+      args: ["emulator", "-avd", avdName],
+      stdio: ["pipe", "pipe", "pipe"]
+    });
+    console.log(process.args);
+    const str = "";
+    process.onDidExit(status => {
+      if (status === 0) {
+        resolve(str);
+      } else {
+        reject(status);
+      }
+    });
+    process.start();
+  });
 }

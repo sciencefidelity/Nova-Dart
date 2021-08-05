@@ -2,7 +2,8 @@
   "apexskier.typescript.config.isEnabledForJavascript" : "Disable",
   "prettier.default-config.semi" : "Enable",
   "todo.workspace-ignore-paths" : [
-    "test-workspace"
+    "test-workspace",
+    "Scripts"
   ],
   "workspace.art_style" : 1,
   "workspace.color" : 9,

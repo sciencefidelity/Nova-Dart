@@ -2,6 +2,7 @@ import { cleanPath, preferences } from "nova-extension-utils";
 import { DartColorAssistant } from "./colors";
 import { InformationView } from "./informationView";
 import { registerFormatDocument } from "./commands/formatDocument";
+import { registerGetDependencies } from "./commands/getDependencies";
 import { registerHotReload } from "./commands/hotReload";
 import { registerOpenSimulator } from "./commands/openSimulartor";
 import { registerOpenEmulator } from "./commands/openEmulator";
@@ -30,7 +31,7 @@ async function getDartVersion() {
   return new Promise<string>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["dart", "--version"],
-      stdio: ["ignore", "ignore", "pipe"],
+      stdio: ["ignore", "ignore", "pipe"]
     });
     let str = "";
     process.onStderr(function (line) {
@@ -38,7 +39,7 @@ async function getDartVersion() {
       str = arr[3];
       console.log(line);
     });
-    process.onDidExit((status) => {
+    process.onDidExit(status => {
       if (status === 0) {
         resolve(str);
       } else {
@@ -56,7 +57,7 @@ async function getFlutterVersion() {
     makeFileExecutable(versionFile);
     const process = new Process("/usr/bin/env", {
       args: ["bash", "-c", `"${versionFile}"`],
-      stdio: ["ignore", "pipe", "ignore"],
+      stdio: ["ignore", "pipe", "ignore"]
     });
     let str = "";
     process.onStdout(function (line) {
@@ -64,7 +65,7 @@ async function getFlutterVersion() {
       str = arr[1];
       console.log(line);
     });
-    process.onDidExit((status) => {
+    process.onDidExit(status => {
       if (status === 0) {
         resolve(str);
       } else {
@@ -109,9 +110,9 @@ async function asyncActivate() {
     const logDir = nova.path.join(nova.workspace.path, "logs");
     await new Promise<void>((resolve, reject) => {
       const p = new Process("/usr/bin/env", {
-        args: ["mkdir", "-p", logDir],
+        args: ["mkdir", "-p", logDir]
       });
-      p.onDidExit((status) => (status === 0 ? resolve() : reject()));
+      p.onDidExit(status => (status === 0 ? resolve() : reject()));
       p.start();
     });
     console.log("logging to", logDir);
@@ -121,11 +122,11 @@ async function asyncActivate() {
     serviceArgs = {
       path: "/usr/bin/env",
       // args: ["bash", "-c", `tee "${inLog}" | "${runFile}" | tee "${outLog}"`],
-      args: ["bash", "-c", `"${runFile}" | tee "${outLog}"`],
+      args: ["bash", "-c", `"${runFile}" | tee "${outLog}"`]
     };
   } else {
     serviceArgs = {
-      path: runFile,
+      path: runFile
     };
   }
 
@@ -148,25 +149,26 @@ async function asyncActivate() {
           nova.config.get(
             "sciencefidelity.dart.config.analyzerPath",
             "string"
-          ) || "~/flutter/bin/cache/dart-sdk/bin/snapshots",
-      },
+          ) || "~/flutter/bin/cache/dart-sdk/bin/snapshots"
+      }
     },
     {
       initializationOptions: {
-        onlyAnalyzeProjectsWithOpenFiles: true,
+        onlyAnalyzeProjectsWithOpenFiles: true
       },
-      syntaxes,
+      syntaxes
     }
   );
 
   // register nova commands
   compositeDisposable.add(registerFormatDocument(client));
+  compositeDisposable.add(registerGetDependencies());
   compositeDisposable.add(registerHotReload(client));
   compositeDisposable.add(registerOpenSimulator());
   compositeDisposable.add(registerOpenEmulator());
 
   compositeDisposable.add(
-    client.onDidStop((err) => {
+    client.onDidStop(err => {
       let message = "Dart Language Server stopped unexpectedly";
       if (err) {
         message += `:\n\n${err.toString()}`;
@@ -178,9 +180,9 @@ async function asyncActivate() {
       nova.workspace.showActionPanel(
         message,
         {
-          buttons: ["Restart", "Ignore"],
+          buttons: ["Restart", "Ignore"]
         },
-        (index) => {
+        index => {
           if (index == 0) {
             nova.commands.invoke("sciencefidelity.dart.reload");
           }
@@ -192,7 +194,7 @@ async function asyncActivate() {
   client.start();
 
   compositeDisposable.add(
-    nova.workspace.onDidAddTextEditor((editor) => {
+    nova.workspace.onDidAddTextEditor(editor => {
       const editorDisposable = new CompositeDisposable();
       compositeDisposable.add(editorDisposable);
       compositeDisposable.add(
@@ -212,7 +214,7 @@ async function asyncActivate() {
       compositeDisposable.add({
         dispose() {
           willSaveListener?.dispose();
-        },
+        }
       });
 
       function refreshListener() {
@@ -231,7 +233,7 @@ async function asyncActivate() {
         if (!formatDocumentOnSave) {
           return;
         }
-        return editor.onWillSave(async (editor) => {
+        return editor.onWillSave(async editor => {
           if (formatDocumentOnSave) {
             await nova.commands.invoke(
               "sciencefidelity.dart.commands.formatDocument",
@@ -253,11 +255,11 @@ export async function activate() {
 
   compositeDisposable.add(informationView);
 
-  getDartVersion().then((dartVersion) => {
+  getDartVersion().then(dartVersion => {
     informationView.dartVersion = dartVersion;
   });
 
-  getFlutterVersion().then((flutterVersion) => {
+  getFlutterVersion().then(flutterVersion => {
     informationView.flutterVersion = flutterVersion;
   });
 
@@ -272,7 +274,7 @@ export async function activate() {
       nova.notifications.add(notification);
     }
     return asyncActivate()
-      .catch((err) => {
+      .catch(err => {
         console.error("Failed to activate");
         console.error(err);
         nova.workspace.showErrorMessage(err);

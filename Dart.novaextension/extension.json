@@ -10,7 +10,8 @@
     "formatters",
     "issues",
     "languages",
-    "sidebars"
+    "sidebars",
+    "validators"
   ],
   "license": "MIT",
   "repository": "https://github.com/sciencefidelity/Nova-Dart",
@@ -181,6 +182,11 @@
         "title": "Open Android Emulator",
         "command": "sciencefidelity.dart.commands.openEmulator",
         "shortcut": "option-shift-a"
+      },
+      {
+        "title": "Get Flutter Dependencies",
+        "command": "sciencefidelity.dart.commands.getDependencies",
+        "shortcut": "option-shift-p"
       },
       {
         "title": "Organize Imports",
