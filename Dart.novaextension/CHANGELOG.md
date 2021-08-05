@@ -1,6 +1,7 @@
 ## Version 0.4.1
 
 Add editor menu command and shortcut for hot reload.
+Add editor menu command and shortcut to open iOS Simulator and the Android Emulator.
 
 ## Version 0.4.0
 
