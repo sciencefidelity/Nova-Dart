@@ -36,61 +36,24 @@ export class DartColorAssistant implements ColorAssistant {
   attributeNameChars: string;
   valueDelimiterChars: Charset;
   hexRegex: RegExp;
-  rgbRegex: RegExp;
-  rgbaRegex: RegExp;
-  hslRegex: RegExp;
-  hslaRegex: RegExp;
-  srgbRegex: RegExp;
-  srgbaRegex: RegExp;
-  displayP3Regex: RegExp;
-  displayP3ARegex: RegExp;
   namedColors: any;
 
   constructor() {
     // Parsing charsets
-    this.attributeBlockChars = new Charset("\\/{");
-    this.stringDoubleQuotedChars = new Charset('"\\');
-    this.stringSingleQuotedChars = new Charset("'\\");
+    this.attributeBlockChars = new Charset("\\/(");
+    this.stringDoubleQuotedChars = new Charset("(\\");
+    this.stringSingleQuotedChars = new Charset(")\\");
     this.attributeNameChars = Charset.alphanumeric.concat("-_");
     this.valueDelimiterChars = new Charset("/\"';");
-
-    // Dart Regexes
-    // this.srgb = /0x([A-F0-9]{4})/i;
+    console.log("1");
+    // Regexes
     this.hexRegex = /0x([A-F0-9]{2})([A-Z0-9]{6}|[A-Z0-9]{3})\b/i;
 
-    // Regexes
-    // this.hexRegex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\b/i;
-    this.rgbRegex =
-      /\brgb\(\s*([0-9]{1,3}),(\s{0,1})([0-9]{1,3}),(\s{0,1})([0-9]{1,3})\)/i;
-    this.rgbaRegex =
-      /\brgba\(\s*([0-9]{1,3}),(\s{0,1})([0-9]{1,3}),(\s{0,1})([0-9]{1,3}),(\s{0,1})([0-9]{0,1}.?[0-9]+)\)/i;
-    this.hslRegex =
-      /\bhsl\(\s*([0-9]{1,3})\s*,\s*([0-9]*.?[0-9]+)%\s*,\s*([0-9]*.?[0-9]+)%\s*\)/i;
-    this.hslaRegex =
-      /\bhsla\(\s*([0-9]{1,3})\s*,\s*([0-9]*.?[0-9]+)%\s*,\s*([0-9]*.?[0-9]+)%\s*,\s*([0-9]*.?[0-9]+)\s*\)/i;
-    this.srgbRegex = new RegExp(
-      "\\bcolor\\(\\s*srgb\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*\\)",
-      "i"
-    );
-    this.srgbaRegex = new RegExp(
-      "\\bcolor\\(\\s*srgb\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*(?:/\\s*([0-9]*.?[0-9]+)\\s*)\\)",
-      "i"
-    );
-    this.displayP3Regex = new RegExp(
-      "\\bcolor\\(\\s*display-p3\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*\\)",
-      "i"
-    );
-    this.displayP3ARegex = new RegExp(
-      "\\bcolor\\(\\s*display-p3\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s+([0-9]*.?[0-9]+)\\s*(?:/\\s*([0-9]*.?[0-9]+)\\s*)\\)",
-      "i"
-    );
-
-    // Named colors
     const namedColors: ColorStrings = {};
     const keys = Object.keys(namedColorStrings);
     for (const key of keys) {
+      console.log("2");
       const string = namedColorStrings[key];
-
       const red = parseInt(string.substring(0, 2), 16) / 255.0;
       const green = parseInt(string.substring(2, 4), 16) / 255.0;
       const blue = parseInt(string.substring(4, 6), 16) / 255.0;
@@ -98,38 +61,30 @@ export class DartColorAssistant implements ColorAssistant {
       const color = Color.rgb(red, green, blue, 1.0);
       namedColors[key] = color;
     }
+    console.log("3");
     this.namedColors = namedColors;
   }
 
   // eslint-disable-next-line no-unused-vars
   provideColors(textEditor: TextEditor, context: ColorInformationContext) {
-    const regexes = [
-      this.hexRegex,
-      this.rgbaRegex,
-      this.rgbRegex,
-      this.hslaRegex,
-      this.hslRegex,
-      this.srgbRegex,
-      this.srgbaRegex,
-      this.displayP3Regex,
-      this.displayP3ARegex
-    ];
+    const regexes = [this.hexRegex];
 
     const colors = [];
     const candidates = context.candidates;
-
+    console.log("4");
     for (const candidate of candidates) {
+      console.log("5");
       const string = candidate.text;
       const range = candidate.range;
-
       const namedColor = this.namedColors[string];
       if (namedColor) {
-        // TODO: Find out why named colors don't show the color picker
         // Named color
+        console.log("namedColor");
         const infoRange = new Range(range.start, range.start + string.length);
         const colorInfo = new ColorInformation(infoRange, namedColor, "named");
         colors.push(colorInfo);
       } else {
+        console.log("6");
         for (const regex of regexes) {
           const match = string.match(regex);
           if (match) {
@@ -148,10 +103,14 @@ export class DartColorAssistant implements ColorAssistant {
 
   parseColorMatch(match: any, regex: RegExp, range: Range) {
     // Parses a Dart color string into an color object
+    console.log("7");
     const position = range.start + match.index;
     const matchStr = match[0];
     if (regex === this.hexRegex) {
+      console.log("8");
       if (matchStr.length === 10) {
+        console.log("9");
+        const alpha = parseInt(matchStr.substring(2, 4), 16);
         let red = parseInt(matchStr.substring(4, 6), 16);
         let green = parseInt(matchStr.substring(6, 8), 16);
         let blue = parseInt(matchStr.substring(8, 10), 16);
@@ -160,15 +119,17 @@ export class DartColorAssistant implements ColorAssistant {
         green = green / 255.0;
         blue = blue / 255.0;
 
-        const color = Color.rgb(red, green, blue, 1.0);
+        const color = Color.rgb(red, green, blue, alpha);
         const range = new Range(position, position + matchStr.length);
         const info = new ColorInformation(range, color, "hex");
         info.format = ColorFormat.rgb;
+        console.log("hex color found");
         return info;
-      } else if (matchStr.length === 4) {
-        const redStr = matchStr.substring(1, 2);
-        const greenStr = matchStr.substring(2, 3);
-        const blueStr = matchStr.substring(3, 4);
+      } else if (matchStr.length === 7) {
+        console.log("10");
+        const redStr = matchStr.substring(5, 6);
+        const greenStr = matchStr.substring(6, 7);
+        const blueStr = matchStr.substring(7, );
 
         let red = parseInt(redStr + redStr, 16);
         let green = parseInt(greenStr + greenStr, 16);
@@ -184,117 +145,14 @@ export class DartColorAssistant implements ColorAssistant {
         info.format = ColorFormat.rgb;
         return info;
       }
-    } else if (regex == this.rgbaRegex) {
-      let red = parseInt(match[1]);
-      let green = parseInt(match[2]);
-      let blue = parseInt(match[3]);
-      const alpha = parseFloat(match[4]);
-
-      red = red / 255.0;
-      green = green / 255.0;
-      blue = blue / 255.0;
-
-      const color = Color.rgb(red, green, blue, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "rgba");
-      info.format = ColorFormat.rgb;
-      return info;
-    } else if (regex == this.rgbRegex) {
-      let red = parseInt(match[1]);
-      let green = parseInt(match[2]);
-      let blue = parseInt(match[3]);
-
-      red = red / 255.0;
-      green = green / 255.0;
-      blue = blue / 255.0;
-
-      const color = Color.rgb(red, green, blue, 1.0);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "rgb");
-      info.format = ColorFormat.rgb;
-      return info;
-    } else if (regex == this.hslaRegex) {
-      let hue = parseInt(match[1]);
-      let sat = parseFloat(match[2]);
-      let lum = parseFloat(match[3]);
-      const alpha = parseFloat(match[4]);
-
-      hue = hue / 360.0;
-      sat = sat / 100.0;
-      lum = lum / 100.0;
-
-      const color = Color.hsl(hue, sat, lum, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "hsla");
-      info.format = ColorFormat.hsl;
-      return info;
-    } else if (regex == this.hslRegex) {
-      let hue = parseInt(match[1]);
-      let sat = parseFloat(match[2]);
-      let lum = parseFloat(match[3]);
-
-      hue = hue / 360.0;
-      sat = sat / 100.0;
-      lum = lum / 100.0;
-
-      const color = Color.hsl(hue, sat, lum, 1.0);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "hsl");
-      info.format = ColorFormat.hsl;
-      return info;
-    } else if (regex == this.srgbRegex) {
-      const red = parseFloat(match[1]);
-      const green = parseFloat(match[2]);
-      const blue = parseFloat(match[3]);
-
-      const color = Color.rgb(red, green, blue);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "srgb");
-      info.format = ColorFormat.rgb;
-      info.usesFloats = true;
-      return info;
-    } else if (regex == this.srgbaRegex) {
-      const red = parseFloat(match[1]);
-      const green = parseFloat(match[2]);
-      const blue = parseFloat(match[3]);
-      const alpha = parseFloat(match[4]);
-
-      const color = Color.rgb(red, green, blue, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "srgba");
-      info.format = ColorFormat.rgb;
-      info.usesFloats = true;
-      return info;
-    } else if (regex == this.displayP3Regex) {
-      const red = parseFloat(match[1]);
-      const green = parseFloat(match[2]);
-      const blue = parseFloat(match[3]);
-
-      const color = Color.displayP3(red, green, blue);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "p3");
-      info.format = ColorFormat.displayP3;
-      info.usesFloats = true;
-      return info;
-    } else if (regex == this.displayP3ARegex) {
-      const red = parseFloat(match[1]);
-      const green = parseFloat(match[2]);
-      const blue = parseFloat(match[3]);
-      const alpha = parseFloat(match[4]);
-
-      const color = Color.displayP3(red, green, blue, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "p3a");
-      info.format = ColorFormat.displayP3;
-      info.usesFloats = true;
-      return info;
     }
-
+    console.log("11");
     return null;
   }
   // eslint-disable-next-line no-unused-vars
   provideColorPresentations(color: any, context: any) {
     // Converts a color object into an array of color presentations
+    console.log("12");
     const format = color.format;
     const presentations = [];
 
@@ -523,7 +381,7 @@ export class DartColorAssistant implements ColorAssistant {
         presentations.push(presentation);
       }
     }
-
+    console.log("13");
     return presentations;
   }
 }

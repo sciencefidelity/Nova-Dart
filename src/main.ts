@@ -10,6 +10,8 @@ import { wrapCommand, makeFileExecutable } from "./novaUtils";
 
 // Colors
 const Colors = new DartColorAssistant();
+nova.assistants.registerColorAssistant(["dart"], Colors);
+
 const formatOnSaveKey = "sciencefidelity.dart.config.formatDocumentOnSave";
 
 nova.commands.register(
@@ -26,6 +28,8 @@ let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
 const informationView = new InformationView();
 
+const re = /\b[0-9]*\.[0-9]*\.[0-9]*\b/
+
 // Launches the Dart executable to determine its current version
 async function getDartVersion() {
   return new Promise<string>((resolve, reject) => {
@@ -35,8 +39,8 @@ async function getDartVersion() {
     });
     let str = "";
     process.onStderr(function (line) {
-      const arr = line.split(" ");
-      str = arr[3];
+      const arr = line.match(re) || ["unknown"];
+      str = arr[0];
       console.log(line);
     });
     process.onDidExit(status => {
@@ -61,8 +65,8 @@ async function getFlutterVersion() {
     });
     let str = "";
     process.onStdout(function (line) {
-      const arr = line.split(" ");
-      str = arr[1];
+      const arr = line.match(re) || ["Unknown"];
+      str = arr[0];
       console.log(line);
     });
     process.onDidExit(status => {
@@ -262,8 +266,6 @@ export async function activate() {
   getFlutterVersion().then(flutterVersion => {
     informationView.flutterVersion = flutterVersion;
   });
-
-  nova.assistants.registerColorAssistant(["dart"], Colors);
 
   if (
     nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
