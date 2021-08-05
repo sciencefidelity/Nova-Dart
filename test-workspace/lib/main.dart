@@ -4,6 +4,28 @@ void main() {
   runApp(MyApp());
 }
 
+Color c = const Color(0xFFFF7F50);
+Color d = const Color.fromARGB(0xFF, 0xFF, 0x7F, 0x50);
+Color e = const Color.fromARGB(255, 66, 165, 245);
+Color f = const Color.fromRGBO(66, 165, 245, 1.0);
+
+/// Parses a variable declaration from [contents].
+///
+/// If passed, [url] is the name of the file
+/// from which [contents] comes.
+///
+/// Throws a [SassFormatException] if parsing fails.
+///
+/// @nodoc
+
+/// Returns the lesser of two numbers.
+///
+/// ```dart
+/// min(5, 3) == 3
+/// ```
+
+/// A parser for `@at-root` queries.
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
