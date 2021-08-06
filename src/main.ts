@@ -57,10 +57,8 @@ async function getDartVersion() {
 // Launches the Flutter executable to determine its current version
 async function getFlutterVersion() {
   return new Promise<string>((resolve, reject) => {
-    const versionFile = nova.path.join(nova.extension.path, "version.sh");
-    makeFileExecutable(versionFile);
     const process = new Process("/usr/bin/env", {
-      args: ["bash", "-c", `"${versionFile}"`],
+      args: ["flutter", "--version"],
       stdio: ["ignore", "pipe", "ignore"]
     });
     let str = "";
