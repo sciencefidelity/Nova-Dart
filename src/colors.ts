@@ -122,8 +122,8 @@ export class DartColorAssistant implements ColorAssistant {
   }
   // eslint-disable-next-line no-unused-vars
   provideColorPresentations(
-    color: Color,
-    editor: TextEditor,
+    color: Color, // eslint-disable-next-line no-unused-vars
+    editor: TextEditor, // eslint-disable-next-line no-unused-vars
     context: ColorPresentationContext
   ) {
     // Converts a color object into an array of color presentations
