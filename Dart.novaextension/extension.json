@@ -43,14 +43,14 @@
     },
     {
       "key": "sciencefidelity.dart.config.hotReloadOnSave",
-      "title": "Format document on save",
+      "title": "Hot Reload on Save",
       "description": "Run Hot Reload command on file save.",
       "type": "boolean",
       "default": true
     },
     {
       "key": "sciencefidelity.dart.config.formatDocumentOnSave",
-      "title": "Format document on save",
+      "title": "Format Document on Save",
       "description": "Run Format Document command on file save.",
       "type": "boolean",
       "default": true
@@ -71,8 +71,8 @@
     },
     {
       "key": "sciencefidelity.dart.config.hotReloadOnSave",
-      "title": "Hot reload on save",
-      "description": "Run Format Document command on file save.",
+      "title": "Hot Reload on Save",
+      "description": "Run Hot Reload command on file save.",
       "type": "enum",
       "values": [
         ["null", "Inherit from Global Settings"],
@@ -83,7 +83,7 @@
     },
     {
       "key": "sciencefidelity.dart.config.formatDocumentOnSave",
-      "title": "Format document on save",
+      "title": "Format Document on Save",
       "description": "Run Format Document command on file save.",
       "type": "enum",
       "values": [
