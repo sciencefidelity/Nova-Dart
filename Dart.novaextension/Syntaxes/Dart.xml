@@ -56,6 +56,7 @@
         <include syntax="self" collection="shebang" />
         <include syntax="self" collection="comments" />
         <include syntax="self" collection="imports" />
+        <include syntax="self" collection="colors" />
         <include syntax="self" collection="annotations" />
         <include syntax="self" collection="keywords" />
         <include syntax="self" collection="constants-and-special-vars" />
@@ -237,6 +238,29 @@
                         <expression>(?:\b[a-zA-Z_]|\$)[A-Za-zÀ-ÖØ-öø-ÿŸřŘšŠžŽ0-9_]*</expression>
                     </scope>
                 </subscopes>
+            </scope>
+        </collection>
+
+        <collection name="colors">
+            <scope name="dart.style.value.color.hex">
+                <symbol type="color" />
+                <expression>(Color)(\()(0x[A-Fa-f0-9]{8})(\))</expression>
+                <capture number="1" name="dart.string.key.color.hex" />
+                <capture number="2" name="dart.style.bracket.color.hex" />
+                <capture number="3" name="dart.style.value.color.hex" />
+                <capture number="4" name="dart.style.bracket.color.hex" />
+            </scope>
+            <scope name="dart.style.value.color.rgba">
+                <symbol type="color" />
+                <expression>(Color)\.(fromARGB|fromRGBO)(\()\s*([\w_]+),\s*([\w_]+),\s*([\w_]+),\s*([\w_.]+)\s*(\))</expression>
+                <capture number="1" name="dart.string.key.color.rgba" />
+                <capture number="2" name="dart.identifier.property.color.rgba" />
+                <capture number="3" name="dart.style.bracket.color.rgba" />
+                <capture number="4" name="dart.style.value.color.rgba.number.alpha" />
+                <capture number="5" name="dart.style.value.color.rgba.number.red" />
+                <capture number="6" name="dart.style.value.color.rgba.number.green" />
+                <capture number="7" name="dart.style.value.color.rgba.number.blue" />
+                <capture number="8" name="dart.style.bracket.color.rgba" />
             </scope>
         </collection>
 
