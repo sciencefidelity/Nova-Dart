@@ -26,10 +26,6 @@ Color f = const Color.fromRGBO(66, 165, 245, 1.0);
 
 /// A parser for `@at-root` queries.
 
-.hello {
-  color: 0xFFFF7F50;
-}
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
