@@ -54,7 +54,7 @@ export class DartColorAssistant implements ColorAssistant {
     const position = range.start + match.index!;
     const matchStr = match[0];
 
-    if (regex == this.hexRegex) {
+    if (regex === this.hexRegex) {
       let alpha = parseInt(match[1].substring(0, 2), 16);
       let red = parseInt(match[1].substring(2, 4), 16);
       let green = parseInt(match[1].substring(4, 6), 16);
@@ -70,7 +70,7 @@ export class DartColorAssistant implements ColorAssistant {
       const info = new ColorInformation(range, color, "hex");
       info.format = ColorFormat.rgb;
       return info;
-    } else if (regex == this.argbHexRegex) {
+    } else if (regex === this.argbHexRegex) {
       let alpha = parseInt(match[1].substring(2, 4), 16);
       let red = parseInt(match[2].substring(2, 4), 16);
       let green = parseInt(match[3].substring(2, 4), 16);
@@ -86,7 +86,7 @@ export class DartColorAssistant implements ColorAssistant {
       const info = new ColorInformation(range, color, "hexa");
       info.format = ColorFormat.rgb;
       return info;
-    } else if (regex == this.argbRegex) {
+    } else if (regex === this.argbRegex) {
       let alpha = parseInt(match[1]);
       let red = parseInt(match[2]);
       let green = parseInt(match[3]);
@@ -102,7 +102,7 @@ export class DartColorAssistant implements ColorAssistant {
       const info = new ColorInformation(range, color, "rgba");
       info.format = ColorFormat.rgb;
       return info;
-    } else if (regex == this.rgboRegex) {
+    } else if (regex === this.rgboRegex) {
       let red = parseInt(match[1]);
       let green = parseInt(match[2]);
       let blue = parseInt(match[3]);
@@ -145,19 +145,19 @@ export class DartColorAssistant implements ColorAssistant {
       blue = blue * 255.0;
 
       let alphaHex = Math.floor(alpha).toString(16);
-      if (alphaHex.length == 1) {
+      if (alphaHex.length === 1) {
         alphaHex = "0" + alphaHex;
       }
       let redHex = Math.floor(red).toString(16);
-      if (redHex.length == 1) {
+      if (redHex.length === 1) {
         redHex = "0" + redHex;
       }
       let greenHex = Math.floor(green).toString(16);
-      if (greenHex.length == 1) {
+      if (greenHex.length === 1) {
         greenHex = "0" + greenHex;
       }
       let blueHex = Math.floor(blue).toString(16);
-      if (blueHex.length == 1) {
+      if (blueHex.length === 1) {
         blueHex = "0" + blueHex;
       }
       const string =
@@ -189,19 +189,19 @@ export class DartColorAssistant implements ColorAssistant {
       blue = blue * 255.0;
 
       let alphaHex = Math.floor(alpha).toString(16);
-      if (alphaHex.length == 1) {
+      if (alphaHex.length === 1) {
         alphaHex = "0" + alphaHex;
       }
       let redHex = Math.floor(red).toString(16);
-      if (redHex.length == 1) {
+      if (redHex.length === 1) {
         redHex = "0" + redHex;
       }
       let greenHex = Math.floor(green).toString(16);
-      if (greenHex.length == 1) {
+      if (greenHex.length === 1) {
         greenHex = "0" + greenHex;
       }
       let blueHex = Math.floor(blue).toString(16);
-      if (blueHex.length == 1) {
+      if (blueHex.length === 1) {
         blueHex = "0" + blueHex;
       }
 
