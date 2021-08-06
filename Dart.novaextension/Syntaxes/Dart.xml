@@ -74,7 +74,7 @@
                 <expression>(^ {4,}(?![ \*]).*)</expression>
                 <capture number="0" name="dart.identifier.source" />
             </scope>
-            <scope name="dart.identifier.bracket.code-doc">
+            <scope name="dart.identifier.declaration.code-doc">
                 <starts-with>
                     <expression>```.*?$</expression>
                 </starts-with>
@@ -265,8 +265,17 @@
                 <symbol type="function">
                     <context behavior="subtree" />
                 </symbol>
-                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(&lt;|\()</expression>
+                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(\()</expression>
                 <capture number="1" name="dart.identifier.method" />
+                <capture number="2" name="dart.identifier.closure" />
+            </scope>
+            <scope name="dart.function.name">
+                <symbol type="function">
+                    <context behavior="subtree" />
+                </symbol>
+                <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(&lt;)</expression>
+                <capture number="1" name="dart.identifier.method" />
+                <capture number="2" name="dart.declaration" />
             </scope>
             <scope name="dart.function.name">
                 <expression>([_$]*[a-z][a-zA-Z0-9_$]*)(\s+=&gt;)</expression>
