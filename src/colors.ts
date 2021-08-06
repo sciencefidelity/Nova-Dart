@@ -1,387 +1,287 @@
-interface ColorStrings {
-  [key: string]: string[];
-}
+// import { flutterCupertinoColors, flutterMaterialColors } from "../flutter/colors";
 
-interface NamedStrings {
-  [key: string]: string;
-}
-
-const namedColorStrings = {
-  red: "F44336",
-  pink: "E91E63",
-  purple: "9C27B0",
-  deepPurple: "673AB7",
-  indigo: "3F51B5",
-  blue: "2196F3",
-  lightBlue: "00BCD4",
-  teal: "009688",
-  green: "4CAF50",
-  lightGreen: "8BC34A",
-  lime: "CDDC39",
-  yellow: "FFEB3B",
-  amber: "FFC107",
-  orange: "FF9800",
-  deepOrange: "FF5722",
-  brown: "795548",
-  grey: "9E9E9E",
-  blueGrey: "607D8B",
-  black: "000000",
-  white: "FFFFFF"
-} as NamedStrings;
+// interface ColorStrings {
+//   [key: string]: string[];
+// }
 
 export class DartColorAssistant implements ColorAssistant {
-  attributeBlockChars: Charset;
-  stringDoubleQuotedChars: Charset;
-  stringSingleQuotedChars: Charset;
-  attributeNameChars: string;
-  valueDelimiterChars: Charset;
   hexRegex: RegExp;
-  namedColors: any;
+  argbHexRegex: RegExp;
+  argbRegex: RegExp;
+  rgboRegex: RegExp;
 
   constructor() {
-    // Parsing charsets
-    this.attributeBlockChars = new Charset("\\/(");
-    this.stringDoubleQuotedChars = new Charset("(\\");
-    this.stringSingleQuotedChars = new Charset(")\\");
-    this.attributeNameChars = Charset.alphanumeric.concat("-_");
-    this.valueDelimiterChars = new Charset("/\"';");
-    console.log("1");
     // Regexes
-    this.hexRegex = /0x([A-F0-9]{2})([A-Z0-9]{6}|[A-Z0-9]{3})\b/i;
-
-    const namedColors: ColorStrings = {};
-    const keys = Object.keys(namedColorStrings);
-    for (const key of keys) {
-      console.log("2");
-      const string = namedColorStrings[key];
-      const red = parseInt(string.substring(0, 2), 16) / 255.0;
-      const green = parseInt(string.substring(2, 4), 16) / 255.0;
-      const blue = parseInt(string.substring(4, 6), 16) / 255.0;
-
-      const color = Color.rgb(red, green, blue, 1.0);
-      namedColors[key] = color;
-    }
-    console.log("3");
-    this.namedColors = namedColors;
+    // prettier-ignore
+    this.hexRegex = new RegExp("\\(0x([A-F0-9]{8})\\)", 'i');
+    // prettier-ignore
+    this.argbHexRegex = new RegExp("\\.fromARGB\\(\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2})\\s*\\)", "i");
+    // prettier-ignore
+    this.argbRegex = new RegExp("\\.fromARGB\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3})\\s*\\)", "i");
+    // prettier-ignore
+    this.rgboRegex = new RegExp("\\.fromRGBO\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([\\w_.]+)\\s*\\)", "i");
   }
 
-  // eslint-disable-next-line no-unused-vars
   provideColors(textEditor: TextEditor, context: ColorInformationContext) {
-    const regexes = [this.hexRegex];
-
+    const regexes = [
+      this.hexRegex,
+      this.argbHexRegex,
+      this.argbRegex,
+      this.rgboRegex
+    ];
     const colors = [];
+
     const candidates = context.candidates;
-    console.log("4");
     for (const candidate of candidates) {
-      console.log("5");
       const string = candidate.text;
       const range = candidate.range;
-      const namedColor = this.namedColors[string];
-      if (namedColor) {
-        // Named color
-        console.log("namedColor");
-        const infoRange = new Range(range.start, range.start + string.length);
-        const colorInfo = new ColorInformation(infoRange, namedColor, "named");
-        colors.push(colorInfo);
-      } else {
-        console.log("6");
-        for (const regex of regexes) {
-          const match = string.match(regex);
-          if (match) {
-            const color = this.parseColorMatch(match, regex, range);
-            if (color) {
-              colors.push(color);
-              break;
-            }
+      for (const regex of regexes) {
+        const match = string.match(regex) as RegExpMatchArray;
+        if (match) {
+          const color = this.parseColorMatch(match, regex, range);
+          if (color) {
+            colors.push(color);
+            break;
           }
         }
       }
     }
-
     return colors;
   }
 
-  parseColorMatch(match: any, regex: RegExp, range: Range) {
-    // Parses a Dart color string into an color object
-    console.log("7");
-    const position = range.start + match.index;
+  parseColorMatch(match: RegExpMatchArray, regex: RegExp, range: Range) {
+    // Parses a Dart color string into a color object
+    const position = range.start + match.index!;
     const matchStr = match[0];
-    if (regex === this.hexRegex) {
-      console.log("8");
-      if (matchStr.length === 10) {
-        console.log("9");
-        const alpha = parseInt(matchStr.substring(2, 4), 16);
-        let red = parseInt(matchStr.substring(4, 6), 16);
-        let green = parseInt(matchStr.substring(6, 8), 16);
-        let blue = parseInt(matchStr.substring(8, 10), 16);
 
-        red = red / 255.0;
-        green = green / 255.0;
-        blue = blue / 255.0;
+    if (regex == this.hexRegex) {
+      let alpha = parseInt(match[1].substring(0, 2), 16);
+      let red = parseInt(match[1].substring(2, 4), 16);
+      let green = parseInt(match[1].substring(4, 6), 16);
+      let blue = parseInt(match[1].substring(6, 8), 16);
 
-        const color = Color.rgb(red, green, blue, alpha);
-        const range = new Range(position, position + matchStr.length);
-        const info = new ColorInformation(range, color, "hex");
-        info.format = ColorFormat.rgb;
-        console.log("hex color found");
-        return info;
-      } else if (matchStr.length === 7) {
-        console.log("10");
-        const redStr = matchStr.substring(5, 6);
-        const greenStr = matchStr.substring(6, 7);
-        const blueStr = matchStr.substring(7, );
+      alpha = alpha / 255.0;
+      red = red / 255.0;
+      green = green / 255.0;
+      blue = blue / 255.0;
 
-        let red = parseInt(redStr + redStr, 16);
-        let green = parseInt(greenStr + greenStr, 16);
-        let blue = parseInt(blueStr + blueStr, 16);
+      const color = Color.rgb(red, green, blue, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "hex");
+      info.format = ColorFormat.rgb;
+      return info;
+    } else if (regex == this.argbHexRegex) {
+      let alpha = parseInt(match[1].substring(2, 4), 16);
+      let red = parseInt(match[2].substring(2, 4), 16);
+      let green = parseInt(match[3].substring(2, 4), 16);
+      let blue = parseInt(match[4].substring(2, 4), 16);
 
-        red = red / 255.0;
-        green = green / 255.0;
-        blue = blue / 255.0;
+      alpha = alpha / 255.0;
+      red = red / 255.0;
+      green = green / 255.0;
+      blue = blue / 255.0;
 
-        const color = Color.rgb(red, green, blue, 1.0);
-        const range = new Range(position, position + matchStr.length);
-        const info = new ColorInformation(range, color, "hex");
-        info.format = ColorFormat.rgb;
-        return info;
-      }
+      const color = Color.rgb(red, green, blue, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "hexa");
+      info.format = ColorFormat.rgb;
+      return info;
+    } else if (regex == this.argbRegex) {
+      let alpha = parseInt(match[1]);
+      let red = parseInt(match[2]);
+      let green = parseInt(match[3]);
+      let blue = parseInt(match[4]);
+
+      alpha = alpha / 255.0;
+      red = red / 255.0;
+      green = green / 255.0;
+      blue = blue / 255.0;
+
+      const color = Color.rgb(red, green, blue, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "rgba");
+      info.format = ColorFormat.rgb;
+      return info;
+    } else if (regex == this.rgboRegex) {
+      let red = parseInt(match[1]);
+      let green = parseInt(match[2]);
+      let blue = parseInt(match[3]);
+      const alpha = parseFloat(match[4]);
+
+      red = red / 255.0;
+      green = green / 255.0;
+      blue = blue / 255.0;
+
+      const color = Color.rgb(red, green, blue, alpha);
+      const range = new Range(position, position + matchStr.length);
+      const info = new ColorInformation(range, color, "srgb");
+      info.format = ColorFormat.rgb;
+      return info;
     }
-    console.log("11");
     return null;
   }
   // eslint-disable-next-line no-unused-vars
-  provideColorPresentations(color: any, context: any) {
+  provideColorPresentations(
+    color: Color,
+    editor: TextEditor,
+    context: ColorPresentationContext
+  ) {
     // Converts a color object into an array of color presentations
-    console.log("12");
-    const format = color.format;
     const presentations = [];
 
-    if (format === ColorFormat.displayP3) {
-      // Display P3
-      const components = color.components;
+    // Constructor (hex)
+    {
+      const rgbColor = color.convert(ColorFormat.rgb);
+      const components = rgbColor.components;
 
-      // Ensure a certain amount of rounding precision, to prevent very small exponent floats
-      const red = Math.round(components[0] * 1000.0) / 1000.0;
-      const green = Math.round(components[1] * 1000.0) / 1000.0;
-      const blue = Math.round(components[2] * 1000.0) / 1000.0;
+      let alpha = Math.round(components[3] * 1000.0) / 1000.0;
+      let red = Math.round(components[0] * 1000.0) / 1000.0;
+      let green = Math.round(components[1] * 1000.0) / 1000.0;
+      let blue = Math.round(components[2] * 1000.0) / 1000.0;
+
+      alpha = alpha * 255.0;
+      red = red * 255.0;
+      green = green * 255.0;
+      blue = blue * 255.0;
+
+      let alphaHex = Math.floor(alpha).toString(16);
+      if (alphaHex.length == 1) {
+        alphaHex = "0" + alphaHex;
+      }
+      let redHex = Math.floor(red).toString(16);
+      if (redHex.length == 1) {
+        redHex = "0" + redHex;
+      }
+      let greenHex = Math.floor(green).toString(16);
+      if (greenHex.length == 1) {
+        greenHex = "0" + greenHex;
+      }
+      let blueHex = Math.floor(blue).toString(16);
+      if (blueHex.length == 1) {
+        blueHex = "0" + blueHex;
+      }
+      const string =
+        "(0x" +
+        alphaHex.toUpperCase() +
+        redHex.toUpperCase() +
+        greenHex.toUpperCase() +
+        blueHex.toUpperCase() +
+        ")";
+
+      const presentation = new ColorPresentation(string, "hex");
+      presentation.format = ColorFormat.rgb;
+      presentations.push(presentation);
+    }
+
+    // fromARGB (hex)
+    {
+      const rgbColor = color.convert(ColorFormat.rgb);
+      const components = rgbColor.components;
+
+      let alpha = Math.round(components[3] * 1000.0) / 1000.0;
+      let red = Math.round(components[0] * 1000.0) / 1000.0;
+      let green = Math.round(components[1] * 1000.0) / 1000.0;
+      let blue = Math.round(components[2] * 1000.0) / 1000.0;
+
+      alpha = alpha * 255.0;
+      red = red * 255.0;
+      green = green * 255.0;
+      blue = blue * 255.0;
+
+      let alphaHex = Math.floor(alpha).toString(16);
+      if (alphaHex.length == 1) {
+        alphaHex = "0" + alphaHex;
+      }
+      let redHex = Math.floor(red).toString(16);
+      if (redHex.length == 1) {
+        redHex = "0" + redHex;
+      }
+      let greenHex = Math.floor(green).toString(16);
+      if (greenHex.length == 1) {
+        greenHex = "0" + greenHex;
+      }
+      let blueHex = Math.floor(blue).toString(16);
+      if (blueHex.length == 1) {
+        blueHex = "0" + blueHex;
+      }
+
+      const string =
+        ".fromARGB(0x" +
+        alphaHex.toUpperCase() +
+        ", 0x" +
+        redHex.toUpperCase() +
+        ", 0x" +
+        greenHex.toUpperCase() +
+        ", 0x" +
+        blueHex.toUpperCase() +
+        ")";
+
+      const presentation = new ColorPresentation(string, "hexa");
+      presentation.format = ColorFormat.rgb;
+      presentations.push(presentation);
+    }
+
+    // fromARGB
+    {
+      const rgbColor = color.convert(ColorFormat.rgb);
+      const components = rgbColor.components;
+
+      let alpha = Math.round(components[3] * 1000.0) / 1000.0;
+      let red = Math.round(components[0] * 1000.0) / 1000.0;
+      let green = Math.round(components[1] * 1000.0) / 1000.0;
+      let blue = Math.round(components[2] * 1000.0) / 1000.0;
+
+      alpha = alpha * 255.0;
+      red = red * 255.0;
+      green = green * 255.0;
+      blue = blue * 255.0;
+
+      const string =
+        ".fromARGB(" +
+        alpha.toFixed() +
+        ", " +
+        red.toFixed() +
+        ", " +
+        green.toFixed() +
+        ", " +
+        blue.toFixed() +
+        ")";
+
+      const presentation = new ColorPresentation(string, "rgba");
+      presentation.format = ColorFormat.rgb;
+      presentations.push(presentation);
+    }
+
+    // fromRGBO
+    {
+      const rgbColor = color.convert(ColorFormat.rgb);
+      const components = rgbColor.components;
+
+      let red = Math.round(components[0] * 1000.0) / 1000.0;
+      let green = Math.round(components[1] * 1000.0) / 1000.0;
+      let blue = Math.round(components[2] * 1000.0) / 1000.0;
       const alpha = Math.round(components[3] * 1000.0) / 1000.0;
 
-      // color(display-p3 r g b)
-      if (alpha === 1.0) {
-        const string =
-          "color(display-p3 " +
-          red.toString() +
-          " " +
-          green.toString() +
-          " " +
-          blue.toString() +
-          ")";
+      red = red * 255.0;
+      green = green * 255.0;
+      blue = blue * 255.0;
 
-        const presentation = new ColorPresentation(string, "p3");
-        presentation.format = ColorFormat.displayP3;
-        presentation.usesFloats = true;
-        presentations.push(presentation);
-      }
+      const string =
+        ".fromRGBO(" +
+        red.toFixed() +
+        ", " +
+        green.toFixed() +
+        ", " +
+        blue.toFixed() +
+        ", " +
+        alpha.toString() +
+        ")";
 
-      // color(display-p3 r g b / a)
-      {
-        const string =
-          "color(display-p3 " +
-          red.toString() +
-          " " +
-          green.toString() +
-          " " +
-          blue.toString() +
-          " / " +
-          alpha.toString() +
-          ")";
-
-        const presentation = new ColorPresentation(string, "p3a");
-        presentation.format = ColorFormat.displayP3;
-        presentation.usesFloats = true;
-        presentations.push(presentation);
-      }
-    } else {
-      // color()
-      {
-        const rgbColor = color.convert(ColorFormat.rgb);
-        const components = rgbColor.components;
-
-        // Ensure a certain amount of rounding precision, to prevent very small exponent floats
-        const red = Math.round(components[0] * 1000.0) / 1000.0;
-        const green = Math.round(components[1] * 1000.0) / 1000.0;
-        const blue = Math.round(components[2] * 1000.0) / 1000.0;
-        const alpha = Math.round(components[3] * 1000.0) / 1000.0;
-
-        // color(srgb r g b)
-        if (alpha === 1.0) {
-          const string =
-            "color(srgb " +
-            red.toString() +
-            " " +
-            green.toString() +
-            " " +
-            blue.toString() +
-            ")";
-
-          const presentation = new ColorPresentation(string, "srgb");
-          presentation.format = ColorFormat.rgb;
-          presentation.usesFloats = true;
-          presentations.push(presentation);
-        }
-
-        // color(srgb r g b / a)
-        {
-          const string =
-            "color(srgb " +
-            red.toString() +
-            " " +
-            green.toString() +
-            " " +
-            blue.toString() +
-            " / " +
-            alpha.toString() +
-            ")";
-
-          const presentation = new ColorPresentation(string, "srgba");
-          presentation.format = ColorFormat.rgb;
-          presentation.usesFloats = true;
-          presentations.push(presentation);
-        }
-      }
-
-      // RGB
-      {
-        const rgbColor = color.convert(ColorFormat.rgb);
-        const components = rgbColor.components;
-
-        let red = Math.round(components[0] * 1000.0) / 1000.0;
-        let green = Math.round(components[1] * 1000.0) / 1000.0;
-        let blue = Math.round(components[2] * 1000.0) / 1000.0;
-        const alpha = Math.round(components[3] * 1000.0) / 1000.0;
-
-        red = red * 255.0;
-        green = green * 255.0;
-        blue = blue * 255.0;
-
-        // rgb()
-        if (alpha == 1.0) {
-          const string =
-            "rgb(" +
-            red.toFixed() +
-            ", " +
-            green.toFixed() +
-            ", " +
-            blue.toFixed() +
-            ")";
-
-          const presentation = new ColorPresentation(string, "rgb");
-          presentation.format = ColorFormat.rgb;
-          presentations.push(presentation);
-        }
-
-        // rgba()
-        {
-          const string =
-            "rgba(" +
-            red.toFixed() +
-            ", " +
-            green.toFixed() +
-            ", " +
-            blue.toFixed() +
-            ", " +
-            alpha.toString() +
-            ")";
-
-          const presentation = new ColorPresentation(string, "rgba");
-          presentation.format = ColorFormat.rgb;
-          presentations.push(presentation);
-        }
-      }
-
-      // HSL
-      {
-        const hslColor = color.convert(ColorFormat.hsl);
-        const components = hslColor.components;
-
-        let hue = Math.round(components[0] * 1000.0) / 1000.0;
-        let sat = Math.round(components[1] * 1000.0) / 1000.0;
-        let lum = Math.round(components[2] * 1000.0) / 1000.0;
-        const alpha = Math.round(components[3] * 1000.0) / 1000.0;
-
-        hue = hue * 360.0;
-        sat = sat * 100.0;
-        lum = lum * 100.0;
-
-        // hsl()
-        if (alpha === 1.0) {
-          const string =
-            "hsl(" +
-            hue.toFixed() +
-            ", " +
-            sat.toFixed() +
-            "%, " +
-            lum.toFixed() +
-            "%)";
-
-          const presentation = new ColorPresentation(string, "hsl");
-          presentation.format = ColorFormat.hsl;
-          presentations.push(presentation);
-        }
-
-        // hsla()
-        {
-          const string =
-            "hsla(" +
-            hue.toFixed() +
-            ", " +
-            sat.toFixed() +
-            "%, " +
-            lum.toFixed() +
-            "%, " +
-            alpha.toString() +
-            ")";
-
-          const presentation = new ColorPresentation(string, "hsla");
-          presentation.format = ColorFormat.hsl;
-          presentations.push(presentation);
-        }
-      }
-
-      // Hex
-      {
-        const rgbColor = color.convert(ColorFormat.rgb);
-        const components = rgbColor.components;
-
-        let red = Math.round(components[0] * 1000.0) / 1000.0;
-        let green = Math.round(components[1] * 1000.0) / 1000.0;
-        let blue = Math.round(components[2] * 1000.0) / 1000.0;
-
-        red = red * 255.0;
-        green = green * 255.0;
-        blue = blue * 255.0;
-
-        let redHex = Math.floor(red).toString(16);
-        if (redHex.length === 1) {
-          redHex = "0" + redHex;
-        }
-        let greenHex = Math.floor(green).toString(16);
-        if (greenHex.length === 1) {
-          greenHex = "0" + greenHex;
-        }
-        let blueHex = Math.floor(blue).toString(16);
-        if (blueHex.length === 1) {
-          blueHex = "0" + blueHex;
-        }
-
-        const string = "#" + redHex + greenHex + blueHex;
-
-        const presentation = new ColorPresentation(string, "hex");
-        presentation.format = ColorFormat.rgb;
-        presentations.push(presentation);
-      }
+      const presentation = new ColorPresentation(string, "srgb");
+      presentation.format = ColorFormat.rgb;
+      presentations.push(presentation);
     }
-    console.log("13");
+
     return presentations;
   }
 }
