@@ -28,7 +28,7 @@ let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
 const informationView = new InformationView();
 
-const re = /\b[0-9]*\.[0-9]*\.[0-9]*\b/
+const re = /\b[0-9]*\.[0-9]*\.[0-9]*\b/;
 
 // Launches the Dart executable to determine its current version
 async function getDartVersion() {
@@ -62,10 +62,12 @@ async function getFlutterVersion() {
       stdio: ["ignore", "pipe", "ignore"]
     });
     let str = "";
+    const output: string[] = [];
     process.onStdout(function (line) {
-      const arr = line.match(re) || ["Unknown"];
-      str = arr[0];
       console.log(line);
+      output.push(line);
+      const arr = output.toString().match(re) || ["Unknown"];
+      str = arr[0];
     });
     process.onDidExit(status => {
       if (status === 0) {
