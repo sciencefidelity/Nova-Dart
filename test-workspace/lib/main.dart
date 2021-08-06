@@ -7,7 +7,7 @@ void main() {
 Color c = const Color(0xFFFF7F50);
 Color d = const Color.fromARGB(0xFF, 0xFF, 0x7F, 0x50);
 Color e = const Color.fromARGB(255, 66, 165, 245);
-Color f = const Color.fromRGBO(66, 165, 245, 1.0);
+Color f = const Color.fromRGBO(66, 165, 245, 1);
 
 /// Parses a variable declaration from [contents].
 ///
@@ -37,14 +37,6 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
-}
-
-.hello {
-  color: 0xFFFF7F50;
-}
-
-body {
-  color: 0xFFFF7F50;
 }
 
 class MyHomePage extends StatefulWidget {
