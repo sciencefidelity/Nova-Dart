@@ -1,3 +1,4 @@
+// prettier-ignore
 export const flutterMaterialColors: { [key: string]: string } = {
   "amber.primary": "ffffc107",
   "amber[50]": "fffff8e1",
@@ -309,6 +310,7 @@ export const flutterMaterialColors: { [key: string]: string } = {
   "yellowAccent[700]": "ffffd600",
 };
 
+// prettier-ignore
 export const flutterCupertinoColors: { [key: string]: string } = {
   "activeBlue": "ff007aff",
   "activeBlue.darkColor": "ff0a84ff",
