@@ -14,12 +14,17 @@ Support for syntax highlighting, language server protocol, auto formatting, clip
 ### TODO
 
 - Have a running app [hot reloaded](https://flutter.dev/docs/development/tools/hot-reload) on save, add buttons and commands to start, stop hot reload and hot restart (`r` and `R` in the terminal).
-- Allow user to enable/disable highlighting inside strings. ([Dart Vim Plugin](https://github.com/dart-lang/dart-vim-plugin) does this).
+- Add a command to create a Flutter app.
 - Add command to open [Dart's devtools](https://dart.dev/tools/dart-devtools).
+- Allow user to enable/disable highlighting inside strings. ([Dart Vim Plugin](https://github.com/dart-lang/dart-vim-plugin) does this).
 
 ### Known bugs
 
-- Some colours are as yet undecided and could change in the final syntax: `var` and `void`; `this` and `super` and highlighting inside dartdoc.
+- The LSP is not completely stable and can crash.
+- Nova does not allow scrolling inside LSP hover windows and many of the Dart analysis docs are too long to fit on screen.
+- Syntax highlighting does not work inside LSP hover windows.
+- Key bindings do not work if two running extensions use the same key binding. I would like to use `option-shift-f` to format, as is used by Prettier and Dart Code, but it does not work if Prettier is also running. Auto format on save is not affected.
+- Some colours are as yet undecided and could change in the final syntax: `var` and `void`, `this` and `super`, dartdoc highlighting.
 
 ### Contributing
 
