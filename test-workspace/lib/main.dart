@@ -4,28 +4,6 @@ void main() {
   runApp(MyApp());
 }
 
-Color c = const Color(0xFFFF7F50);
-Color d = const Color.fromARGB(0xFF, 0xFF, 0x7F, 0x50);
-Color e = const Color.fromARGB(255, 66, 165, 245);
-Color f = const Color.fromRGBO(66, 165, 245, 1);
-
-/// Parses a variable declaration from [contents].
-///
-/// If passed, [url] is the name of the file
-/// from which [contents] comes.
-///
-/// Throws a [SassFormatException] if parsing fails.
-///
-/// @nodoc
-
-/// Returns the lesser of two numbers.
-///
-/// ```dart
-/// min(5, 3) == 3
-/// ```
-
-/// A parser for `@at-root` queries.
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,8 +11,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey[900],
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Color Picker'),
     );
   }
 }
@@ -49,11 +28,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final Map<String, Color> colors = {
+    'blue': Color.fromRGBO(33, 152, 223, 1),
+    'teal': Color.fromRGBO(55, 179, 159, 1),
+    'green': Color.fromRGBO(89, 190, 73, 1),
+    'yellow': Color.fromRGBO(233, 189, 49, 1),
+    'orange': Color.fromRGBO(242, 109, 76, 1),
+    'pink': Color.fromRGBO(232, 78, 139, 1),
+    'purple': Color.fromRGBO(138, 86, 208, 1)
+  };
 
-  void _incrementCounter() {
+  Color? selectedColor;
+
+  void _setColor(String colorName, Color color) {
     setState(() {
-      _counter++;
+      selectedColor = color;
     });
   }
 
@@ -62,26 +51,24 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        backgroundColor: selectedColor ?? Colors.black,
+      ), // AppBar
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var entry in colors.entries)
+            Container(
+              margin: EdgeInsets.all(10),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: entry.value, minimumSize: Size(300, 60)),
+                child: Text(''),
+                onPressed: () => _setColor(entry.key, entry.value),
+              ), // ElevatedButton
+            ), // Container
+        ],
+      ), // Column
+    ); // Scaffold
   }
 }
