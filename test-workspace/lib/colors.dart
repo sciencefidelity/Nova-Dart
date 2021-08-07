@@ -262,6 +262,26 @@ final Map<String, Color?> colorsLimeAccent = {
   'limeAccent700': Colors.limeAccent[700],
 };
 
+final Map<String, Color?> colorsYellow = {
+  'yellow50': Colors.yellow[50],
+  'yellow100': Colors.yellow[100],
+  'yellow200': Colors.yellow[200],
+  'yellow300': Colors.yellow[300],
+  'yellow400': Colors.yellow[400],
+  'yellow500': Colors.yellow[500],
+  'yellow600': Colors.yellow[600],
+  'yellow700': Colors.yellow[700],
+  'yellow800': Colors.yellow[800],
+  'yellow900': Colors.yellow[900],
+};
+
+final Map<String, Color?> colorsYellowAccent = {
+  'yellowAccent100': Colors.yellowAccent[100],
+  'yellowAccent200': Colors.yellowAccent[200],
+  'yellowAccent400': Colors.yellowAccent[400],
+  'yellowAccent700': Colors.yellowAccent[700],
+};
+
 final Map<String, Color?> colorsAmber = {
   'amber50': Colors.amber[50],
   'amber100': Colors.amber[100],
@@ -280,6 +300,46 @@ final Map<String, Color?> colorsAmberAccent = {
   'amberAccent200': Colors.amberAccent[200],
   'amberAccent400': Colors.amberAccent[400],
   'amberAccent700': Colors.amberAccent[700],
+};
+
+final Map<String, Color?> colorsOrange = {
+  'orange50': Colors.orange[50],
+  'orange100': Colors.orange[100],
+  'orange200': Colors.orange[200],
+  'orange300': Colors.orange[300],
+  'orange400': Colors.orange[400],
+  'orange500': Colors.orange[500],
+  'orange600': Colors.orange[600],
+  'orange700': Colors.orange[700],
+  'orange800': Colors.orange[800],
+  'orange900': Colors.orange[900],
+};
+
+final Map<String, Color?> colorsOrangeAccent = {
+  'orangeAccent100': Colors.orangeAccent[100],
+  'orangeAccent200': Colors.orangeAccent[200],
+  'orangeAccent400': Colors.orangeAccent[400],
+  'orangeAccent700': Colors.orangeAccent[700],
+};
+
+final Map<String, Color?> colorsDeepOrange = {
+  'deepOrange50': Colors.deepOrange[50],
+  'deepOrange100': Colors.deepOrange[100],
+  'deepOrange200': Colors.deepOrange[200],
+  'deepOrange300': Colors.deepOrange[300],
+  'deepOrange400': Colors.deepOrange[400],
+  'deepOrange500': Colors.deepOrange[500],
+  'deepOrange600': Colors.deepOrange[600],
+  'deepOrange700': Colors.deepOrange[700],
+  'deepOrange800': Colors.deepOrange[800],
+  'deepOrange900': Colors.deepOrange[900],
+};
+
+final Map<String, Color?> colorsDeepOrangeAccent = {
+  'deepOrangeAccent100': Colors.deepOrangeAccent[100],
+  'deepOrangeAccent200': Colors.deepOrangeAccent[200],
+  'deepOrangeAccent400': Colors.deepOrangeAccent[400],
+  'deepOrangeAccent700': Colors.deepOrangeAccent[700],
 };
 
 final Map<String, Color?> colorsBlueGrey = {
