@@ -10,6 +10,7 @@ Support for syntax highlighting, language server protocol, auto formatting, clip
 
 - [Setting up Flutter tooling on macOS](https://flutter.dev/docs/get-started/install/macos)
 - [List of Dart lint rules](https://dart-lang.github.io/linter/lints/)
+- [Customising the linter](https://dart.dev/guides/language/analysis-options#the-analysis-options-file)
 
 ### TODO
 
