@@ -65,7 +65,7 @@
 
     <collections>
         <!-- !Dartdoc -->
-        <!-- TODO - Choose colors for dartdoc identifiers -->
+        <!-- TODO: Choose colors for dartdoc identifiers -->
         <collection name="dartdoc">
             <scope name="dart.identifier.argument.dartdoc">
                 <expression>(\[.*?\])</expression>
@@ -242,7 +242,61 @@
             </scope>
         </collection>
 
+        <!-- !Colors -->
         <collection name="colors">
+            <!-- !Material-Colors -->
+            <scope name="dart.style.value.color.named">
+                <symbol type="color" />
+                <expression>(Colors)(\.)(black|white)([0-9]){2}</expression>
+                <capture number="1" name="dart.string.key.color.named" />
+                <capture number="2" name="dart.bracket.dot" />
+                <capture number="3" name="dart.style.value.color.named" />
+                <capture number="4" name="dart.style.value.color.named" />
+            </scope>
+            <scope name="dart.style.value.color.named">
+                <symbol type="color" />
+                <expression>(Colors)(\.)(amberAccent|amber|blueAccent|blueGrey|blue|brown|cyanAccent|cyan|deepOrangeAccent|deepOrange|deepPurpleAccent|deepPurple|greenAccent|green|grey|indigoAccent|indigo|lightBlueAccent|lightBlue|lightGreenAccent|lightGreen|limeAccent|lime|orangeAccent|orange|pinkAccent|pink|purpleAccent|purple|redAccent|red|tealAccent|teal|transparent|yellowAccent|yellow)(\[)([0-9]){2,3}(\])</expression>
+                <capture number="1" name="dart.string.key.color.named" />
+                <capture number="2" name="dart.bracket.dot" />
+                <capture number="3" name="dart.style.value.color.named" />
+                <capture number="4" name="dart.bracket" />
+                <capture number="5" name="dart.style.value.color.named" />
+                <capture number="6" name="dart.bracket" />
+            </scope>
+            <scope name="dart.style.value.color.named">
+                <symbol type="color" />
+                <expression>(Colors)(\.)(amberAccent|amber|blueAccent|blueGrey|blue|brown|cyanAccent|cyan|deepOrangeAccent|deepOrange|deepPurpleAccent|deepPurple|greenAccent|green|grey|indigoAccent|indigo|lightBlueAccent|lightBlue|lightGreenAccent|lightGreen|limeAccent|lime|orangeAccent|orange|pinkAccent|pink|purpleAccent|purple|redAccent|red|tealAccent|teal|transparent|yellowAccent|yellow)(\.)(primary)</expression>
+                <capture number="1" name="dart.string.key.color.named" />
+                <capture number="2" name="dart.bracket.dot" />
+                <capture number="3" name="dart.style.value.color.named" />
+                <capture number="4" name="dart.bracket.dot" />
+                <capture number="5" name="dart.style.value.color.named" />
+            </scope>
+            <scope name="dart.style.value.color.named">
+                <symbol type="color" />
+                <expression>(Colors)(\.)(amberAccent|amber|black|blueAccent|blueGrey|blue|brown|cyanAccent|cyan|deepOrangeAccent|deepOrange|deepPurpleAccent|deepPurple|greenAccent|green|grey|indigoAccent|indigo|lightBlueAccent|lightBlue|lightGreenAccent|lightGreen|limeAccent|lime|orangeAccent|orange|pinkAccent|pink|purpleAccent|purple|redAccent|red|tealAccent|teal|transparent|white|yellowAccent|yellow)</expression>
+                <capture number="1" name="dart.string.key.color.named" />
+                <capture number="2" name="dart.bracket.dot" />
+                <capture number="3" name="dart.style.value.color.named" />
+            </scope>
+            <!-- !Cupertino Colors -->
+            <scope name="dart.style.value.color.named">
+                <symbol type="color" />
+                <expression>(CupertinoColors)(\.)(activeBlue|activeGreen|activeOrange|black|darkBackgroundGray|destructiveRed|extraLightBackgroundGray|inactiveGray|label|lightBackgroundGray|link|opaqueSeparator|placeholderText|quaternaryLabel|quaternarySystemFill|secondaryLabel|secondarySystemBackground|secondarySystemFill|secondarySystemGroupedBackground|separator|systemBackground|systemBlue|systemFill|systemGreen|systemGrey2|systemGrey3|systemGrey4|systemGrey5|systemGrey6|systemGrey|systemGroupedBackground|systemIndigo|systemOrange|systemPink|systemPurple|systemRed|systemTeal|systemYellow|tertiaryLabel|tertiarySystemBackground|tertiarySystemFill|tertiarySystemGroupedBackground|white)(\.)(darkColor|darkElevatedColor|darkHighContrastColor|darkHighContrastElevatedColor|elevatedColor|highContrastColor|highContrastElevatedColor)</expression>
+                <capture number="1" name="dart.string.key.color.named" />
+                <capture number="2" name="dart.bracket.dot" />
+                <capture number="3" name="dart.style.value.color.named" />
+                <capture number="4" name="dart.bracket.dot" />
+                <capture number="5" name="dart.style.value.color.named" />
+            </scope>
+            <scope name="dart.style.value.color.named">
+                <symbol type="color" />
+                <expression>(CupertinoColors)(\.)(activeBlue|activeGreen|activeOrange|black|darkBackgroundGray|destructiveRed|extraLightBackgroundGray|inactiveGray|label|lightBackgroundGray|link|opaqueSeparator|placeholderText|quaternaryLabel|quaternarySystemFill|secondaryLabel|secondarySystemBackground|secondarySystemFill|secondarySystemGroupedBackground|separator|systemBackground|systemBlue|systemFill|systemGreen|systemGrey2|systemGrey3|systemGrey4|systemGrey5|systemGrey6|systemGrey|systemGroupedBackground|systemIndigo|systemOrange|systemPink|systemPurple|systemRed|systemTeal|systemYellow|tertiaryLabel|tertiarySystemBackground|tertiarySystemFill|tertiarySystemGroupedBackground|white)</expression>
+                <capture number="1" name="dart.string.key.color.named" />
+                <capture number="2" name="dart.bracket.dot" />
+                <capture number="3" name="dart.style.value.color.named" />
+            </scope>
+            <!-- !Color Constructor -->
             <scope name="dart.style.value.color.hex">
                 <symbol type="color" />
                 <expression>(Color)(\()(0x[A-Fa-f0-9]{8})(\))</expression>
