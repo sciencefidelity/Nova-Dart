@@ -187,7 +187,7 @@ export class DartColorAssistant implements ColorAssistant {
         blueHex = "0" + blueHex;
       }
       const string =
-        "(0x" +
+        "Color(0x" +
         alphaHex.toUpperCase() +
         redHex.toUpperCase() +
         greenHex.toUpperCase() +
@@ -232,7 +232,7 @@ export class DartColorAssistant implements ColorAssistant {
       }
 
       const string =
-        ".fromARGB(0x" +
+        "Color.fromARGB(0x" +
         alphaHex.toUpperCase() +
         ", 0x" +
         redHex.toUpperCase() +
@@ -263,7 +263,7 @@ export class DartColorAssistant implements ColorAssistant {
       blue = blue * 255.0;
 
       const string =
-        ".fromARGB(" +
+        "Color.fromARGB(" +
         alpha.toFixed() +
         ", " +
         red.toFixed() +
@@ -293,7 +293,7 @@ export class DartColorAssistant implements ColorAssistant {
       blue = blue * 255.0;
 
       const string =
-        ".fromRGBO(" +
+        "Color.fromRGBO(" +
         red.toFixed() +
         ", " +
         green.toFixed() +
