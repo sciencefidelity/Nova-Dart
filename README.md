@@ -17,6 +17,7 @@ Support for syntax highlighting, language server protocol, auto formatting, clip
 - Have a running app [hot reloaded](https://flutter.dev/docs/development/tools/hot-reload) on save, add buttons and commands to start, stop hot reload and hot restart (`r` and `R` in the terminal).
 - Add a command to create a Flutter app.
 - Add command to open [Dart's devtools](https://dart.dev/tools/dart-devtools).
+- Show scaffold of the open file in the sidebar ([Dart Code](https://github.com/Dart-Code/Dart-Code) does this).
 - Allow user to enable/disable highlighting inside strings. ([Dart Vim Plugin](https://github.com/dart-lang/dart-vim-plugin) does this).
 
 ### Known bugs

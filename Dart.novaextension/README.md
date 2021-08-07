@@ -2,7 +2,7 @@
 
 [Dart](https://dart.dev), [Flutter](https://flutter.dev) and [AngularDart](https://angualardart.dev) tools for [Nova](https://nova.app).
 
-Supports syntax highlighting, intelligent code completion, auto formatting and clips.
+Supports syntax highlighting, intelligent code completion, auto formatting, the Nova Color Assistant, commands, sidebar and clips.
 
 <br />
 
