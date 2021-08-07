@@ -1,3 +1,9 @@
+## Version 0.5.0
+
+The Color Assistant is now fully functional.
+Added named colors for all Material and Cupertino colors.
+Hot reload not working.
+
 ## Version 0.4.1
 
 Add editor menu command and shortcut for hot reload.
