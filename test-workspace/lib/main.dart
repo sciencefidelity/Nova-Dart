@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,18 +30,34 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final Map<String, Color> colors = {
-                                      'blue': Color.fromRGBO(33, 152, 223, 1),
-                                      'teal': Color.fromRGBO(55, 179, 159, 1),
-                                      'green': Color.fromRGBO(89, 190, 73, 1),
-                                      'yellow': Color.fromRGBO(233, 189, 49, 1),
-                                      'orange': Color.fromRGBO(242, 109, 76, 1),
-                                      'pink': Color.fromRGBO(232, 78, 139, 1),
-                                      'purple': Color.fromRGBO(138, 86, 208, 1)
+    'blue': Color.fromRGBO(33, 152, 223, 1),
+    'teal': Color.fromRGBO(55, 179, 159, 1),
+    'green': Color.fromRGBO(89, 190, 73, 1),
+    'yellow': Color.fromRGBO(233, 189, 49, 1),
+    'orange': Color.fromRGBO(242, 109, 76, 1),
+    'pink': Color.fromRGBO(232, 78, 139, 1),
+    'purple': Color.fromRGBO(138, 86, 208, 1)
   };
+
+  @override
+  void initState() {
+    _getStoredColor();
+    super.initState();
+  }
 
   Color? selectedColor;
 
-  void _setColor(String colorName, Color color) {
+  void _getStoredColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? colorName = prefs.getString('color');
+    setState(() {
+      selectedColor = colors[colorName];
+    });
+  }
+
+  void _setColor(String colorName, Color color) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('color', colorName);
     setState(() {
       selectedColor = color;
     });
