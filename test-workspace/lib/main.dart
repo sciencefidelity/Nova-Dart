@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.grey[900],
       ),
       home: MyHomePage(title: 'Color Picker'),
-    );
+    ); // MaterialApp
   }
 }
 
