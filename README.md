@@ -11,6 +11,12 @@ Support for syntax highlighting, language server protocol, auto formatting, clip
 - [Setting up Flutter tooling on macOS](https://flutter.dev/docs/get-started/install/macos)
 - [List of Dart lint rules](https://dart-lang.github.io/linter/lints/)
 - [Customising the linter](https://dart.dev/guides/language/analysis-options#the-analysis-options-file)
+- [Dart diagnostic messages](https://dart.dev/tools/diagnostic-messages)
+- [Effective Dart documentation](https://dart.dev/guides/language/effective-dart/documentation)
+- [The Flutter command-line tool](https://flutter.dev/docs/reference/flutter-cli)
+- [Flutter DevTools documentation](https://flutter.dev/docs/development/tools/devtools)
+- [Dart DevTools documentation](https://dart.dev/tools/dart-devtools)
+- [Dart Code site](https://dartcode.org)
 
 ### TODO
 
