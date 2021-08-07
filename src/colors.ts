@@ -22,7 +22,7 @@ export class DartColorAssistant implements ColorAssistant {
     this.rgboRegex = new RegExp("\\.fromRGBO\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([\\w_.]+)\\s*\\)", "i");
   }
 
-  provideColors(textEditor: TextEditor, context: ColorInformationContext) {
+  provideColors(editor: TextEditor, context: ColorInformationContext) {
     const regexes = [
       this.hexRegex,
       this.argbHexRegex,

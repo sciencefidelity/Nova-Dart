@@ -91,8 +91,8 @@
               </subscopes>
             </scope>
             <scope name="dart.bracket.dartdoc">
-                <expression>(`.*?`)</expression>
-                <capture number="0" name="dart.string.key" />
+                <expression>`(.*?)`</expression>
+                <capture number="1" name="dart.operator" />
             </scope>
             <scope name="dart.identifier.dartdoc">
                 <expression>(\* ((    ).*))$</expression>
