@@ -1,4 +1,4 @@
-# Dart extension for Nova
+# Advanced Dart and Flutter tooling for Nova
 
 > This extension is in early development.
 
