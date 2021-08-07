@@ -75,9 +75,10 @@
                 <expression>(^ {4,}(?![ \*]).*)</expression>
                 <capture number="0" name="dart.identifier.source" />
             </scope>
-            <scope name="dart.identifier.declaration.code-doc">
+            <scope name="dart.punctuation.bracket.code-doc">
                 <starts-with>
-                    <expression>```.*?$</expression>
+                    <expression>```([a-zA-Z]+).*?$</expression>
+                    <capture number="1" name="dart.string.key" />
                 </starts-with>
                 <ends-with>
                     <expression>```</expression>
@@ -86,12 +87,12 @@
                   <scope name="dart.comment.triple-slash">
                     <expression>///</expression>
                 </scope>
-                <!-- <include syntax="dart" /> -->
+                <include syntax="dart" />
               </subscopes>
             </scope>
             <scope name="dart.bracket.dartdoc">
                 <expression>(`.*?`)</expression>
-                <capture number="0" name="dart.bracket.source" />
+                <capture number="0" name="dart.string.key" />
             </scope>
             <scope name="dart.identifier.dartdoc">
                 <expression>(\* ((    ).*))$</expression>
