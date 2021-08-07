@@ -1,14 +1,15 @@
-// import { flutterCupertinoColors, flutterMaterialColors } from "../flutter/colors";
+import { flutterNamedColors } from "./colorsProvider";
 
-// interface ColorStrings {
-//   [key: string]: string[];
-// }
+interface ColorStrings {
+  [key: string]: string[];
+}
 
 export class DartColorAssistant implements ColorAssistant {
   hexRegex: RegExp;
   argbHexRegex: RegExp;
   argbRegex: RegExp;
   rgboRegex: RegExp;
+  namedColors: any;
 
   constructor() {
     // Regexes
@@ -20,6 +21,22 @@ export class DartColorAssistant implements ColorAssistant {
     this.argbRegex = new RegExp("\\.fromARGB\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3})\\s*\\)", "i");
     // prettier-ignore
     this.rgboRegex = new RegExp("\\.fromRGBO\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([\\w_.]+)\\s*\\)", "i");
+
+    // Named colors
+    const namedColors: ColorStrings = {};
+    const keys = Object.keys(flutterNamedColors);
+    for (const key of keys) {
+      const string = flutterNamedColors[key];
+
+      const alpha = parseInt(string.substring(0, 2), 16) / 255.0;
+      const red = parseInt(string.substring(2, 4), 16) / 255.0;
+      const green = parseInt(string.substring(4, 6), 16) / 255.0;
+      const blue = parseInt(string.substring(6, 8), 16) / 255.0;
+
+      const color = Color.rgb(red, green, blue, alpha);
+      namedColors[key] = color;
+    }
+    this.namedColors = namedColors;
   }
 
   provideColors(editor: TextEditor, context: ColorInformationContext) {
@@ -35,6 +52,15 @@ export class DartColorAssistant implements ColorAssistant {
     for (const candidate of candidates) {
       const string = candidate.text;
       const range = candidate.range;
+
+      // Named color
+      const namedColor = this.namedColors[string];
+      if (namedColor) {
+        const infoRange = new Range(range.start, range.start + string.length);
+        const colorInfo = new ColorInformation(infoRange, namedColor, "named");
+        colors.push(colorInfo);
+      }
+
       for (const regex of regexes) {
         const match = string.match(regex) as RegExpMatchArray;
         if (match) {
