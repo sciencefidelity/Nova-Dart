@@ -204,10 +204,14 @@ async function asyncActivate() {
   );
 
   client.start();
-  client.onNotification("dart/textDocument/publishOutline", notification => {
-    console.log(notification.outline.children[0].element.kind);
-    console.log(notification.outline.children[0].element.returnType);
-  });
+  client.onNotification(
+    "dart/textDocument/publishFlutterOutline",
+    notification => {
+      console.log(JSON.stringify(notification));
+      // console.log(notification.outline.children[0].element.kind);
+      // console.log(notification.outline.children[0].element.returnType);
+    }
+  );
 
   compositeDisposable.add(
     nova.workspace.onDidAddTextEditor(editor => {
