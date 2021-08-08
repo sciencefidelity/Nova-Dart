@@ -5,18 +5,6 @@ void main() {
   runApp(MyApp());
 }
 
-/// This is a `class`.
-///
-/// ```dart
-/// void main() {
-///   runApp(MyApp());
-/// }
-/// ```
-///
-/// Something [else] is here.
-///
-/// _markdown_
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

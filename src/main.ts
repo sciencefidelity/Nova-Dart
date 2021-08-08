@@ -3,6 +3,7 @@ import { DartColorAssistant } from "./colors";
 import { InformationView } from "./informationView";
 import { registerFormatDocument } from "./commands/formatDocument";
 import { registerGetDependencies } from "./commands/getDependencies";
+import { registerFlutterRun } from "./commands/flutterRun";
 import { registerHotReload } from "./commands/hotReload";
 import { registerOpenSimulator } from "./commands/openSimulartor";
 import { registerOpenEmulator } from "./commands/openEmulator";
@@ -22,6 +23,7 @@ nova.commands.register(
 );
 
 nova.commands.register("sciencefidelity.dart.reload", reload);
+nova.commands.register("sciencefidelity.dart.commands.flutterRun", registerFlutterRun);
 nova.commands.register("sciencefidelity.dart.hotReload", registerHotReload);
 
 let client: LanguageClient | null = null;
@@ -175,6 +177,7 @@ async function asyncActivate() {
   // register nova commands
   compositeDisposable.add(registerFormatDocument(client));
   compositeDisposable.add(registerGetDependencies());
+  compositeDisposable.add(registerFlutterRun());
   compositeDisposable.add(registerHotReload(client));
   compositeDisposable.add(registerOpenSimulator());
   compositeDisposable.add(registerOpenEmulator());
@@ -204,14 +207,12 @@ async function asyncActivate() {
   );
 
   client.start();
-  client.onNotification(
-    "dart/textDocument/publishFlutterOutline",
-    notification => {
-      console.log(JSON.stringify(notification));
-      // console.log(notification.outline.children[0].element.kind);
-      // console.log(notification.outline.children[0].element.returnType);
-    }
-  );
+  // client.onNotification(
+  //   "dart/textDocument/publishFlutterOutline",
+  //   notification => {
+  //
+  //   }
+  // );
 
   compositeDisposable.add(
     nova.workspace.onDidAddTextEditor(editor => {
