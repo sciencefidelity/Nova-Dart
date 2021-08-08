@@ -104,14 +104,26 @@
       "sections": [
         {
           "id": "sciencefidelity.dart.sidebar.reload",
-          "name": "Hot Reload",
-          "placeholderText": "Dart Hot Reload",
+          "name": "Flutter",
+          "placeholderText": "Flutter Hot Reload",
           "headerCommands": [
+            {
+              "title": "Run",
+              "image": "FlutterRun",
+              "tooltip": "Flutter run",
+              "command": "sciencefidelity.dart.flutterRun"
+            },
             {
               "title": "Hot Reload",
               "image": "HotReload",
-              "tooltip": "Hot reload your running app",
+              "tooltip": "Hot reload",
               "command": "sciencefidelity.dart.hotReload"
+            },
+            {
+              "title": "Stop",
+              "image": "Stop",
+              "tooltip": "Stop the current app",
+              "command": "sciencefidelity.dart.flutterStop"
             }
           ]
         },

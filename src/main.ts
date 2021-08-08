@@ -140,7 +140,20 @@ async function asyncActivate() {
   } else if (nova.workspace.path) {
     path = cleanPath(nova.workspace.path);
   }
+
   const syntaxes = ["dart"];
+  const clientOptions = {
+    initializationOptions: {
+      // 	onlyAnalyzeProjectsWithOpenFiles: true,
+      onlyAnalyzeProjectsWithOpenFiles: true,
+      suggestFromUnimportedLibraries: true,
+      closingLabels: true,
+      outline: true,
+      flutterOutline: true
+    },
+    syntaxes
+  };
+
   client = new LanguageClient(
     "sciencefidelity.dart",
     "Dart Language Server",
@@ -156,12 +169,7 @@ async function asyncActivate() {
           ) || "~/flutter/bin/cache/dart-sdk/bin/snapshots"
       }
     },
-    {
-      initializationOptions: {
-        onlyAnalyzeProjectsWithOpenFiles: true
-      },
-      syntaxes
-    }
+    clientOptions
   );
 
   // register nova commands
@@ -196,6 +204,10 @@ async function asyncActivate() {
   );
 
   client.start();
+  client.onNotification("dart/textDocument/publishOutline", notification => {
+    console.log(notification.outline.children[0].element.kind);
+    console.log(notification.outline.children[0].element.returnType);
+  });
 
   compositeDisposable.add(
     nova.workspace.onDidAddTextEditor(editor => {
