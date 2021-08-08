@@ -97,10 +97,43 @@
 
   "sidebars": [
     {
-      "id": "sciencefidelity.dart.sidebar",
+      "id": "sciencefidelity.dart.flutter.sidebar",
+      "name": "Flutter",
+      "smallImage": "FlutterSidebarSmall",
+      "largeImage": "FlutterSidebarLarge",
+      "sections": [
+        {
+          "id": "sciencefidelity.dart.sidebar.reload",
+          "name": "Flutter",
+          "placeholderText": "Flutter Hot Reload",
+          "headerCommands": [
+            {
+              "title": "Run",
+              "image": "FlutterRun",
+              "tooltip": "Flutter run",
+              "command": "sciencefidelity.dart.flutterRun"
+            },
+            {
+              "title": "Hot Reload",
+              "image": "HotReload",
+              "tooltip": "Hot reload",
+              "command": "sciencefidelity.dart.hotReload"
+            },
+            {
+              "title": "Stop",
+              "image": "Stop",
+              "tooltip": "Stop the current app",
+              "command": "sciencefidelity.dart.flutterStop"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sciencefidelity.dart.dart.sidebar",
       "name": "Dart",
-      "smallImage": "SidebarSmall",
-      "largeImage": "SidebarLarge",
+      "smallImage": "DartSidebarSmall",
+      "largeImage": "DartSidebarLarge",
       "sections": [
         {
           "id": "sciencefidelity.dart.sidebar.reload",
