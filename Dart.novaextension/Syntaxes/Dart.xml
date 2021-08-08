@@ -66,7 +66,7 @@
     <collections>
         <!-- !Dartdoc -->
         <!-- TODO: Choose colors for dartdoc identifiers -->
-        <collection name="dartdoc">
+        <!-- <collection name="dartdoc">
             <scope name="dart.identifier.argument.dartdoc">
                 <expression>(\[.*?\])</expression>
                 <capture number="0" name="dart.identifier.argument" />
@@ -101,7 +101,7 @@
             <scope name="dart.identifier.variable.other.source">
                 <expression>(\*    .*)$</expression>
             </scope>
-        </collection>
+        </collection> -->
 
         <!-- shebang -->
         <collection name="shebang">
@@ -115,9 +115,7 @@
         <collection name="comments">
             <!-- comment block empty -->
             <scope name="dart.comment.block.empty" spell-check="true">
-                <symbol type="comment">
-                    <context behavior="subtree" group-by-name="true" />
-                </symbol>
+                <symbol type="comment" />
                 <expression>/\*\*/</expression>
                 <capture number="0" name="dart.comment.punctuation.definition" />
             </scope>
@@ -128,9 +126,7 @@
         <!-- !Comments-doc-oldschool -->
         <collection name="comments-doc-oldschool">
             <scope name="dart.comment.block.documentation" spell-check="true">
-                <symbol type="comment">
-                    <context behavior="subtree" group-by-name="true" />
-                </symbol>
+                <symbol type="comment" />
                 <starts-with>
                     <expression>/\*\*</expression>
                 </starts-with>
@@ -147,9 +143,7 @@
         <!-- !Comments-doc -->
         <collection name="comments-doc">
             <scope name="dart.comment.block.documentation" spell-check="true">
-                <symbol type="comment">
-                    <context behavior="subtree" group-by-name="true" />
-                </symbol>
+                <symbol type="comment" />
                 <starts-with>
                     <expression>///</expression>
                 </starts-with>
@@ -164,9 +158,7 @@
         <!-- !Comments-inline -->
         <collection name="comments-inline">
             <scope name="dart.comment.line.double-slash" spell-check="true">
-                <symbol type="comment">
-                    <context behavior="subtree" group-by-name="true" />
-                </symbol>
+                <symbol type="comment" />
                 <expression>((//).*)$</expression>
                 <capture number="1" name="dart.comment.line.double-slash" />
             </scope>
@@ -175,9 +167,7 @@
         <!-- !Comments-block -->
         <collection name="comments-block">
             <scope name="dart.comment.block" spell-check="true">
-                <symbol type="comment">
-                    <context behavior="subtree" group-by-name="true" />
-                </symbol>
+                <symbol type="comment" />
                 <starts-with>
                     <expression>/\*</expression>
                 </starts-with>
@@ -322,7 +312,9 @@
         <!-- !Annotations -->
         <collection name="annotations">
             <scope name="dart.identifier.constant.annotation">
-                <expression>@[a-zA-Z]+</expression>
+                <expression>(@)([a-zA-Z]+)</expression>
+                <capture number="1" name="dart.identifier.property" />
+                <capture number="2" name="dart.identifier.variable" />
             </scope>
         </collection>
 
@@ -432,9 +424,9 @@
             <scope name="dart.keyword.modifier">
                 <expression>(?&lt;!\$)\b(static|final|const|required|late)\b(?!\$)</expression>
             </scope>
-            <!-- Can't decide on the color of void and var -->
-            <!-- <scope name="dart.keyword.modifier.primative"> -->
-            <scope name="dart.identifier.constant.primitive">
+            <!-- TODO: Decide on the color of void and var -->
+            <scope name="dart.keyword.modifier.primative">
+            <!-- <scope name="dart.identifier.constant.primitive"> -->
                 <expression>(?&lt;!\$)\b(?:void|var)\b(?!\$)</expression>
             </scope>
         </collection>
