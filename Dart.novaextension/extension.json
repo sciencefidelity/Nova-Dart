@@ -111,7 +111,7 @@
               "title": "Run",
               "image": "FlutterRun",
               "tooltip": "Flutter run",
-              "command": "sciencefidelity.dart.flutterRun"
+              "command": "sciencefidelity.dart.commands.flutterRun"
             },
             {
               "title": "Hot Reload",
@@ -144,7 +144,7 @@
               "title": "Run",
               "image": "FlutterRun",
               "tooltip": "Flutter run",
-              "command": "sciencefidelity.dart.flutterRun"
+              "command": "sciencefidelity.dart.commands.flutterRun"
             },
             {
               "title": "Hot Reload",
@@ -202,6 +202,14 @@
       }
     ],
     "editor": [
+      {
+        "title": "Flutter Run",
+        "command": "sciencefidelity.dart.commands.flutterRun",
+        "shortcut": "option-shift-s",
+        "filters": {
+          "syntaxes": ["dart"]
+        }
+      },
       {
         "title": "Hot Reload",
         "command": "sciencefidelity.dart.commands.hotReload",
