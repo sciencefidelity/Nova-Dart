@@ -137,7 +137,7 @@
       "sections": [
         {
           "id": "sciencefidelity.dart.sidebar.reload",
-          "name": "Flutter",
+          "name": "Dart",
           "placeholderText": "Flutter Hot Reload",
           "headerCommands": [
             {
