@@ -4,7 +4,7 @@ import { InformationView } from "./informationView";
 import { registerFormatDocument } from "./commands/formatDocument";
 import { registerGetDependencies } from "./commands/getDependencies";
 import { registerFlutterRun } from "./commands/flutterRun";
-import { registerHotReload } from "./commands/hotReload";
+// import { registerHotReload } from "./commands/hotReload";
 import { registerOpenSimulator } from "./commands/openSimulartor";
 import { registerOpenEmulator } from "./commands/openEmulator";
 import { wrapCommand, makeFileExecutable } from "./novaUtils";
@@ -23,8 +23,6 @@ nova.commands.register(
 );
 
 nova.commands.register("sciencefidelity.dart.reload", reload);
-nova.commands.register("sciencefidelity.dart.commands.flutterRun", registerFlutterRun);
-nova.commands.register("sciencefidelity.dart.hotReload", registerHotReload);
 
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
@@ -178,7 +176,6 @@ async function asyncActivate() {
   compositeDisposable.add(registerFormatDocument(client));
   compositeDisposable.add(registerGetDependencies());
   compositeDisposable.add(registerFlutterRun());
-  compositeDisposable.add(registerHotReload(client));
   compositeDisposable.add(registerOpenSimulator());
   compositeDisposable.add(registerOpenEmulator());
 

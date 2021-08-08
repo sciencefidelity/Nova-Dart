@@ -1,4 +1,3 @@
-import { cleanPath } from "nova-extension-utils";
 import { wrapCommand } from "../novaUtils";
 
 export function registerFlutterRun() {
@@ -7,31 +6,18 @@ export function registerFlutterRun() {
     wrapCommand(flutterRun)
   );
 
-  async function flutterRun(): Promise<void>;
-  async function flutterRun() {
-    return new Promise((resolve, reject) => {
-
-      console.log("Running")
-      const flutterRunProcess = new Process("usr/bin/env", {
+  async function flutterRun(): Promise<void> {
+    return new Promise(() => {
+      console.log("running task");
+      const process = new Process("usr/bin/env", {
         args: ["echo", "hello"],
-        stdio: ["ignore", "pipe", "ignore"],
+        stdio: "pipe",
         shell: true
       });
-      const str = "";
-      flutterRunProcess.onStdout(function (line) {
+      process.onStdout(function (line) {
         console.log(line);
       });
-      flutterRunProcess.onStderr(function (line) {
-        console.log(line);
-      });
-      flutterRunProcess.onDidExit(status => {
-        if (status === 0) {
-          resolve(str);
-        } else {
-          reject(status);
-        }
-      });
-      flutterRunProcess.start();
+      process.start();
     });
   }
 }

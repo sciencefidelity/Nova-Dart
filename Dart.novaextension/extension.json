@@ -111,19 +111,19 @@
               "title": "Run",
               "image": "FlutterRun",
               "tooltip": "Flutter run",
-              "command": "sciencefidelity.dart.commands.flutterRun"
+              "command": "sciencefidelity.dart.commandsflutterRun"
             },
             {
               "title": "Hot Reload",
               "image": "HotReload",
               "tooltip": "Hot reload",
-              "command": "sciencefidelity.dart.hotReload"
+              "command": "sciencefidelity.dart.commands.hotReload"
             },
             {
               "title": "Stop",
               "image": "Stop",
               "tooltip": "Stop the current app",
-              "command": "sciencefidelity.dart.flutterStop"
+              "command": "sciencefidelity.dart.commands.flutterStop"
             }
           ]
         }
@@ -150,13 +150,13 @@
               "title": "Hot Reload",
               "image": "HotReload",
               "tooltip": "Hot reload",
-              "command": "sciencefidelity.dart.hotReload"
+              "command": "sciencefidelity.dart.commands.hotReload"
             },
             {
               "title": "Stop",
               "image": "Stop",
               "tooltip": "Stop the current app",
-              "command": "sciencefidelity.dart.flutterStop"
+              "command": "sciencefidelity.dart.commands.flutterStop"
             }
           ]
         },
@@ -204,15 +204,11 @@
     "editor": [
       {
         "title": "Flutter Run",
-        "command": "sciencefidelity.dart.commands.flutterRun",
-        "shortcut": "option-shift-s",
-        "filters": {
-          "syntaxes": ["dart"]
-        }
+        "command": "sciencefidelity.dart.commands.flutterRun"
       },
       {
         "title": "Hot Reload",
-        "command": "sciencefidelity.dart.commands.hotReload",
+        "command": "sciencefidelity.dart.hotReload",
         "shortcut": "option-shift-r",
         "filters": {
           "syntaxes": ["dart"]
