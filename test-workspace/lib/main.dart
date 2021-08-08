@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
   final String title;
+
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -39,29 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'purple': Color.fromRGBO(138, 86, 208, 1)
   };
 
-  @override
-  void initState() {
-    _getStoredColor();
-    super.initState();
-  }
-
   Color? selectedColor;
-
-  void _getStoredColor() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? colorName = prefs.getString('color');
-    setState(() {
-      selectedColor = colors[colorName];
-    });
-  }
-
-  void _setColor(String colorName, Color color) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('color', colorName);
-    setState(() {
-      selectedColor = color;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,5 +65,27 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ), // Column
     ); // Scaffold
+  }
+
+  @override
+  void initState() {
+    _getStoredColor();
+    super.initState();
+  }
+
+  void _getStoredColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? colorName = prefs.getString('color');
+    setState(() {
+      selectedColor = colors[colorName];
+    });
+  }
+
+  void _setColor(String colorName, Color color) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('color', colorName);
+    setState(() {
+      selectedColor = color;
+    });
   }
 }
