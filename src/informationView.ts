@@ -7,7 +7,7 @@ type Element = {
 export class InformationView implements TreeDataProvider<Element>, Disposable {
   constructor() {
     this._treeView = new TreeView("sciencefidelity.dart.sidebar.info", {
-      dataProvider: this,
+      dataProvider: this
     });
 
     this.getChildren = this.getChildren.bind(this);
@@ -16,10 +16,20 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
 
   private _treeView: TreeView<{ title: string; value: string }>;
 
+  private readonly _statusElement: Element = {
+    title: "LSP Status",
+    value: "Inactive",
+    identifier: "status"
+  };
+  public set status(value: string) {
+    this._statusElement.value = value;
+    this._treeView.reload(this._statusElement);
+  }
+
   private readonly _dartVersionElement: Element = {
     title: "Dart SDK",
     value: "",
-    identifier: "dartVersion",
+    identifier: "dartVersion"
   };
   public set dartVersion(value: string) {
     this._dartVersionElement.value = value;
@@ -29,21 +39,11 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
   private readonly _flutterVersionElement: Element = {
     title: "Flutter SDK",
     value: "",
-    identifier: "flutterVersion",
+    identifier: "flutterVersion"
   };
   public set flutterVersion(value: string) {
     this._flutterVersionElement.value = value;
     this._treeView.reload(this._flutterVersionElement);
-  }
-
-  private readonly _statusElement: Element = {
-    title: "LSP Status",
-    value: "Inactive",
-    identifier: "status",
-  };
-  public set status(value: string) {
-    this._statusElement.value = value;
-    this._treeView.reload(this._statusElement);
   }
 
   reload() {
@@ -51,11 +51,11 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
   }
 
   getChildren(element: Element | null): Array<Element> {
-    if (element === null) {
+    if (element == null) {
       return [
-        this._dartVersionElement,
-        this._flutterVersionElement,
         this._statusElement,
+        this._dartVersionElement,
+        this._flutterVersionElement
       ];
     }
     return [];

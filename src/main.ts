@@ -6,7 +6,9 @@ import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun";
 import { registerFormatDocument } from "./commands/formatDocument";
 import { registerOpenSimulator } from "./commands/openSimulartor";
 import { registerOpenEmulator } from "./commands/openEmulator";
+import { registerGetDaemonVersion } from "./commands/getDaemonVersion";
 import { wrapCommand, makeFileExecutable } from "./novaUtils";
+import { getDartVersion, getFlutterVersion } from "./getVersions";
 
 // Colors
 const Colors = new DartColorAssistant();
@@ -26,67 +28,6 @@ nova.commands.register("sciencefidelity.dart.reload", reload);
 let client: LanguageClient | null = null;
 const compositeDisposable = new CompositeDisposable();
 const informationView = new InformationView();
-
-const re = /\b[0-9]*\.[0-9]*\.[0-9]*\b/;
-
-// Launches the Dart executable to determine its current version
-async function getDartVersion() {
-  return new Promise<string>((resolve, reject) => {
-    const process = new Process("/usr/bin/env", {
-      args: ["dart", "--version"],
-      stdio: ["ignore", "ignore", "pipe"]
-    });
-    let str = "";
-    process.onStderr(function (line) {
-      const arr = line.match(re) || ["unknown"];
-      str = arr[0];
-      console.log(line);
-    });
-    process.onDidExit(status => {
-      if (status === 0) {
-        resolve(str);
-      } else {
-        reject(status);
-      }
-    });
-    process.start();
-  });
-}
-
-// Launches the Flutter executable to determine its current version
-async function getFlutterVersion() {
-  return new Promise<string>((resolve, reject) => {
-    const process = new Process("/usr/bin/env", {
-      args: ["flutter", "--version"],
-      stdio: ["ignore", "pipe", "ignore"]
-    });
-    let str = "";
-    const output: string[] = [];
-    process.onStdout(function (line) {
-      console.log(line);
-      output.push(line);
-      const arr = output.toString().match(re) || ["Unknown"];
-      str = arr[0];
-    });
-    process.onDidExit(status => {
-      if (status === 0) {
-        resolve(str);
-      } else {
-        reject(status);
-      }
-    });
-    process.start();
-  });
-}
-
-async function getDaemonVersion() {
-  return new Promise<string>(() => {
-    daemon?.request("daemon.version", { id: 0 });
-    daemon?.onNotify("daemon.version", function (message) {
-      console.log(message);
-    });
-  });
-}
 
 nova.config.onDidChange(
   "sciencefidelity.dart.config.enableAnalyzer",
@@ -211,7 +152,7 @@ async function asyncActivate() {
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
   //   notification => {
-  //
+  //     console.log(JSON.stringify(notification));
   //   }
   // );
 
@@ -220,7 +161,10 @@ async function asyncActivate() {
       const editorDisposable = new CompositeDisposable();
       compositeDisposable.add(editorDisposable);
       compositeDisposable.add(
-        editor.onDidDestroy(() => editorDisposable.dispose())
+        editor.onDidDestroy(() => {
+          editorDisposable.dispose();
+          daemon?.kill();
+        })
       );
 
       // watch things that might change if this needs to happen or not
@@ -240,7 +184,7 @@ async function asyncActivate() {
       });
 
       function refreshListener() {
-        willSaveListener?.dispose();
+        // willSaveListener?.dispose();
         willSaveListener = setupListener();
       }
 
@@ -268,8 +212,7 @@ async function asyncActivate() {
   );
 
   informationView.status = "Running";
-
-  informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
+  informationView.reload(); // this is needed
 }
 
 export async function activate() {
@@ -280,6 +223,7 @@ export async function activate() {
   compositeDisposable.add(registerFlutterStop());
   compositeDisposable.add(registerOpenSimulator());
   compositeDisposable.add(registerOpenEmulator());
+  compositeDisposable.add(registerGetDaemonVersion());
   compositeDisposable.add(informationView);
 
   getDartVersion().then(dartVersion => {
@@ -298,7 +242,7 @@ export async function activate() {
       notification.body = "Dart LSP is loading";
       nova.notifications.add(notification);
     }
-    return asyncActivate()
+    asyncActivate()
       .catch(err => {
         console.error("Failed to activate");
         console.error(err);
@@ -308,15 +252,12 @@ export async function activate() {
         console.log("activated");
       });
   }
+
+  informationView.reload(); // this is needed
   startFlutterDeamon();
-
-  getDaemonVersion();
-
-  informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 }
 
-export function deactivate() {
+async function deactivate() {
   client?.stop();
-  daemon?.terminate();
   compositeDisposable.dispose();
 }
