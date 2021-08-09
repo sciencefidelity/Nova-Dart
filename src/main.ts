@@ -1,10 +1,9 @@
 import { cleanPath, preferences } from "nova-extension-utils";
+import { daemon, startFlutterDeamon } from "./startFlutterDaemon";
 import { DartColorAssistant } from "./colors";
 import { InformationView } from "./informationView";
+import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun";
 import { registerFormatDocument } from "./commands/formatDocument";
-import { registerGetDependencies } from "./commands/getDependencies";
-import { registerFlutterRun } from "./commands/flutterRun";
-// import { registerHotReload } from "./commands/hotReload";
 import { registerOpenSimulator } from "./commands/openSimulartor";
 import { registerOpenEmulator } from "./commands/openEmulator";
 import { wrapCommand, makeFileExecutable } from "./novaUtils";
@@ -77,6 +76,15 @@ async function getFlutterVersion() {
       }
     });
     process.start();
+  });
+}
+
+async function getDaemonVersion() {
+  return new Promise<string>(() => {
+    daemon?.request("daemon.version", { id: 0 });
+    daemon?.onNotify("daemon.version", function (message) {
+      console.log(message);
+    });
   });
 }
 
@@ -172,12 +180,8 @@ async function asyncActivate() {
     clientOptions
   );
 
-  // register nova commands
+  // Register format on save command
   compositeDisposable.add(registerFormatDocument(client));
-  compositeDisposable.add(registerGetDependencies());
-  compositeDisposable.add(registerFlutterRun());
-  compositeDisposable.add(registerOpenSimulator());
-  compositeDisposable.add(registerOpenEmulator());
 
   compositeDisposable.add(
     client.onDidStop(err => {
@@ -271,6 +275,11 @@ async function asyncActivate() {
 export async function activate() {
   console.log("activating...");
 
+  // register nova commands
+  compositeDisposable.add(registerFlutterRun());
+  compositeDisposable.add(registerFlutterStop());
+  compositeDisposable.add(registerOpenSimulator());
+  compositeDisposable.add(registerOpenEmulator());
   compositeDisposable.add(informationView);
 
   getDartVersion().then(dartVersion => {
@@ -299,11 +308,15 @@ export async function activate() {
         console.log("activated");
       });
   }
+  startFlutterDeamon();
+
+  getDaemonVersion();
 
   informationView.reload(); // this is needed, otherwise the view won't show up properly, possibly a Nova bug
 }
 
 export function deactivate() {
   client?.stop();
+  daemon?.terminate();
   compositeDisposable.dispose();
 }
