@@ -201,6 +201,10 @@
       {
         "title": "Restart Server",
         "command": "sciencefidelity.dart.reload"
+      },
+      {
+        "title": "Get Daemon Version",
+        "command": "sciencefidelity.dart.commands.getDaemonVersion"
       }
     ],
     "editor": [
