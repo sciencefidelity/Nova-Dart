@@ -1,8 +1,4 @@
-type Element = {
-  title: string
-  value: string
-  readonly identifier: string
-};
+import { Element } from "./interfaces"
 
 export class InformationView implements TreeDataProvider<Element>, Disposable {
   constructor() {
@@ -73,3 +69,5 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
     this._treeView.dispose()
   }
 }
+
+export const informationView = new InformationView()
