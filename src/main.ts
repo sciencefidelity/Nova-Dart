@@ -46,7 +46,7 @@ async function reload() {
   }
 }
 
-async function activate() {
+export function activate() {
   console.log("activating...")
 
   // register nova commands
@@ -88,7 +88,7 @@ async function activate() {
   startFlutterDeamon()
 }
 
-async function deactivate() {
+export function deactivate() {
   client?.stop()
   compositeDisposable.dispose()
 }
