@@ -1,9 +1,9 @@
-import { cleanPath, preferences } from "nova-extension-utils"
+import { preferences } from "nova-extension-utils"
 import { daemon } from "./startFlutterDaemon"
 import { registerFormatDocument } from "./commands/formatDocument"
-import { makeFileExecutable } from "./novaUtils"
 import { informationView } from "./informationView"
 import { compositeDisposable } from "./main"
+import { makeFileExecutable } from "./novaUtils"
 
 export let client: LanguageClient | null = null
 const syntaxes = ["dart"]
@@ -12,46 +12,49 @@ const formatOnSaveKey = "sciencefidelity.dart.config.formatDocumentOnSave"
 export async function activateLsp() {
   informationView.status = "Activating..."
 
-  // Uploading to the extension library makes this file unexecutable
-  const runFile = nova.path.join(nova.extension.path, "run.sh")
-  await makeFileExecutable(runFile)
+  const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
+  await makeFileExecutable(findDartFile)
 
-  let workspacePath = ""
-  if (nova.inDevMode() && nova.workspace.path) {
-    workspacePath = `${cleanPath(nova.workspace.path)}/test-workspace`
-  } else if (nova.workspace.path) {
-    workspacePath = cleanPath(nova.workspace.path)
+  let analyzerPath: string | null = null
+  async function findDart() {
+    return new Promise<string | null>((resolve, reject) => {
+
+      const find = new Process("/bin/sh", {
+        args: ["bash", "-c", `"${findDartFile}"`],
+        stdio: "pipe",
+        shell: true
+      })
+      find.onStdout(async function (line) {
+        // analyzerPath = line.replace(/dart$/i, "snapshots")
+        console.log("analyzer path:" + line)
+      })
+      find.onStderr(async function (line) {
+        // analyzerPath = line.replace(/dart$/i, "snapshots")
+        console.log("analyzer path:" + line)
+      })
+      find.onDidExit(status => {
+        if (status === 0) {
+          resolve(analyzerPath)
+        } else {
+          reject(status)
+        }
+      })
+      find.start()
+    })
   }
 
-  let serviceArgs
+  findDart()
 
-  if (nova.inDevMode() && nova.workspace.path) {
-    const logDir = nova.path.join(nova.workspace.path, "logs")
-    await new Promise<void>((resolve, reject) => {
-      const p = new Process("/usr/bin/env", {
-        args: ["mkdir", "-p", logDir]
-      })
-      p.onDidExit(status => (status === 0 ? resolve() : reject()))
-      p.start()
-    })
-    console.log("logging to", logDir)
-    const outLog = nova.path.join(logDir, "languageServer.log")
-    serviceArgs = {
-      path: "/usr/bin/env",
-      args: ["bash", "-c", `"${runFile}" | tee "${outLog}"`]
-    }
-  } else {
-    serviceArgs = { path: runFile }
+  if (!analyzerPath) {
+    analyzerPath = nova.config.get(
+      "sciencefidelity.dart.config.analyzerPath",
+      "string"
+    )
   }
 
   const serverOptions = {
-    ...serviceArgs,
-    env: {
-      WORKSPACE_DIR: workspacePath,
-      INSTALL_DIR:
-        nova.config.get("sciencefidelity.dart.config.analyzerPath", "string") ||
-        "~/flutter/bin/cache/dart-sdk/bin/snapshots"
-    }
+    path: "/usr/bin/env",
+    args: ["dart", `${analyzerPath}/analysis_server.dart.snapshot`, "--lsp"]
   }
 
   const clientOptions = {
@@ -100,6 +103,7 @@ export async function activateLsp() {
   )
 
   client.start()
+
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
   //   notification => {

@@ -1,4 +1,4 @@
-import { startFlutterDeamon } from "./startFlutterDaemon"
+import { daemon, startFlutterDeamon } from "./startFlutterDaemon"
 import { DartColorAssistant } from "./colors"
 import { informationView } from "./informationView"
 import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun"
@@ -89,6 +89,7 @@ export function activate() {
 }
 
 export function deactivate() {
+  daemon?.kill()
   client?.stop()
   compositeDisposable.dispose()
 }
