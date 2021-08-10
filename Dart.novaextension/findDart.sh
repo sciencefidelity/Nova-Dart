@@ -1,2 +1,2 @@
-#!/usr/bin/env bash
-"where" "dart"
+#!/usr/bin/env zsh
+where dart

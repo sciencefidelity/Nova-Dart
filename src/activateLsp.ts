@@ -15,22 +15,15 @@ export async function activateLsp() {
   const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
   await makeFileExecutable(findDartFile)
 
-  let analyzerPath: string | null = null
   async function findDart() {
     return new Promise<string | null>((resolve, reject) => {
-
-      const find = new Process("/bin/sh", {
-        args: ["bash", "-c", `"${findDartFile}"`],
-        stdio: "pipe",
-        shell: true
+      const find = new Process("/usr/bin/env", {
+        args: ["zsh", "-c", `"${findDartFile}"`],
+        stdio: "pipe"
       })
+      let analyzerPath: string | null = null
       find.onStdout(async function (line) {
-        // analyzerPath = line.replace(/dart$/i, "snapshots")
-        console.log("analyzer path:" + line)
-      })
-      find.onStderr(async function (line) {
-        // analyzerPath = line.replace(/dart$/i, "snapshots")
-        console.log("analyzer path:" + line)
+        analyzerPath = line
       })
       find.onDidExit(status => {
         if (status === 0) {
@@ -43,67 +36,72 @@ export async function activateLsp() {
     })
   }
 
-  findDart()
-
-  if (!analyzerPath) {
-    analyzerPath = nova.config.get(
-      "sciencefidelity.dart.config.analyzerPath",
-      "string"
-    )
-  }
-
-  const serverOptions = {
-    path: "/usr/bin/env",
-    args: ["dart", `${analyzerPath}/analysis_server.dart.snapshot`, "--lsp"]
-  }
-
-  const clientOptions = {
-    initializationOptions: {
-      onlyAnalyzeProjectsWithOpenFiles: true,
-      suggestFromUnimportedLibraries: true,
-      closingLabels: true,
-      outline: true,
-      flutterOutline: true
-    },
-    syntaxes: syntaxes
-  }
-
-  client = new LanguageClient(
-    "sciencefidelity.dart",
-    "Dart Language Server",
-    serverOptions,
-    clientOptions
-  )
-
-  // Register format on save command
-  compositeDisposable.add(registerFormatDocument(client))
-
-  compositeDisposable.add(
-    client.onDidStop(err => {
-      let message = "Dart Language Server stopped unexpectedly"
-      if (err) {
-        message += `:\n\n${err.toString()}`
-      } else {
-        message += "."
-      }
-      message +=
-        "\n\nPlease report this, along with any output in the Extension Console."
-      nova.workspace.showActionPanel(
-        message,
-        {
-          buttons: ["Restart", "Ignore"]
-        },
-        index => {
-          if (index == 0) {
-            nova.commands.invoke("sciencefidelity.dart.reload")
-          }
-        }
+  findDart().then(analyzerPath => {
+    if (!analyzerPath) {
+      analyzerPath = nova.config.get(
+        "sciencefidelity.dart.config.analyzerPath",
+        "string"
       )
-    })
-  )
+    }
 
-  client.start()
+    const analysisServer = `${analyzerPath
+      ?.trim()
+      .replace(
+        "/bin/dart",
+        "/bin/cache/dart-sdk/bin/snapshots"
+      )}/analysis_server.dart.snapshot`
 
+    console.log(analysisServer)
+    const serverOptions = {
+      path: "/usr/bin/env",
+      args: ["dart", `${analysisServer}`, "--lsp"]
+    }
+
+    const clientOptions = {
+      initializationOptions: {
+        onlyAnalyzeProjectsWithOpenFiles: true,
+        suggestFromUnimportedLibraries: true,
+        closingLabels: true,
+        outline: true,
+        flutterOutline: true
+      },
+      syntaxes: syntaxes
+    }
+
+    client = new LanguageClient(
+      "sciencefidelity.dart",
+      "Dart Language Server",
+      serverOptions,
+      clientOptions
+    )
+
+    // Register format on save command
+    compositeDisposable.add(registerFormatDocument(client))
+
+    compositeDisposable.add(
+      client.onDidStop(err => {
+        let message = "Dart Language Server stopped unexpectedly"
+        if (err) {
+          message += `:\n\n${err.toString()}`
+        } else {
+          message += "."
+        }
+        nova.workspace.showActionPanel(
+          message,
+          {
+            buttons: ["Restart", "Ignore"]
+          },
+          index => {
+            if (index == 0) {
+              nova.commands.invoke("sciencefidelity.dart.reload")
+            }
+          }
+        )
+      })
+    )
+
+    client.start()
+  })
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
   //   notification => {
