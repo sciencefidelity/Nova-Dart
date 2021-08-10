@@ -1,15 +1,15 @@
-import { flutterNamedColors } from "./colorsProvider";
+import { flutterNamedColors } from "./colorsProvider"
 
 interface ColorStrings {
-  [key: string]: string[];
+  [key: string]: string[]
 }
 
 export class DartColorAssistant implements ColorAssistant {
-  hexRegex: RegExp;
-  argbHexRegex: RegExp;
-  argbRegex: RegExp;
-  rgboRegex: RegExp;
-  namedColors: any;
+  hexRegex: RegExp
+  argbHexRegex: RegExp
+  argbRegex: RegExp
+  rgboRegex: RegExp
+  namedColors: any
 
   constructor() {
     // Regexes
@@ -23,20 +23,20 @@ export class DartColorAssistant implements ColorAssistant {
     this.rgboRegex = new RegExp("\\.fromRGBO\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([\\w_.]+)\\s*\\)", "i");
 
     // Named colors
-    const namedColors: ColorStrings = {};
-    const keys = Object.keys(flutterNamedColors);
+    const namedColors: ColorStrings = {}
+    const keys = Object.keys(flutterNamedColors)
     for (const key of keys) {
-      const string = flutterNamedColors[key];
+      const string = flutterNamedColors[key]
 
-      const alpha = parseInt(string.substring(0, 2), 16) / 255.0;
-      const red = parseInt(string.substring(2, 4), 16) / 255.0;
-      const green = parseInt(string.substring(4, 6), 16) / 255.0;
-      const blue = parseInt(string.substring(6, 8), 16) / 255.0;
+      const alpha = parseInt(string.substring(0, 2), 16) / 255.0
+      const red = parseInt(string.substring(2, 4), 16) / 255.0
+      const green = parseInt(string.substring(4, 6), 16) / 255.0
+      const blue = parseInt(string.substring(6, 8), 16) / 255.0
 
-      const color = Color.rgb(red, green, blue, alpha);
-      namedColors[key] = color;
+      const color = Color.rgb(red, green, blue, alpha)
+      namedColors[key] = color
     }
-    this.namedColors = namedColors;
+    this.namedColors = namedColors
   }
 
   provideColors(editor: TextEditor, context: ColorInformationContext) {
@@ -45,106 +45,106 @@ export class DartColorAssistant implements ColorAssistant {
       this.argbHexRegex,
       this.argbRegex,
       this.rgboRegex
-    ];
-    const colors = [];
+    ]
+    const colors = []
 
-    const candidates = context.candidates;
+    const candidates = context.candidates
     for (const candidate of candidates) {
-      const string = candidate.text;
-      const range = candidate.range;
+      const string = candidate.text
+      const range = candidate.range
 
       // Named color
-      const namedColor = this.namedColors[string];
+      const namedColor = this.namedColors[string]
       if (namedColor) {
-        const infoRange = new Range(range.start, range.start + string.length);
-        const colorInfo = new ColorInformation(infoRange, namedColor, "named");
-        colors.push(colorInfo);
+        const infoRange = new Range(range.start, range.start + string.length)
+        const colorInfo = new ColorInformation(infoRange, namedColor, "named")
+        colors.push(colorInfo)
       }
 
       for (const regex of regexes) {
-        const match = string.match(regex) as RegExpMatchArray;
+        const match = string.match(regex) as RegExpMatchArray
         if (match) {
-          const color = this.parseColorMatch(match, regex, range);
+          const color = this.parseColorMatch(match, regex, range)
           if (color) {
-            colors.push(color);
-            break;
+            colors.push(color)
+            break
           }
         }
       }
     }
-    return colors;
+    return colors
   }
 
   parseColorMatch(match: RegExpMatchArray, regex: RegExp, range: Range) {
     // Parses a Dart color string into a color object
-    const position = range.start + match.index!;
-    const matchStr = match[0];
+    const position = range.start + match.index!
+    const matchStr = match[0]
 
     if (regex === this.hexRegex) {
-      let alpha = parseInt(match[1].substring(0, 2), 16);
-      let red = parseInt(match[1].substring(2, 4), 16);
-      let green = parseInt(match[1].substring(4, 6), 16);
-      let blue = parseInt(match[1].substring(6, 8), 16);
+      let alpha = parseInt(match[1].substring(0, 2), 16)
+      let red = parseInt(match[1].substring(2, 4), 16)
+      let green = parseInt(match[1].substring(4, 6), 16)
+      let blue = parseInt(match[1].substring(6, 8), 16)
 
-      alpha = alpha / 255.0;
-      red = red / 255.0;
-      green = green / 255.0;
-      blue = blue / 255.0;
+      alpha = alpha / 255.0
+      red = red / 255.0
+      green = green / 255.0
+      blue = blue / 255.0
 
-      const color = Color.rgb(red, green, blue, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "hex");
-      info.format = ColorFormat.rgb;
-      return info;
+      const color = Color.rgb(red, green, blue, alpha)
+      const range = new Range(position, position + matchStr.length)
+      const info = new ColorInformation(range, color, "hex")
+      info.format = ColorFormat.rgb
+      return info
     } else if (regex === this.argbHexRegex) {
-      let alpha = parseInt(match[1].substring(2, 4), 16);
-      let red = parseInt(match[2].substring(2, 4), 16);
-      let green = parseInt(match[3].substring(2, 4), 16);
-      let blue = parseInt(match[4].substring(2, 4), 16);
+      let alpha = parseInt(match[1].substring(2, 4), 16)
+      let red = parseInt(match[2].substring(2, 4), 16)
+      let green = parseInt(match[3].substring(2, 4), 16)
+      let blue = parseInt(match[4].substring(2, 4), 16)
 
-      alpha = alpha / 255.0;
-      red = red / 255.0;
-      green = green / 255.0;
-      blue = blue / 255.0;
+      alpha = alpha / 255.0
+      red = red / 255.0
+      green = green / 255.0
+      blue = blue / 255.0
 
-      const color = Color.rgb(red, green, blue, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "hexa");
-      info.format = ColorFormat.rgb;
-      return info;
+      const color = Color.rgb(red, green, blue, alpha)
+      const range = new Range(position, position + matchStr.length)
+      const info = new ColorInformation(range, color, "hexa")
+      info.format = ColorFormat.rgb
+      return info
     } else if (regex === this.argbRegex) {
-      let alpha = parseInt(match[1]);
-      let red = parseInt(match[2]);
-      let green = parseInt(match[3]);
-      let blue = parseInt(match[4]);
+      let alpha = parseInt(match[1])
+      let red = parseInt(match[2])
+      let green = parseInt(match[3])
+      let blue = parseInt(match[4])
 
-      alpha = alpha / 255.0;
-      red = red / 255.0;
-      green = green / 255.0;
-      blue = blue / 255.0;
+      alpha = alpha / 255.0
+      red = red / 255.0
+      green = green / 255.0
+      blue = blue / 255.0
 
-      const color = Color.rgb(red, green, blue, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "rgba");
-      info.format = ColorFormat.rgb;
-      return info;
+      const color = Color.rgb(red, green, blue, alpha)
+      const range = new Range(position, position + matchStr.length)
+      const info = new ColorInformation(range, color, "rgba")
+      info.format = ColorFormat.rgb
+      return info
     } else if (regex === this.rgboRegex) {
-      let red = parseInt(match[1]);
-      let green = parseInt(match[2]);
-      let blue = parseInt(match[3]);
-      const alpha = parseFloat(match[4]);
+      let red = parseInt(match[1])
+      let green = parseInt(match[2])
+      let blue = parseInt(match[3])
+      const alpha = parseFloat(match[4])
 
-      red = red / 255.0;
-      green = green / 255.0;
-      blue = blue / 255.0;
+      red = red / 255.0
+      green = green / 255.0
+      blue = blue / 255.0
 
-      const color = Color.rgb(red, green, blue, alpha);
-      const range = new Range(position, position + matchStr.length);
-      const info = new ColorInformation(range, color, "srgb");
-      info.format = ColorFormat.rgb;
-      return info;
+      const color = Color.rgb(red, green, blue, alpha)
+      const range = new Range(position, position + matchStr.length)
+      const info = new ColorInformation(range, color, "srgb")
+      info.format = ColorFormat.rgb
+      return info
     }
-    return null;
+    return null
   }
   // eslint-disable-next-line no-unused-vars
   provideColorPresentations(
@@ -153,38 +153,38 @@ export class DartColorAssistant implements ColorAssistant {
     context: ColorPresentationContext
   ) {
     // Converts a color object into an array of color presentations
-    const presentations = [];
+    const presentations = []
 
     // Constructor (hex)
     {
-      const rgbColor = color.convert(ColorFormat.rgb);
-      const components = rgbColor.components;
+      const rgbColor = color.convert(ColorFormat.rgb)
+      const components = rgbColor.components
 
-      let alpha = Math.round(components[3] * 1000.0) / 1000.0;
-      let red = Math.round(components[0] * 1000.0) / 1000.0;
-      let green = Math.round(components[1] * 1000.0) / 1000.0;
-      let blue = Math.round(components[2] * 1000.0) / 1000.0;
+      let alpha = Math.round(components[3] * 1000.0) / 1000.0
+      let red = Math.round(components[0] * 1000.0) / 1000.0
+      let green = Math.round(components[1] * 1000.0) / 1000.0
+      let blue = Math.round(components[2] * 1000.0) / 1000.0
 
-      alpha = alpha * 255.0;
-      red = red * 255.0;
-      green = green * 255.0;
-      blue = blue * 255.0;
+      alpha = alpha * 255.0
+      red = red * 255.0
+      green = green * 255.0
+      blue = blue * 255.0
 
-      let alphaHex = Math.floor(alpha).toString(16);
+      let alphaHex = Math.floor(alpha).toString(16)
       if (alphaHex.length === 1) {
-        alphaHex = "0" + alphaHex;
+        alphaHex = "0" + alphaHex
       }
-      let redHex = Math.floor(red).toString(16);
+      let redHex = Math.floor(red).toString(16)
       if (redHex.length === 1) {
-        redHex = "0" + redHex;
+        redHex = "0" + redHex
       }
-      let greenHex = Math.floor(green).toString(16);
+      let greenHex = Math.floor(green).toString(16)
       if (greenHex.length === 1) {
-        greenHex = "0" + greenHex;
+        greenHex = "0" + greenHex
       }
-      let blueHex = Math.floor(blue).toString(16);
+      let blueHex = Math.floor(blue).toString(16)
       if (blueHex.length === 1) {
-        blueHex = "0" + blueHex;
+        blueHex = "0" + blueHex
       }
       const string =
         "Color(0x" +
@@ -192,43 +192,43 @@ export class DartColorAssistant implements ColorAssistant {
         redHex.toUpperCase() +
         greenHex.toUpperCase() +
         blueHex.toUpperCase() +
-        ")";
+        ")"
 
-      const presentation = new ColorPresentation(string, "hex");
-      presentation.format = ColorFormat.rgb;
-      presentations.push(presentation);
+      const presentation = new ColorPresentation(string, "hex")
+      presentation.format = ColorFormat.rgb
+      presentations.push(presentation)
     }
 
     // fromARGB (hex)
     {
-      const rgbColor = color.convert(ColorFormat.rgb);
-      const components = rgbColor.components;
+      const rgbColor = color.convert(ColorFormat.rgb)
+      const components = rgbColor.components
 
-      let alpha = Math.round(components[3] * 1000.0) / 1000.0;
-      let red = Math.round(components[0] * 1000.0) / 1000.0;
-      let green = Math.round(components[1] * 1000.0) / 1000.0;
-      let blue = Math.round(components[2] * 1000.0) / 1000.0;
+      let alpha = Math.round(components[3] * 1000.0) / 1000.0
+      let red = Math.round(components[0] * 1000.0) / 1000.0
+      let green = Math.round(components[1] * 1000.0) / 1000.0
+      let blue = Math.round(components[2] * 1000.0) / 1000.0
 
-      alpha = alpha * 255.0;
-      red = red * 255.0;
-      green = green * 255.0;
-      blue = blue * 255.0;
+      alpha = alpha * 255.0
+      red = red * 255.0
+      green = green * 255.0
+      blue = blue * 255.0
 
-      let alphaHex = Math.floor(alpha).toString(16);
+      let alphaHex = Math.floor(alpha).toString(16)
       if (alphaHex.length === 1) {
-        alphaHex = "0" + alphaHex;
+        alphaHex = "0" + alphaHex
       }
-      let redHex = Math.floor(red).toString(16);
+      let redHex = Math.floor(red).toString(16)
       if (redHex.length === 1) {
-        redHex = "0" + redHex;
+        redHex = "0" + redHex
       }
-      let greenHex = Math.floor(green).toString(16);
+      let greenHex = Math.floor(green).toString(16)
       if (greenHex.length === 1) {
-        greenHex = "0" + greenHex;
+        greenHex = "0" + greenHex
       }
-      let blueHex = Math.floor(blue).toString(16);
+      let blueHex = Math.floor(blue).toString(16)
       if (blueHex.length === 1) {
-        blueHex = "0" + blueHex;
+        blueHex = "0" + blueHex
       }
 
       const string =
@@ -240,27 +240,27 @@ export class DartColorAssistant implements ColorAssistant {
         greenHex.toUpperCase() +
         ", 0x" +
         blueHex.toUpperCase() +
-        ")";
+        ")"
 
-      const presentation = new ColorPresentation(string, "hexa");
-      presentation.format = ColorFormat.rgb;
-      presentations.push(presentation);
+      const presentation = new ColorPresentation(string, "hexa")
+      presentation.format = ColorFormat.rgb
+      presentations.push(presentation)
     }
 
     // fromARGB
     {
-      const rgbColor = color.convert(ColorFormat.rgb);
-      const components = rgbColor.components;
+      const rgbColor = color.convert(ColorFormat.rgb)
+      const components = rgbColor.components
 
-      let alpha = Math.round(components[3] * 1000.0) / 1000.0;
-      let red = Math.round(components[0] * 1000.0) / 1000.0;
-      let green = Math.round(components[1] * 1000.0) / 1000.0;
-      let blue = Math.round(components[2] * 1000.0) / 1000.0;
+      let alpha = Math.round(components[3] * 1000.0) / 1000.0
+      let red = Math.round(components[0] * 1000.0) / 1000.0
+      let green = Math.round(components[1] * 1000.0) / 1000.0
+      let blue = Math.round(components[2] * 1000.0) / 1000.0
 
-      alpha = alpha * 255.0;
-      red = red * 255.0;
-      green = green * 255.0;
-      blue = blue * 255.0;
+      alpha = alpha * 255.0
+      red = red * 255.0
+      green = green * 255.0
+      blue = blue * 255.0
 
       const string =
         "Color.fromARGB(" +
@@ -271,26 +271,26 @@ export class DartColorAssistant implements ColorAssistant {
         green.toFixed() +
         ", " +
         blue.toFixed() +
-        ")";
+        ")"
 
-      const presentation = new ColorPresentation(string, "rgba");
-      presentation.format = ColorFormat.rgb;
-      presentations.push(presentation);
+      const presentation = new ColorPresentation(string, "rgba")
+      presentation.format = ColorFormat.rgb
+      presentations.push(presentation)
     }
 
     // fromRGBO
     {
-      const rgbColor = color.convert(ColorFormat.rgb);
-      const components = rgbColor.components;
+      const rgbColor = color.convert(ColorFormat.rgb)
+      const components = rgbColor.components
 
-      let red = Math.round(components[0] * 1000.0) / 1000.0;
-      let green = Math.round(components[1] * 1000.0) / 1000.0;
-      let blue = Math.round(components[2] * 1000.0) / 1000.0;
-      const alpha = Math.round(components[3] * 1000.0) / 1000.0;
+      let red = Math.round(components[0] * 1000.0) / 1000.0
+      let green = Math.round(components[1] * 1000.0) / 1000.0
+      let blue = Math.round(components[2] * 1000.0) / 1000.0
+      const alpha = Math.round(components[3] * 1000.0) / 1000.0
 
-      red = red * 255.0;
-      green = green * 255.0;
-      blue = blue * 255.0;
+      red = red * 255.0
+      green = green * 255.0
+      blue = blue * 255.0
 
       const string =
         "Color.fromRGBO(" +
@@ -301,13 +301,13 @@ export class DartColorAssistant implements ColorAssistant {
         blue.toFixed() +
         ", " +
         alpha.toString() +
-        ")";
+        ")"
 
-      const presentation = new ColorPresentation(string, "srgb");
-      presentation.format = ColorFormat.rgb;
-      presentations.push(presentation);
+      const presentation = new ColorPresentation(string, "srgb")
+      presentation.format = ColorFormat.rgb
+      presentations.push(presentation)
     }
 
-    return presentations;
+    return presentations
   }
 }

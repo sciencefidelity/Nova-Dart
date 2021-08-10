@@ -1,5 +1,5 @@
 interface NamedStrings {
-  [key: string]: string;
+  [key: string]: string
 }
 
 // prettier-ignore
@@ -655,5 +655,5 @@ export const flutterNamedColors: { [key: string]: string } = {
   "CupertinoColors.tertiarySystemGroupedBackground.elevatedColor": "fff2f2f7",
   "CupertinoColors.tertiarySystemGroupedBackground.highContrastColor": "ffebebf0",
   "CupertinoColors.tertiarySystemGroupedBackground.highContrastElevatedColor": "ffebebf0",
-  "CupertinoColors.white": "ffffffff",
-} as NamedStrings;
+  "CupertinoColors.white": "ffffffff"
+} as NamedStrings

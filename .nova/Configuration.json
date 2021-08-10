@@ -1,6 +1,6 @@
 {
   "apexskier.typescript.config.isEnabledForJavascript" : "Disable",
-  "prettier.default-config.semi" : "Enable",
+  "prettier.default-config.semi" : "Global Default",
   "todo.workspace-ignore-paths" : [
     "test-workspace",
     "Scripts"
