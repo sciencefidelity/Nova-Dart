@@ -7,7 +7,7 @@ import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerGetDaemonVersion } from "./commands/getDaemonVersion"
 import { wrapCommand } from "./novaUtils"
 import { getDartVersion, getFlutterVersion } from "./getVersions"
-import { asyncActivate } from "./activateLsp"
+import { activateLsp } from "./activateLsp"
 import { client } from "./activateLsp"
 
 // Colors
@@ -42,7 +42,7 @@ async function reload() {
   ) {
     deactivate()
     console.log("reloading...")
-    await asyncActivate()
+    await activateLsp()
   }
 }
 
@@ -73,7 +73,7 @@ export function activate() {
       notification.body = "Dart LSP is loading"
       nova.notifications.add(notification)
     }
-    asyncActivate()
+    activateLsp()
       .catch(err => {
         console.error("Failed to activate")
         console.error(err)

@@ -6,17 +6,25 @@ import { informationView } from "./informationView"
 import { compositeDisposable } from "./main"
 
 export let client: LanguageClient | null = null
+const syntaxes = ["dart"]
 const formatOnSaveKey = "sciencefidelity.dart.config.formatDocumentOnSave"
 
-export async function asyncActivate() {
+export async function activateLsp() {
   informationView.status = "Activating..."
 
+  // Uploading to the extension library makes this file unexecutable
   const runFile = nova.path.join(nova.extension.path, "run.sh")
-
-  // Uploading to the extension library makes this file not executable
   await makeFileExecutable(runFile)
 
+  let workspacePath = ""
+  if (nova.inDevMode() && nova.workspace.path) {
+    workspacePath = `${cleanPath(nova.workspace.path)}/test-workspace`
+  } else if (nova.workspace.path) {
+    workspacePath = cleanPath(nova.workspace.path)
+  }
+
   let serviceArgs
+
   if (nova.inDevMode() && nova.workspace.path) {
     const logDir = nova.path.join(nova.workspace.path, "logs")
     await new Promise<void>((resolve, reject) => {
@@ -27,28 +35,25 @@ export async function asyncActivate() {
       p.start()
     })
     console.log("logging to", logDir)
-    // passing inLog breaks some requests for an unknown reason
-    // const inLog = nova.path.join(logDir, "languageServer-in.log");
-    const outLog = nova.path.join(logDir, "languageServer-out.log")
+    const outLog = nova.path.join(logDir, "languageServer.log")
     serviceArgs = {
       path: "/usr/bin/env",
-      // args: ["bash", "-c", `tee "${inLog}" | "${runFile}" | tee "${outLog}"`],
       args: ["bash", "-c", `"${runFile}" | tee "${outLog}"`]
     }
   } else {
-    serviceArgs = {
-      path: runFile
+    serviceArgs = { path: runFile }
+  }
+
+  const serverOptions = {
+    ...serviceArgs,
+    env: {
+      WORKSPACE_DIR: workspacePath,
+      INSTALL_DIR:
+        nova.config.get("sciencefidelity.dart.config.analyzerPath", "string") ||
+        "~/flutter/bin/cache/dart-sdk/bin/snapshots"
     }
   }
 
-  let path
-  if (nova.inDevMode() && nova.workspace.path) {
-    path = `${cleanPath(nova.workspace.path)}/test-workspace`
-  } else if (nova.workspace.path) {
-    path = cleanPath(nova.workspace.path)
-  }
-
-  const syntaxes = ["dart"]
   const clientOptions = {
     initializationOptions: {
       onlyAnalyzeProjectsWithOpenFiles: true,
@@ -57,24 +62,13 @@ export async function asyncActivate() {
       outline: true,
       flutterOutline: true
     },
-    syntaxes
+    syntaxes: syntaxes
   }
 
   client = new LanguageClient(
     "sciencefidelity.dart",
     "Dart Language Server",
-    {
-      type: "stdio",
-      ...serviceArgs,
-      env: {
-        WORKSPACE_DIR: path || "",
-        INSTALL_DIR:
-          nova.config.get(
-            "sciencefidelity.dart.config.analyzerPath",
-            "string"
-          ) || "~/flutter/bin/cache/dart-sdk/bin/snapshots"
-      }
-    },
+    serverOptions,
     clientOptions
   )
 
@@ -141,7 +135,7 @@ export async function asyncActivate() {
       })
 
       function refreshListener() {
-        // willSaveListener?.dispose()
+        willSaveListener?.dispose()
         willSaveListener = setupListener()
       }
 
