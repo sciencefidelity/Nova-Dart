@@ -19,7 +19,7 @@ export async function activateLsp() {
     return new Promise<string | null>((resolve, reject) => {
       const find = new Process("/usr/bin/env", {
         args: ["zsh", "-c", `"${findDartFile}"`],
-        stdio: "pipe"
+        stdio: ["ignore", "pipe", "ignore"]
       })
       let analyzerPath: string | null = null
       find.onStdout(async function (line) {
@@ -51,7 +51,7 @@ export async function activateLsp() {
         "/bin/cache/dart-sdk/bin/snapshots"
       )}/analysis_server.dart.snapshot`
 
-    console.log(analysisServer)
+    console.log(`Path to analysis server: ${analysisServer}`)
     const serverOptions = {
       path: "/usr/bin/env",
       args: ["dart", `${analysisServer}`, "--lsp"]
