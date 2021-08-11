@@ -1,7 +1,7 @@
 export let daemon: Process | null = null
 
 export const startFlutterDeamon = async () => {
-  return new Promise(() => {
+  return new Promise<void>((resolve, reject) => {
     if (nova.inDevMode()) {
       const daemonNotification = new NotificationRequest("daemon activated")
       daemonNotification.body = "Flutter Daemon is loading"
@@ -12,12 +12,19 @@ export const startFlutterDeamon = async () => {
       args: ["flutter", "daemon"],
       stdio: "jsonrpc"
     })
-    daemon.onNotify("daemon/connected", message => {
+    daemon.onNotify("daemon.connected", message => {
       console.log(JSON.stringify(message.result))
-      console.log(JSON.stringify(message.errorReason))
+      console.error(JSON.stringify(message.errorReason))
+    })
+    daemon.onDidExit(status => {
+      if (status === 0) {
+        resolve()
+      } else {
+        reject(status)
+      }
     })
     daemon.start()
-  }).then(function () {
+  }).then(() => {
     console.log("Daemon started")
   })
 }
