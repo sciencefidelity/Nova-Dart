@@ -15,6 +15,7 @@ export const registerOpenSimulator = () => {
       })
       process.onDidExit(status => {
         if (status === 0) {
+          console.log("opening iOS Simulator")
           resolve()
         } else {
           reject(status)

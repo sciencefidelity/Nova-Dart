@@ -39,6 +39,7 @@ const openAvd = async (line: string): Promise<void> => {
     })
     process.onDidExit(status => {
       if (status === 0) {
+        console.log(`opening ${avdName}`)
         resolve()
       } else {
         reject(status)
