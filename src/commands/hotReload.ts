@@ -9,7 +9,7 @@ export const registerHotReload = (client: LanguageClient) => {
 
   async function hotReload(
     // eslint-disable-next-line no-unused-vars
-    editor: TextEditor
+    _editor: TextEditor
   ): Promise<void> {
 
     const changes = (await client.sendRequest(

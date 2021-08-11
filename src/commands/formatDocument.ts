@@ -8,10 +8,8 @@ export const registerFormatDocument = (client: LanguageClient) => {
     wrapCommand(formatDocument)
   )
 
-  async function formatDocument(
-    // eslint-disable-next-line no-unused-vars
-    workspace: Workspace,
-    // eslint-disable-next-line no-unused-vars
+  async function formatDocument( // eslint-disable-next-line no-unused-vars
+    workspace: Workspace, // eslint-disable-next-line no-unused-vars
     editor: TextEditor
   ): Promise<void>
   async function formatDocument(

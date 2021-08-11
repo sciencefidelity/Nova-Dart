@@ -11,7 +11,7 @@ export const registerFlutterRun = () => {
   )
 
   async function flutterRun(): Promise<void> {
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       let path
 
       if (nova.inDevMode() && nova.workspace.path) {
@@ -25,10 +25,14 @@ export const registerFlutterRun = () => {
         stdio: ["ignore", "pipe", "ignore"]
       })
       process.onStdout(line => {
-        // const arr: AppStart = JSON.parse(line)
-        // const id: string = arr.params.appId
-        // console.log(id)
         console.log(JSON.stringify(line))
+      })
+      process.onDidExit(status => {
+        if (status === 0) {
+          resolve()
+        } else {
+          reject(status)
+        }
       })
       process.start()
     })

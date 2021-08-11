@@ -22,10 +22,8 @@ export function registerGetDependencies() {
       })
       process.onDidExit(status => {
         if (status === 0) {
-          console.log("Exited")
           resolve()
         } else {
-          console.log("Failed")
           reject(status)
         }
       })

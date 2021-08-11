@@ -9,13 +9,20 @@ export const registerOpenEmulator = () => {
   // Find the name of the avd
   // TODO: Open an alert to let the user choose an avd
   async function openEmulator(): Promise<void> {
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       const process = new Process("/usr/bin/env", {
         args: ["emulator", "-list-avds"],
         stdio: ["ignore", "pipe", "ignore"]
       })
       process.onStdout(async line => {
         await openAvd(line)
+      })
+      process.onDidExit(status => {
+        if (status === 0) {
+          resolve()
+        } else {
+          reject(status)
+        }
       })
       process.start()
     })
