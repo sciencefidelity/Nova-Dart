@@ -38,8 +38,8 @@ export class DartColorAssistant implements ColorAssistant {
     }
     this.namedColors = namedColors
   }
-  // @ts-ignore: No unused params
-  provideColors(editor: TextEditor, context: ColorInformationContext) {
+
+  provideColors(_editor: TextEditor, context: ColorInformationContext) {
     const regexes = [
       this.hexRegex,
       this.argbHexRegex,
@@ -146,11 +146,11 @@ export class DartColorAssistant implements ColorAssistant {
     }
     return null
   }
-  // eslint-disable-next-line no-unused-vars
+
   provideColorPresentations(
     color: Color, // eslint-disable-next-line no-unused-vars
-    editor: TextEditor, // eslint-disable-next-line no-unused-vars
-    context: ColorPresentationContext
+    _editor: TextEditor, // eslint-disable-next-line no-unused-vars
+    _context: ColorPresentationContext
   ) {
     // Converts a color object into an array of color presentations
     const presentations = []
