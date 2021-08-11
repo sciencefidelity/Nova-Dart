@@ -1,4 +1,4 @@
-import { daemon, startFlutterDeamon } from "./startFlutterDaemon"
+// import { daemon, startFlutterDeamon } from "./startFlutterDaemon"
 import { DartColorAssistant } from "./colors"
 import { informationView } from "./informationView"
 import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun"
@@ -47,7 +47,7 @@ nova.config.onDidChange(
   }
 )
 
-export const activate = () => {
+export const activate = async () => {
   console.log("activating...")
 
   // register nova commands
@@ -59,13 +59,18 @@ export const activate = () => {
   compositeDisposable.add(registerGetDependencies())
   compositeDisposable.add(informationView)
 
-  getDartVersion().then(dartVersion => {
+  try {
+    const dartVersion = await getDartVersion()
     informationView.dartVersion = dartVersion
-  })
-
-  getFlutterVersion().then(flutterVersion => {
-    informationView.flutterVersion = flutterVersion
-  })
+  } catch {
+    console.log("Dart version not found")
+  }
+  // try {
+  //   const flutterVersion = await getFlutterVersion()
+  //   informationView.flutterVersion = flutterVersion
+  // } catch {
+  //   console.log("Flutter version not found")
+  // }
 
   if (
     nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
@@ -87,11 +92,11 @@ export const activate = () => {
   }
 
   informationView.reload()
-  startFlutterDeamon()
+  // startFlutterDeamon()
 }
 
 export const deactivate = () => {
-  daemon?.terminate()
+  // daemon?.terminate()
   client?.stop()
   compositeDisposable.dispose()
 }

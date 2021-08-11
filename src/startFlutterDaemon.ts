@@ -24,7 +24,5 @@ export const startFlutterDeamon = async () => {
       }
     })
     daemon.start()
-  }).then(() => {
-    console.log("Daemon started")
   })
 }
