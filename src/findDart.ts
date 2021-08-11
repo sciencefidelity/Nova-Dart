@@ -10,8 +10,11 @@ export const findDart = async () => {
       stdio: ["ignore", "pipe", "ignore"]
     })
     let analyzerPath: string | null = null
-    find.onStdout(async function (line) {
+    find.onStdout(async line => {
       analyzerPath = line
+    })
+    find.onStderr(async line => {
+      console.log(line)
     })
     find.onDidExit(status => {
       if (status === 0) {
