@@ -74,13 +74,13 @@ export const activate = () => {
       nova.notifications.add(notification)
     }
     activateLsp()
+      .then(() => {
+        console.log("activated")
+      })
       .catch(err => {
         console.error("Failed to activate")
         console.error(err)
         nova.workspace.showErrorMessage(err)
-      })
-      .then(() => {
-        console.log("activated")
       })
   }
 
