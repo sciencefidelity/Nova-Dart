@@ -14,13 +14,13 @@ export class DartColorAssistant implements ColorAssistant {
   constructor() {
     // Regexes
     // prettier-ignore
-    this.hexRegex = new RegExp("\\(0x([A-F0-9]{8})\\)", 'i');
+    this.hexRegex = new RegExp("Color\\(0x([A-F0-9]{8})\\)", 'i');
     // prettier-ignore
-    this.argbHexRegex = new RegExp("\\.fromARGB\\(\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2})\\s*\\)", "i");
+    this.argbHexRegex = new RegExp("Color\\.fromARGB\\(\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2})\\s*\\)", "i");
     // prettier-ignore
-    this.argbRegex = new RegExp("\\.fromARGB\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3})\\s*\\)", "i");
+    this.argbRegex = new RegExp("Color\\.fromARGB\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3})\\s*\\)", "i");
     // prettier-ignore
-    this.rgboRegex = new RegExp("\\.fromRGBO\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([\\w_.]+)\\s*\\)", "i");
+    this.rgboRegex = new RegExp("Color\\.fromRGBO\\(\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([0-9]{1,3}),\\s*([\\w_.]+)\\s*\\)", "i");
 
     // Named colors
     const namedColors: ColorStrings = {}
