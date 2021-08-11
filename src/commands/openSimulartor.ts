@@ -5,23 +5,23 @@ export const registerOpenSimulator = () => {
     "sciencefidelity.dart.commands.openSimulator",
     wrapCommand(openSimulator)
   )
+}
 
-  // Opens the iOS Simulator
-  async function openSimulator(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const process = new Process("/usr/bin/env", {
-        args: ["open", "-a", "Simulator"],
-        stdio: ["ignore", "ignore", "pipe"]
-      })
-      process.onDidExit(status => {
-        if (status === 0) {
-          console.log("opening iOS Simulator")
-          resolve()
-        } else {
-          reject(status)
-        }
-      })
-      process.start()
+// Opens the iOS Simulator
+const openSimulator = () => {
+  return new Promise((resolve, reject) => {
+    const process = new Process("/usr/bin/env", {
+      args: ["open", "-a", "Simulator"],
+      stdio: ["ignore", "ignore", "pipe"]
     })
-  }
+    process.onDidExit(status => {
+      if (status === 0) {
+        resolve()
+      } else {
+        reject(status)
+      }
+    })
+    console.log("Opening iOS Simulator")
+    process.start()
+  }) as Promise<void>
 }

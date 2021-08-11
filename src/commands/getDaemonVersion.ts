@@ -6,12 +6,12 @@ export const registerGetDaemonVersion = () => {
     "sciencefidelity.dart.commands.getDaemonVersion",
     wrapCommand(getDaemonVersion)
   )
+}
 
-  async function getDaemonVersion(): Promise<void> {
-    console.log("Getting daemon version")
-    daemon?.request("daemon.version").then((reply) => {
-      console.log("message sent")
-      console.log(reply.result)
-    })
-  }
+const getDaemonVersion = async () => {
+  console.log("Getting daemon version")
+  daemon?.request("daemon.version").then((reply) => {
+    console.log("message sent")
+    console.log(reply.result)
+  })
 }

@@ -5,29 +5,31 @@ export function registerGetDependencies() {
     "sciencefidelity.dart.commands.getDependencies",
     wrapCommand(getDependencies)
   )
+}
 
-  // Fetch dependencies
-  // eslint-disable-next-line no-unused-vars
-  async function getDependencies(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const process = new Process("/usr/bin/env", {
-        args: ["flutter", "pub", "get"],
-        stdio: ["pipe", "pipe", "pipe"]
-      })
-      process.onStdout(() => {
-        console.log("Fetching Dependencies")
-        const notification = new NotificationRequest("dependencies")
-        notification.body = "Fetching Dependencies"
-        nova.notifications.add(notification)
-      })
-      process.onDidExit(status => {
-        if (status === 0) {
-          resolve()
-        } else {
-          reject(status)
-        }
-      })
-      process.start()
+// Fetch dependencies
+// eslint-disable-next-line no-unused-vars
+const getDependencies = () => {
+  return new Promise((resolve, reject) => {
+    const process = new Process("/usr/bin/env", {
+      args: ["flutter", "pub", "get"],
+      stdio: ["ignore", "pipe", "ignore"]
     })
-  }
+    process.onStdout(line => {
+      console.log(line)
+    })
+    process.onDidExit(status => {
+      if (status === 0) {
+        console.log("Dependencies up to date")
+        resolve()
+      } else {
+        reject(status)
+      }
+    })
+    console.log("Fetching dependencies")
+    const dependencyNotification = new NotificationRequest("dependencies")
+    dependencyNotification.body = "Fetching dependencies"
+    nova.notifications.add(dependencyNotification)
+    process.start()
+  }) as Promise<void>
 }

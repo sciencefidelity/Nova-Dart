@@ -1,23 +1,15 @@
-import type * as lspTypes from "vscode-languageserver-protocol"
 import { wrapCommand } from "../novaUtils"
 
-export const registerHotReload = (client: LanguageClient) => {
+export const registerHotReload = () => {
   return nova.commands.register(
     "sciencefidelity.dart.commands.hotReload",
     wrapCommand(hotReload)
   )
+}
 
-  async function hotReload(
-    // eslint-disable-next-line no-unused-vars
-    _editor: TextEditor
-  ): Promise<void> {
-
-    const changes = (await client.sendRequest(
-      "flutter.hotReload"
-    )) as null | Array<lspTypes.TextEdit>
-
-    if (!changes) {
-      return
-    }
-  }
+const hotReload = () => {
+  // eslint-disable-next-line no-unused-vars
+  return new Promise((_resolve, _reject) => {
+    console.log("Function not implemented")
+  }) as Promise<void>
 }
