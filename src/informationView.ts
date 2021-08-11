@@ -47,7 +47,7 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
   }
 
   getChildren(element: Element | null): Array<Element> {
-    if (element == null) {
+    if (element === null) {
       return [
         this._statusElement,
         this._dartVersionElement,
