@@ -1,7 +1,7 @@
 import { flutterNamedColors } from "./colorsProvider"
 
 interface ColorStrings {
-  [key: string]: string[]
+  [key: string]: Color
 }
 
 export class DartColorAssistant implements ColorAssistant {
@@ -9,7 +9,7 @@ export class DartColorAssistant implements ColorAssistant {
   argbHexRegex: RegExp
   argbRegex: RegExp
   rgboRegex: RegExp
-  namedColors: any
+  namedColors: ColorStrings
 
   constructor() {
     // Regexes
@@ -38,7 +38,7 @@ export class DartColorAssistant implements ColorAssistant {
     }
     this.namedColors = namedColors
   }
-
+  // @ts-ignore: No unused params
   provideColors(editor: TextEditor, context: ColorInformationContext) {
     const regexes = [
       this.hexRegex,
