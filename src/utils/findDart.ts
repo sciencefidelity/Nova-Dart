@@ -3,24 +3,24 @@ import { makeFileExecutable } from "./novaUtils"
 const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
 makeFileExecutable(findDartFile)
 
-export const findDart = async () => {
+export const findDart = () => {
   return new Promise<string | null>((resolve, reject) => {
     const find = new Process("/usr/bin/env", {
       args: ["zsh", "-c", `"${findDartFile}"`],
-      stdio: ["ignore", "pipe", "ignore"]
+      stdio: ["ignore", "pipe", "pipe"]
     })
     let analyzerPath: string | null = null
-    find.onStdout(async line => {
+    find.onStdout(line => {
       analyzerPath = line
     })
-    find.onStderr(async line => {
+    find.onStderr(line => {
       console.log(line)
     })
     find.onDidExit(status => {
       if (status === 0) {
         resolve(analyzerPath)
       } else {
-        reject(status)
+        reject("Dart Analyzer not found, please add the path in the plugin config.")
       }
     })
     find.start()

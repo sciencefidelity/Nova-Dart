@@ -33,7 +33,7 @@
     {
       "key": "sciencefidelity.dart.config.analyzerPath",
       "title": "Dart Analyzer Path",
-      "description": "Path to the binary snapshotsanalysis_server.dart.snapshot, located in /bin/cache/dart-sdk/bin/snapshots of the flutter folder.",
+      "description": "The extension will attempt to find the Dart analysis server (analysis_server.dart.snapshot). If that does not work add the path here, it's located in /bin/cache/dart-sdk/bin/snapshots of your Flutter installation.",
       "type": "path",
       "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots"
     },
