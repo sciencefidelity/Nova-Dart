@@ -65,12 +65,12 @@ export const activate = async () => {
   } catch {
     console.log("Dart version not found")
   }
-  // try {
-  //   const flutterVersion = await getFlutterVersion()
-  //   informationView.flutterVersion = flutterVersion
-  // } catch {
-  //   console.log("Flutter version not found")
-  // }
+  try {
+    const flutterVersion = await getFlutterVersion()
+    informationView.flutterVersion = flutterVersion
+  } catch {
+    console.log("Flutter version not found")
+  }
 
   if (
     nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
