@@ -4,14 +4,13 @@ import { daemon } from "../startFlutterDaemon"
 
 // let appId: string | null
 
-export function registerFlutterRun() {
+export const registerFlutterRun = () => {
   return nova.commands.register(
     "sciencefidelity.dart.commands.flutterRun",
     wrapCommand(flutterRun)
   )
 
-  async function flutterRun(): Promise<void>
-  async function flutterRun() {
+  async function flutterRun(): Promise<void> {
     return new Promise(() => {
       let path
 
@@ -36,22 +35,20 @@ export function registerFlutterRun() {
   }
 }
 
-export function registerFlutterStop() {
+export const registerFlutterStop = () => {
   return nova.commands.register(
     "sciencefidelity.dart.commands.flutterStop",
     wrapCommand(flutterStop)
   )
 
-  async function flutterStop(): Promise<void>
-  async function flutterStop() {
+  async function flutterStop(): Promise<void> {
     return new Promise((resolve, reject) => {
       daemon?.request("app.stop").then(function (response) {
         console.log(JSON.parse(response))
       })
-      const str = ""
       daemon?.onDidExit(status => {
         if (status === 0) {
-          resolve(str)
+          resolve()
         } else {
           reject(status)
         }

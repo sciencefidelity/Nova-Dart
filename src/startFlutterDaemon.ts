@@ -1,6 +1,6 @@
 export let daemon: Process | null = null
 
-export async function startFlutterDeamon() {
+export const startFlutterDeamon = async () => {
   return new Promise(() => {
     if (nova.inDevMode()) {
       const daemonNotification = new NotificationRequest("daemon activated")

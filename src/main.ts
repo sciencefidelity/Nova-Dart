@@ -21,22 +21,7 @@ nova.commands.register(
   })
 )
 
-nova.commands.register("sciencefidelity.dart.reload", reload)
-
-export const compositeDisposable = new CompositeDisposable()
-
-nova.config.onDidChange(
-  "sciencefidelity.dart.config.enableAnalyzer",
-  async function (current) {
-    if (current) {
-      activate()
-    } else {
-      deactivate()
-    }
-  }
-)
-
-async function reload() {
+const reload = async () => {
   if (
     nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
   ) {
@@ -46,7 +31,22 @@ async function reload() {
   }
 }
 
-export function activate() {
+nova.commands.register("sciencefidelity.dart.reload", reload)
+
+export const compositeDisposable = new CompositeDisposable()
+
+nova.config.onDidChange(
+  "sciencefidelity.dart.config.enableAnalyzer",
+  async current => {
+    if (current) {
+      activate()
+    } else {
+      deactivate()
+    }
+  }
+)
+
+export const activate = () => {
   console.log("activating...")
 
   // register nova commands
@@ -88,8 +88,8 @@ export function activate() {
   startFlutterDeamon()
 }
 
-export function deactivate() {
-  daemon?.kill()
+export const deactivate = () => {
+  daemon?.terminate()
   client?.stop()
   compositeDisposable.dispose()
 }

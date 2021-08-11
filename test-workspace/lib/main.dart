@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final Map<String, Color> colors = {
-    'blue': Color.fromRGBO(33, 152, 223, 1),
+    'blue': Color.fromRGBO(32, 151, 223, 1),
     'teal': Color.fromRGBO(55, 179, 159, 1),
     'green': Color.fromRGBO(89, 190, 73, 1),
     'yellow': Color.fromRGBO(233, 189, 49, 1),

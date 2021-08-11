@@ -3,38 +3,14 @@ import { daemon } from "./startFlutterDaemon"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { informationView } from "./informationView"
 import { compositeDisposable } from "./main"
-import { makeFileExecutable } from "./novaUtils"
+import { findDart } from "./findDart"
 
 export let client: LanguageClient | null = null
 const syntaxes = ["dart"]
 const formatOnSaveKey = "sciencefidelity.dart.config.formatDocumentOnSave"
 
-export async function activateLsp() {
+export const activateLsp = async () => {
   informationView.status = "Activating..."
-
-  const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
-  await makeFileExecutable(findDartFile)
-
-  async function findDart() {
-    return new Promise<string | null>((resolve, reject) => {
-      const find = new Process("/usr/bin/env", {
-        args: ["zsh", "-c", `"${findDartFile}"`],
-        stdio: ["ignore", "pipe", "ignore"]
-      })
-      let analyzerPath: string | null = null
-      find.onStdout(async function (line) {
-        analyzerPath = line
-      })
-      find.onDidExit(status => {
-        if (status === 0) {
-          resolve(analyzerPath)
-        } else {
-          reject(status)
-        }
-      })
-      find.start()
-    })
-  }
 
   findDart().then(analyzerPath => {
     if (!analyzerPath) {
@@ -52,7 +28,8 @@ export async function activateLsp() {
       )}/analysis_server.dart.snapshot`
 
     console.log(`Path to analysis server: ${analysisServer}`)
-    const serverOptions = {
+    const serverOptions: ServerOptions = {
+      type: "stdio",
       path: "/usr/bin/env",
       args: ["dart", `${analysisServer}`, "--lsp"]
     }
@@ -120,28 +97,7 @@ export async function activateLsp() {
         })
       )
 
-      // watch things that might change if this needs to happen or not
-      editorDisposable.add(editor.document.onDidChangeSyntax(refreshListener))
-      editorDisposable.add(
-        nova.config.onDidChange(formatOnSaveKey, refreshListener)
-      )
-      editorDisposable.add(
-        nova.workspace.config.onDidChange(formatOnSaveKey, refreshListener)
-      )
-
-      let willSaveListener = setupListener()
-      compositeDisposable.add({
-        dispose() {
-          willSaveListener?.dispose()
-        }
-      })
-
-      function refreshListener() {
-        willSaveListener?.dispose()
-        willSaveListener = setupListener()
-      }
-
-      function setupListener() {
+      const setupListener = () => {
         if (
           !(syntaxes as Array<string | null>).includes(editor.document.syntax)
         ) {
@@ -161,6 +117,27 @@ export async function activateLsp() {
           }
         })
       }
+
+      let willSaveListener = setupListener()
+      compositeDisposable.add({
+        dispose() {
+          willSaveListener?.dispose()
+        }
+      })
+
+      const refreshListener = () => {
+        willSaveListener?.dispose()
+        willSaveListener = setupListener()
+      }
+
+      // watch things that might change if this needs to happen or not
+      editorDisposable.add(editor.document.onDidChangeSyntax(refreshListener))
+      editorDisposable.add(
+        nova.config.onDidChange(formatOnSaveKey, refreshListener)
+      )
+      editorDisposable.add(
+        nova.workspace.config.onDidChange(formatOnSaveKey, refreshListener)
+      )
     })
   )
 

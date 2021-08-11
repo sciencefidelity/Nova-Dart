@@ -8,15 +8,13 @@ export function registerGetDependencies() {
 
   // Fetch dependencies
   // eslint-disable-next-line no-unused-vars
-  async function getDependencies(): Promise<void>
-  async function getDependencies() {
+  async function getDependencies(): Promise<void> {
     return new Promise((resolve, reject) => {
       const process = new Process("/usr/bin/env", {
         args: ["flutter", "pub", "get"],
         stdio: ["pipe", "pipe", "pipe"]
       })
-      const str = ""
-      process.onStdout(function () {
+      process.onStdout(() => {
         console.log("Fetching Dependencies")
         const notification = new NotificationRequest("dependencies")
         notification.body = "Fetching Dependencies"
@@ -25,7 +23,7 @@ export function registerGetDependencies() {
       process.onDidExit(status => {
         if (status === 0) {
           console.log("Exited")
-          resolve(str)
+          resolve()
         } else {
           console.log("Failed")
           reject(status)

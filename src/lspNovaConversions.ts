@@ -1,11 +1,11 @@
 import type * as lspTypes from "vscode-languageserver-protocol"
 import * as lsp from "vscode-languageserver-types"
 
-// this could really use some tests
-export function rangeToLspRange(
+// TODO: this could really use some tests
+export const rangeToLspRange = (
   document: TextDocument,
   range: Range
-): lspTypes.Range | null {
+): lspTypes.Range | null => {
   const fullContents = document.getTextInRange(new Range(0, document.length))
   let chars = 0
   let startLspRange: lspTypes.Position | undefined
@@ -25,11 +25,11 @@ export function rangeToLspRange(
   return null
 }
 
-// this could really use some tests
-export function lspRangeToRange(
+// TODO: this could really use some tests
+export const lspRangeToRange = (
   document: TextDocument,
   range: lspTypes.Range
-): Range {
+): Range => {
   const fullContents = document.getTextInRange(new Range(0, document.length))
   let rangeStart = 0
   let rangeEnd = 0
@@ -49,8 +49,8 @@ export function lspRangeToRange(
   return new Range(rangeStart, rangeEnd)
 }
 
-export function isLspLocationArray(
+export const isLspLocationArray = (
   x: Array<lspTypes.Location> | Array<lspTypes.LocationLink>
-): x is Array<lspTypes.Location> {
+): x is Array<lspTypes.Location> => {
   return lsp.Location.is(x[0])
 }

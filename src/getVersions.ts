@@ -1,14 +1,14 @@
 const re = /\b[0-9]*\.[0-9]*\.[0-9]*\b/
 
 // Launches the Dart executable to determine its current version
-export async function getDartVersion() {
+export const getDartVersion = async () => {
   return new Promise<string>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["dart", "--version"],
       stdio: ["ignore", "ignore", "pipe"]
     })
     let str = ""
-    process.onStderr(function (line) {
+    process.onStderr(line => {
       const arr = line.match(re) || ["unknown"]
       str = arr[0]
       console.log(line)
@@ -25,7 +25,7 @@ export async function getDartVersion() {
 }
 
 // Launches the Flutter executable to determine its current version
-export async function getFlutterVersion() {
+export const getFlutterVersion = () => {
   return new Promise<string>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["flutter", "--version"],
@@ -33,7 +33,7 @@ export async function getFlutterVersion() {
     })
     let str = ""
     const output: string[] = []
-    process.onStdout(function (line) {
+    process.onStdout(line => {
       console.log(line)
       output.push(line)
       const arr = output.toString().match(re) || ["Unknown"]

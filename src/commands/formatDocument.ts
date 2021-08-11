@@ -2,14 +2,12 @@ import type * as lspTypes from "vscode-languageserver-protocol"
 import { applyLSPEdits } from "../applyLSPEdits"
 import { wrapCommand } from "../novaUtils"
 
-export function registerFormatDocument(client: LanguageClient) {
+export const registerFormatDocument = (client: LanguageClient) => {
   return nova.commands.register(
     "sciencefidelity.dart.commands.formatDocument",
     wrapCommand(formatDocument)
   )
 
-  // eslint-disable-next-line no-unused-vars
-  async function formatDocument(editor: TextEditor): Promise<void>
   async function formatDocument(
     // eslint-disable-next-line no-unused-vars
     workspace: Workspace,

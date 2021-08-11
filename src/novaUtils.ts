@@ -1,8 +1,8 @@
-export function wrapCommand(
+export const wrapCommand = (
   // eslint-disable-next-line no-unused-vars
   command: (...args: any[]) => void | Promise<void>
   // eslint-disable-next-line no-unused-vars
-): (...args: any[]) => void {
+): (...args: any[]) => void => {
   return async function wrapped(...args: any[]) {
     try {
       await command(...args)
@@ -12,7 +12,7 @@ export function wrapCommand(
   }
 }
 
-export async function openFile(uri: string) {
+export const openFile = async (uri: string) => {
   const newEditor = await nova.workspace.openFile(uri)
   if (newEditor) {
     return newEditor
@@ -22,7 +22,7 @@ export async function openFile(uri: string) {
   return await nova.workspace.openFile(uri)
 }
 
-export async function makeFileExecutable(file: string) {
+export const makeFileExecutable = async (file: string) => {
   return new Promise<void>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["chmod", "u+x", file]
