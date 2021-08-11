@@ -1,4 +1,4 @@
-// import { daemon, startFlutterDeamon } from "./startFlutterDaemon"
+import { daemon, startFlutterDeamon } from "./startFlutterDaemon"
 import { DartColorAssistant } from "./colors"
 import { informationView } from "./informationView"
 import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun"
@@ -80,23 +80,23 @@ export const activate = async () => {
       notification.body = "Dart LSP is loading"
       nova.notifications.add(notification)
     }
-    activateLsp()
-      .then(() => {
-        console.log("activated")
-      })
-      .catch(err => {
-        console.error("Failed to activate")
-        console.error(err)
-        nova.workspace.showErrorMessage(err)
-      })
+    try {
+      await activateLsp()
+      console.log("LSP Activated")
+    } catch (err) {
+      console.error("Failed to activate LSP")
+      console.error(err)
+      nova.workspace.showErrorMessage(err)
+    }
   }
 
+  startFlutterDeamon()
+
   informationView.reload()
-  // startFlutterDeamon()
 }
 
 export const deactivate = () => {
-  // daemon?.terminate()
+  daemon?.terminate()
   client?.stop()
   compositeDisposable.dispose()
 }
