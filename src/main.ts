@@ -4,6 +4,7 @@ import { informationView } from "./informationView"
 import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { registerOpenEmulator } from "./commands/openEmulator"
+import { registerGetDependencies } from "./commands/getDependencies"
 import { registerGetDaemonVersion } from "./commands/getDaemonVersion"
 import { wrapCommand } from "./novaUtils"
 import { getDartVersion, getFlutterVersion } from "./getVersions"
@@ -55,6 +56,7 @@ export const activate = () => {
   compositeDisposable.add(registerOpenSimulator())
   compositeDisposable.add(registerOpenEmulator())
   compositeDisposable.add(registerGetDaemonVersion())
+  compositeDisposable.add(registerGetDependencies())
   compositeDisposable.add(informationView)
 
   getDartVersion().then(dartVersion => {
