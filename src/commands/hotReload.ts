@@ -1,4 +1,4 @@
-import { wrapCommand } from "../novaUtils"
+import { wrapCommand } from "../utils/novaUtils"
 
 export const registerHotReload = () => {
   return nova.commands.register(

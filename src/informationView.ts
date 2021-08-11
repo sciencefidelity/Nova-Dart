@@ -1,4 +1,4 @@
-import { Element } from "./interfaces"
+import { Element } from "./interfaces/interfaces"
 
 export class InformationView implements TreeDataProvider<Element>, Disposable {
   constructor() {

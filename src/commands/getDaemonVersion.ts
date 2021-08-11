@@ -1,4 +1,4 @@
-import { wrapCommand } from "../novaUtils"
+import { wrapCommand } from "../utils/novaUtils"
 import { daemon } from "../startFlutterDaemon"
 
 export const registerGetDaemonVersion = () => {

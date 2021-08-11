@@ -1,6 +1,6 @@
 import type * as lspTypes from "vscode-languageserver-protocol"
 import { applyLSPEdits } from "../applyLSPEdits"
-import { wrapCommand } from "../novaUtils"
+import { wrapCommand } from "../utils/novaUtils"
 
 export const registerFormatDocument = (client: LanguageClient) => {
   return nova.commands.register(

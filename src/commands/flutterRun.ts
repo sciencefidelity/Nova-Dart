@@ -1,5 +1,5 @@
 import { cleanPath } from "nova-extension-utils"
-import { wrapCommand } from "../novaUtils"
+import { wrapCommand } from "../utils/novaUtils"
 import { daemon } from "../startFlutterDaemon"
 
 // let appId: string | null

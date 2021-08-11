@@ -1,8 +1,5 @@
 import { flutterNamedColors } from "./colorsProvider"
-
-interface ColorStrings {
-  [key: string]: Color
-}
+import { ColorStrings } from "./interfaces/interfaces"
 
 export class DartColorAssistant implements ColorAssistant {
   hexRegex: RegExp

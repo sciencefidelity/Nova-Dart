@@ -3,7 +3,7 @@ import { daemon } from "./startFlutterDaemon"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { informationView } from "./informationView"
 import { compositeDisposable } from "./main"
-import { findDart } from "./findDart"
+import { findDart } from "./utils/findDart"
 
 export let client: LanguageClient | null = null
 const syntaxes = ["dart"]

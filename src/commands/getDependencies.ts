@@ -1,4 +1,4 @@
-import { wrapCommand } from "../novaUtils"
+import { wrapCommand } from "../utils/novaUtils"
 
 export function registerGetDependencies() {
   return nova.commands.register(

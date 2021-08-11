@@ -3,3 +3,7 @@ export type Element = {
   value: string
   readonly identifier: string
 }
+
+export interface ColorStrings {
+  [key: string]: Color
+}
