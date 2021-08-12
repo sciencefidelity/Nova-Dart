@@ -1,11 +1,10 @@
 import { preferences } from "nova-extension-utils"
-import { daemon } from "./startFlutterDaemon"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { informationView } from "./informationView"
 import { compositeDisposable } from "./main"
 import { findDart } from "./utils/findDart"
+import { state } from "./main"
 
-export let client: LanguageClient | null = null
 const syntaxes = ["dart"]
 const formatOnSaveKey = "sciencefidelity.dart.config.formatDocumentOnSave"
 
@@ -50,7 +49,7 @@ export const activateLsp = async () => {
     syntaxes: syntaxes
   }
 
-  client = new LanguageClient(
+  state.client = new LanguageClient(
     "sciencefidelity.dart",
     "Dart Language Server",
     serverOptions,
@@ -58,7 +57,7 @@ export const activateLsp = async () => {
   )
 
   compositeDisposable.add(
-    client.onDidStop(err => {
+    state.client.onDidStop(err => {
       let message = "Dart Language Server stopped unexpectedly"
       if (err) {
         message += `:\n\n${err.toString()}`
@@ -76,7 +75,7 @@ export const activateLsp = async () => {
       )
     })
   )
-  client.start()
+  state.client.start()
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
   //   notification => {
@@ -85,7 +84,7 @@ export const activateLsp = async () => {
   // )
 
   // Register format on save command
-  compositeDisposable.add(registerFormatDocument(client))
+  compositeDisposable.add(registerFormatDocument(state.client))
 
   compositeDisposable.add(
     nova.workspace.onDidAddTextEditor(editor => {
@@ -94,7 +93,7 @@ export const activateLsp = async () => {
       compositeDisposable.add(
         editor.onDidDestroy(() => {
           editorDisposable.dispose()
-          daemon?.kill()
+          state.daemon?.kill()
         })
       )
 
@@ -144,4 +143,23 @@ export const activateLsp = async () => {
 
   informationView.status = "Running"
   informationView.reload()
+}
+
+// Reload LSP
+export const reloadLsp = async () => {
+  if (
+    nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
+  ) {
+    deactivateLsp()
+    state.client = null
+    console.log("reloading...")
+    await activateLsp()
+  }
+}
+
+export const deactivateLsp = async () => {
+  if (state.client) {
+    state.client.stop()
+    state.client = null
+  }
 }

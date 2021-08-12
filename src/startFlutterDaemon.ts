@@ -1,4 +1,4 @@
-export let daemon: Process | null = null
+import { state } from "./main"
 
 export const startFlutterDeamon = async () => {
   // eslint-disable-next-line no-unused-vars
@@ -10,13 +10,13 @@ export const startFlutterDeamon = async () => {
     }
     console.log("Flutter Daemon is loading")
     // let message
-    daemon = new Process("/usr/bin/env", {
+    state.daemon = new Process("/usr/bin/env", {
       args: ["flutter", "daemon"],
       stdio: "jsonrpc"
     })
-    daemon.onNotify("daemon.connected", message => {
+    state.daemon.onNotify("daemon.connected", message => {
       console.log(message)
     })
-    daemon.start()
+    state.daemon.start()
   })
 }

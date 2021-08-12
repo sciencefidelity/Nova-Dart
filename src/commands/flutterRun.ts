@@ -1,6 +1,6 @@
 import { cleanPath } from "nova-extension-utils"
 import { wrapCommand } from "../utils/novaUtils"
-import { daemon } from "../startFlutterDaemon"
+import { state } from "../main"
 
 // let appId: string | null
 
@@ -48,10 +48,10 @@ export const registerFlutterStop = () => {
 
 const flutterStop = () => {
   return new Promise((resolve, reject) => {
-    daemon?.request("app.stop").then(function (response) {
+    state.daemon?.request("app.stop").then(function (response) {
       console.log(JSON.parse(response))
     })
-    daemon?.onDidExit(status => {
+    state.daemon?.onDidExit(status => {
       if (status === 0) {
         resolve()
       } else {

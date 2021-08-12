@@ -1,4 +1,4 @@
-import { daemon, startFlutterDeamon } from "./startFlutterDaemon"
+import { startFlutterDeamon } from "./startFlutterDaemon"
 import { DartColorAssistant } from "./colors"
 import { informationView } from "./informationView"
 import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun"
@@ -8,13 +8,19 @@ import { registerGetDependencies } from "./commands/getDependencies"
 import { registerGetDaemonVersion } from "./commands/getDaemonVersion"
 import { wrapCommand } from "./utils/novaUtils"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
-import { activateLsp } from "./activateLsp"
-import { client } from "./activateLsp"
+import { activateLsp, reloadLsp, deactivateLsp } from "./activateLsp"
+import { stopProcess } from "./utils/utils"
 
-// Colors
+export const state = {
+  client: null as LanguageClient | null,
+  daemon: null as Process | null
+}
+
+// Start color assistant
 const Colors = new DartColorAssistant()
 nova.assistants.registerColorAssistant(["dart"], Colors)
 
+// Register command to open workspace config
 nova.commands.register(
   "sciencefidelity.dart.openWorkspaceConfig",
   wrapCommand(function openWorkspaceConfig(workspace: Workspace) {
@@ -22,17 +28,7 @@ nova.commands.register(
   })
 )
 
-const reload = async () => {
-  if (
-    nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
-  ) {
-    deactivate()
-    console.log("reloading...")
-    await activateLsp()
-  }
-}
-
-nova.commands.register("sciencefidelity.dart.reload", reload)
+nova.commands.register("sciencefidelity.dart.reload", reloadLsp)
 
 export const compositeDisposable = new CompositeDisposable()
 
@@ -40,7 +36,7 @@ nova.config.onDidChange(
   "sciencefidelity.dart.config.enableAnalyzer",
   async current => {
     if (current) {
-      activate()
+      activateLsp()
     } else {
       deactivate()
     }
@@ -91,12 +87,11 @@ export const activate = async () => {
   }
 
   startFlutterDeamon()
-
   informationView.reload()
 }
 
-export const deactivate = () => {
-  daemon?.terminate()
-  client?.stop()
+export const deactivate = async () => {
+  await stopProcess(state.daemon)
+  await deactivateLsp()
   compositeDisposable.dispose()
 }

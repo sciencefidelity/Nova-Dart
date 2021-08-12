@@ -1,5 +1,5 @@
 import { wrapCommand } from "../utils/novaUtils"
-import { daemon } from "../startFlutterDaemon"
+import { state } from "../main"
 
 export const registerGetDaemonVersion = () => {
   return nova.commands.register(
@@ -10,7 +10,7 @@ export const registerGetDaemonVersion = () => {
 
 const getDaemonVersion = async () => {
   console.log("Getting daemon version")
-  daemon?.request("daemon.version").then((reply) => {
+  state.daemon?.request("daemon.version").then((reply) => {
     console.log("message sent")
     console.log(reply.result)
   })
