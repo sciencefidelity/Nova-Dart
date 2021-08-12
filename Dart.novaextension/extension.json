@@ -105,7 +105,7 @@
       "largeImage": "FlutterSidebarLarge",
       "sections": [
         {
-          "id": "sciencefidelity.dart.sidebar.reload",
+          "id": "sciencefidelity.dart.sidebar.run",
           "name": "Flutter",
           "placeholderText": "Flutter Hot Reload",
           "headerCommands": [
@@ -138,7 +138,7 @@
       "largeImage": "DartSidebarLarge",
       "sections": [
         {
-          "id": "sciencefidelity.dart.sidebar.reload",
+          "id": "sciencefidelity.dart.sidebar.flutterRun",
           "name": "Dart",
           "placeholderText": "Flutter Hot Reload",
           "headerCommands": [

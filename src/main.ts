@@ -10,15 +10,28 @@ import { wrapCommand } from "./utils/utils"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
 import { activateLsp, reloadLsp, deactivateLsp } from "./activateLsp"
 import { stopProcess } from "./utils/utils"
+import { cancelSubscriptions } from "./manageSubscriptions"
+
+export const keys = {
+  enableAnalyzer: "sciencefidelity.dart.config.enableAnalyzer",
+  formatDocument: "sciencefidelity.dart.commands.formatDocument",
+  formatDocumentOnSave: "sciencefidelity.dart.config.formatDocumentOnSave",
+  openWorkspaceConfig: "sciencefidelity.dart.openWorkspaceConfig",
+  reloadLsp: "sciencefidelity.dart.reloadLsp"
+}
+
+export const state = {
+  client: null as LanguageClient | null,
+  daemon: null as Process | null,
+  subscriptions: null as CompositeDisposable | null
+}
 
 export const vars = {
   syntaxes: ["dart"] as string[]
 }
 
-export const state = {
-  client: null as LanguageClient | null,
-  daemon: null as Process | null
-}
+// Resgister subscriptions class
+state.subscriptions = new CompositeDisposable()
 
 // Start color assistant
 const Colors = new DartColorAssistant()
@@ -26,23 +39,21 @@ nova.assistants.registerColorAssistant(["dart"], Colors)
 
 // Register command to open workspace config
 nova.commands.register(
-  "sciencefidelity.dart.openWorkspaceConfig",
+  keys.openWorkspaceConfig,
   wrapCommand(function openWorkspaceConfig(workspace: Workspace) {
     workspace.openConfig()
   })
 )
 
-nova.commands.register("sciencefidelity.dart.reload", reloadLsp)
-
-export const compositeDisposable = new CompositeDisposable()
+nova.commands.register(keys.reloadLsp, reloadLsp)
 
 nova.config.onDidChange(
-  "sciencefidelity.dart.config.enableAnalyzer",
+  keys.enableAnalyzer,
   async current => {
     if (current) {
       activateLsp()
     } else {
-      deactivate()
+      deactivateLsp()
     }
   }
 )
@@ -51,13 +62,13 @@ export async function activate() {
   console.log("activating...")
 
   // register nova commands
-  compositeDisposable.add(registerFlutterRun())
-  compositeDisposable.add(registerFlutterStop())
-  compositeDisposable.add(registerOpenSimulator())
-  compositeDisposable.add(registerOpenEmulator())
-  compositeDisposable.add(registerGetDaemonVersion())
-  compositeDisposable.add(registerGetDependencies())
-  compositeDisposable.add(informationView)
+  state.subscriptions?.add(registerFlutterRun())
+  state.subscriptions?.add(registerFlutterStop())
+  state.subscriptions?.add(registerOpenSimulator())
+  state.subscriptions?.add(registerOpenEmulator())
+  state.subscriptions?.add(registerGetDaemonVersion())
+  state.subscriptions?.add(registerGetDependencies())
+  state.subscriptions?.add(informationView)
 
   try {
     const dartVersion = await getDartVersion()
@@ -73,7 +84,7 @@ export async function activate() {
   }
 
   if (
-    nova.config.get("sciencefidelity.dart.config.enableAnalyzer", "boolean")
+    nova.config.get(keys.enableAnalyzer, "boolean")
   ) {
     if (nova.inDevMode()) {
       const notification = new NotificationRequest("activated")
@@ -97,5 +108,5 @@ export async function activate() {
 export async function deactivate() {
   await stopProcess(state.daemon)
   await deactivateLsp()
-  compositeDisposable.dispose()
+  await cancelSubscriptions()
 }
