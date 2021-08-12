@@ -57,9 +57,6 @@ export const activateLsp = async () => {
     clientOptions
   )
 
-  // Register format on save command
-  compositeDisposable.add(registerFormatDocument(client))
-
   compositeDisposable.add(
     client.onDidStop(err => {
       let message = "Dart Language Server stopped unexpectedly"
@@ -70,9 +67,7 @@ export const activateLsp = async () => {
       }
       nova.workspace.showActionPanel(
         message,
-        {
-          buttons: ["Restart", "Ignore"]
-        },
+        { buttons: ["Restart", "Ignore"] },
         index => {
           if (index == 0) {
             nova.commands.invoke("sciencefidelity.dart.reload")
@@ -88,6 +83,9 @@ export const activateLsp = async () => {
   //     console.log(JSON.stringify(notification))
   //   }
   // )
+
+  // Register format on save command
+  compositeDisposable.add(registerFormatDocument(client))
 
   compositeDisposable.add(
     nova.workspace.onDidAddTextEditor(editor => {
