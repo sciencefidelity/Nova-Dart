@@ -11,6 +11,10 @@ import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
 import { activateLsp, reloadLsp, deactivateLsp } from "./activateLsp"
 import { stopProcess } from "./utils/utils"
 
+export const vars = {
+  syntaxes: ["dart"] as string[]
+}
+
 export const state = {
   client: null as LanguageClient | null,
   daemon: null as Process | null
@@ -43,7 +47,7 @@ nova.config.onDidChange(
   }
 )
 
-export const activate = async () => {
+export async function activate() {
   console.log("activating...")
 
   // register nova commands
@@ -90,7 +94,7 @@ export const activate = async () => {
   informationView.reload()
 }
 
-export const deactivate = async () => {
+export async function deactivate() {
   await stopProcess(state.daemon)
   await deactivateLsp()
   compositeDisposable.dispose()

@@ -1,10 +1,24 @@
 import { makeFileExecutable } from "./utils"
 
 const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
-makeFileExecutable(findDartFile)
+let path: string | null = null
 
-export const findDart = () => {
-  return new Promise<string | null>((resolve, reject) => {
+export async function findDartPath() {
+  path = nova.config.get("sciencefidelity.dart.config.analyzerPath", "string")
+  if (path) {
+    return path
+  } else {
+    try {
+      return (path = await findDart())
+    } catch (err) {
+      return err
+    }
+  }
+}
+
+async function findDart() {
+  return new Promise<string | null>((reslove, reject) => {
+    makeFileExecutable(findDartFile)
     const find = new Process("/usr/bin/env", {
       args: ["zsh", "-c", `"${findDartFile}"`],
       stdio: ["ignore", "pipe", "pipe"]
@@ -13,13 +27,14 @@ export const findDart = () => {
     find.onStdout(line => {
       analyzerPath = line
     })
-    find.onStderr(line => {
-      console.log(line)
+    find.onStderr(() => {
+      throw new Error("Dart Analyzer not found.")
     })
     find.onDidExit(status => {
       if (status === 0) {
-        resolve(analyzerPath)
+        reslove(analyzerPath)
       } else {
+        // prettier-ignore
         reject("Dart Analyzer not found, please add the path in the plugin config.")
       }
     })

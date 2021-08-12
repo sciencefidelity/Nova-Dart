@@ -2,26 +2,20 @@ import { preferences } from "nova-extension-utils"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { informationView } from "./informationView"
 import { compositeDisposable } from "./main"
-import { findDart } from "./utils/findDart"
-import { state } from "./main"
+import { findDartPath } from "./utils/findDart"
+import { vars, state } from "./main"
 
-const syntaxes = ["dart"]
 const formatOnSaveKey = "sciencefidelity.dart.config.formatDocumentOnSave"
 
 export const activateLsp = async () => {
+  if (state.client) await deactivateLsp()
   informationView.status = "Activating..."
-  let analyzerPath = nova.config.get(
-    "sciencefidelity.dart.config.analyzerPath",
-    "string"
-  )
-
-  if (!analyzerPath) {
-    try {
-      analyzerPath = await findDart()
-    } catch (err) {
-      console.error(err)
-      nova.workspace.showErrorMessage(err)
-    }
+  let analyzerPath = null
+  try {
+    analyzerPath = await findDartPath()
+  } catch (err) {
+    console.error(err)
+    throw new Error("Dart Analyzer not found.")
   }
 
   const analysisServer = `${analyzerPath
@@ -30,8 +24,8 @@ export const activateLsp = async () => {
       "/bin/dart",
       "/bin/cache/dart-sdk/bin/snapshots"
     )}/analysis_server.dart.snapshot`
+  console.log(`Analyzer path is: ${analysisServer}`)
 
-  console.log(`Path to analysis server: ${analysisServer}`)
   const serverOptions: ServerOptions = {
     type: "stdio",
     path: "/usr/bin/env",
@@ -46,7 +40,7 @@ export const activateLsp = async () => {
       outline: true,
       flutterOutline: true
     },
-    syntaxes: syntaxes
+    syntaxes: vars.syntaxes
   }
 
   state.client = new LanguageClient(
@@ -75,7 +69,14 @@ export const activateLsp = async () => {
       )
     })
   )
-  state.client.start()
+  try {
+    state.client.start()
+    // nova.subscriptions.add(state.client)
+  } catch (err) {
+    if (nova.inDevMode()) {
+      console.error(err)
+    }
+  }
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
   //   notification => {
@@ -99,7 +100,7 @@ export const activateLsp = async () => {
 
       const setupListener = () => {
         if (
-          !(syntaxes as Array<string | null>).includes(editor.document.syntax)
+          !(vars.syntaxes as Array<string | null>).includes(editor.document.syntax)
         ) {
           return
         }
