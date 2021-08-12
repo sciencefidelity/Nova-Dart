@@ -1,4 +1,4 @@
-import { makeFileExecutable } from "./novaUtils"
+import { makeFileExecutable } from "./utils"
 
 const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
 makeFileExecutable(findDartFile)

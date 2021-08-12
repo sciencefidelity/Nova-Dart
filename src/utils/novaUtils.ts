@@ -1,17 +1,3 @@
-export const wrapCommand = (
-  // eslint-disable-next-line no-unused-vars
-  command: (...args: any[]) => void | Promise<void>
-  // eslint-disable-next-line no-unused-vars
-): (...args: any[]) => void => {
-  return async function wrapped(...args: any[]) {
-    try {
-      await command(...args)
-    } catch (err) {
-      nova.workspace.showErrorMessage(err)
-    }
-  }
-}
-
 export const openFile = async (uri: string) => {
   const newEditor = await nova.workspace.openFile(uri)
   if (newEditor) {
@@ -20,20 +6,4 @@ export const openFile = async (uri: string) => {
   console.warn("failed first open attempt, retrying once", uri)
   // try one more time, this doesn't resolve if the file isn't already open
   return await nova.workspace.openFile(uri)
-}
-
-export const makeFileExecutable = async (file: string) => {
-  return new Promise<void>((resolve, reject) => {
-    const process = new Process("/usr/bin/env", {
-      args: ["chmod", "u+x", file]
-    })
-    process.onDidExit(status => {
-      if (status === 0) {
-        resolve()
-      } else {
-        reject(status)
-      }
-    })
-    process.start()
-  })
 }

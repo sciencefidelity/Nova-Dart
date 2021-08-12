@@ -1,4 +1,4 @@
-import { wrapCommand } from "../utils/novaUtils"
+import { wrapCommand } from "../utils/utils"
 
 export const registerOpenSimulator = () => {
   return nova.commands.register(

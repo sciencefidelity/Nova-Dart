@@ -1,4 +1,4 @@
-import { wrapCommand } from "../utils/novaUtils"
+import { wrapCommand } from "../utils/utils"
 import { state } from "../main"
 
 export const registerGetDaemonVersion = () => {
