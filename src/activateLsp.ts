@@ -1,11 +1,11 @@
 import { informationView } from "./informationView"
 import { findDartPath } from "./utils/findDart"
 import { vars, state } from "./main"
-import { removeLspSubscriptions } from "./manageSubscriptions"
+import { addLspSubscriptions, cancelSubscriptions } from "./manageSubscriptions"
 
 export const activateLsp = async () => {
   if (state.client) {
-    await removeLspSubscriptions()
+    await cancelSubscriptions(state.lspSubscriptions)
     await deactivateLsp()
   }
   informationView.status = "Activating..."
@@ -48,7 +48,7 @@ export const activateLsp = async () => {
     serverOptions,
     clientOptions
   )
-
+  await addLspSubscriptions()
   try {
     state.client.start()
   } catch (err) {
@@ -70,7 +70,7 @@ export const activateLsp = async () => {
 // Reload LSP
 export async function reloadLsp() {
   if (state.client) {
-    await removeLspSubscriptions()
+    await cancelSubscriptions(state.lspSubscriptions)
     await deactivateLsp()
     console.log("reloading...")
     await activateLsp()

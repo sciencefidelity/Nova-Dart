@@ -1,18 +1,19 @@
 import { preferences } from "nova-extension-utils"
 import { keys, state, vars } from "./main"
 import { registerFormatDocument } from "./commands/formatDocument"
+import { activateLsp } from "./activateLsp"
 
-export async function cancelSubscriptions() {
-  if (state.subscriptions) {
-    state.subscriptions.dispose()
-    state.subscriptions = null
+export async function cancelSubscriptions(subscriptions: CompositeDisposable | null) {
+  if (subscriptions) {
+    subscriptions.dispose()
+    subscriptions = null
   }
 }
 
 export async function addLspSubscriptions() {
   // Register format on save command
-  if (state.client && state.subscriptions) {
-    state.subscriptions.add(
+  if (state.client && state.lspSubscriptions) {
+    state.lspSubscriptions.add(
       state.client.onDidStop(err => {
         let message = "Dart Language Server stopped unexpectedly"
         if (err) {
@@ -25,20 +26,20 @@ export async function addLspSubscriptions() {
           { buttons: ["Restart", "Ignore"] },
           index => {
             if (index == 0) {
-              nova.commands.invoke(keys.reloadLsp)
+              activateLsp()
             }
           }
         )
       })
     )
-    state.subscriptions.add(registerFormatDocument(state.client))
+    state.lspSubscriptions.add(registerFormatDocument(state.client))
   }
 
-  state.subscriptions?.add(
+  state.lspSubscriptions?.add(
     nova.workspace.onDidAddTextEditor(editor => {
       const editorDisposable = new CompositeDisposable()
-      state.subscriptions?.add(editorDisposable)
-      state.subscriptions?.add(
+      state.lspSubscriptions?.add(editorDisposable)
+      state.lspSubscriptions?.add(
         editor.onDidDestroy(() => {
           editorDisposable.dispose()
           state.daemon?.kill()
@@ -67,7 +68,7 @@ export async function addLspSubscriptions() {
       }
 
       let willSaveListener = setupListener()
-      state.subscriptions?.add({
+      state.lspSubscriptions?.add({
         dispose() {
           willSaveListener?.dispose()
         }
@@ -84,90 +85,6 @@ export async function addLspSubscriptions() {
         nova.config.onDidChange(keys.formatDocumentOnSave, refreshListener)
       )
       editorDisposable.add(
-        nova.workspace.config.onDidChange(
-          keys.formatDocumentOnSave,
-          refreshListener
-        )
-      )
-    })
-  )
-}
-
-export async function removeLspSubscriptions() {
-  // Register format on save command
-  if (state.client && state.subscriptions) {
-    state.subscriptions.remove(
-      state.client.onDidStop(err => {
-        let message = "Dart Language Server stopped unexpectedly"
-        if (err) {
-          message += `:\n\n${err.toString()}`
-        } else {
-          message += "."
-        }
-        nova.workspace.showActionPanel(
-          message,
-          { buttons: ["Restart", "Ignore"] },
-          index => {
-            if (index == 0) {
-              nova.commands.invoke(keys.reloadLsp)
-            }
-          }
-        )
-      })
-    )
-    state.subscriptions.remove(registerFormatDocument(state.client))
-  }
-
-  state.subscriptions?.remove(
-    nova.workspace.onDidAddTextEditor(editor => {
-      const editorDisposable = new CompositeDisposable()
-      state.subscriptions?.remove(editorDisposable)
-      state.subscriptions?.remove(
-        editor.onDidDestroy(() => {
-          editorDisposable.dispose()
-          state.daemon?.kill()
-        })
-      )
-
-      const setupListener = () => {
-        if (
-          !(vars.syntaxes as Array<string | null>).includes(
-            editor.document.syntax
-          )
-        ) {
-          return
-        }
-        const formatDocumentOnSave = preferences.getOverridableBoolean(
-          keys.formatDocumentOnSave
-        )
-        if (!formatDocumentOnSave) {
-          return
-        }
-        return editor.onWillSave(async editor => {
-          if (formatDocumentOnSave) {
-            await nova.commands.invoke(keys.formatDocument, editor)
-          }
-        })
-      }
-
-      let willSaveListener = setupListener()
-      state.subscriptions?.remove({
-        dispose() {
-          willSaveListener?.dispose()
-        }
-      })
-
-      const refreshListener = () => {
-        willSaveListener?.dispose()
-        willSaveListener = setupListener()
-      }
-
-      // watch things that might change if this needs to happen or not
-      editorDisposable.remove(editor.document.onDidChangeSyntax(refreshListener))
-      editorDisposable.remove(
-        nova.config.onDidChange(keys.formatDocumentOnSave, refreshListener)
-      )
-      editorDisposable.remove(
         nova.workspace.config.onDidChange(
           keys.formatDocumentOnSave,
           refreshListener

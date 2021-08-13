@@ -17,21 +17,23 @@ export const keys = {
   formatDocument: "sciencefidelity.dart.commands.formatDocument",
   formatDocumentOnSave: "sciencefidelity.dart.config.formatDocumentOnSave",
   openWorkspaceConfig: "sciencefidelity.dart.openWorkspaceConfig",
-  reloadLsp: "sciencefidelity.dart.reloadLsp"
+  reloadLspKey: "sciencefidelity.dart.commands.reloadLsp"
 }
 
 export const state = {
   client: null as LanguageClient | null,
   daemon: null as Process | null,
-  subscriptions: null as CompositeDisposable | null
+  globalSubscriptions: null as CompositeDisposable | null,
+  lspSubscriptions: null as CompositeDisposable | null
 }
 
 export const vars = {
   syntaxes: ["dart"] as string[]
 }
 
-// Resgister subscriptions class
-state.subscriptions = new CompositeDisposable()
+// Resgister subscriptions
+state.globalSubscriptions = new CompositeDisposable()
+state.lspSubscriptions = new CompositeDisposable()
 
 // Start color assistant
 const Colors = new DartColorAssistant()
@@ -45,7 +47,7 @@ nova.commands.register(
   })
 )
 
-nova.commands.register(keys.reloadLsp, reloadLsp)
+nova.commands.register(keys.reloadLspKey, reloadLsp)
 
 nova.config.onDidChange(
   keys.enableAnalyzer,
@@ -62,13 +64,13 @@ export async function activate() {
   console.log("activating...")
 
   // register nova commands
-  state.subscriptions?.add(registerFlutterRun())
-  state.subscriptions?.add(registerFlutterStop())
-  state.subscriptions?.add(registerOpenSimulator())
-  state.subscriptions?.add(registerOpenEmulator())
-  state.subscriptions?.add(registerGetDaemonVersion())
-  state.subscriptions?.add(registerGetDependencies())
-  state.subscriptions?.add(informationView)
+  state.globalSubscriptions?.add(registerFlutterRun())
+  state.globalSubscriptions?.add(registerFlutterStop())
+  state.globalSubscriptions?.add(registerOpenSimulator())
+  state.globalSubscriptions?.add(registerOpenEmulator())
+  state.globalSubscriptions?.add(registerGetDaemonVersion())
+  state.globalSubscriptions?.add(registerGetDependencies())
+  state.globalSubscriptions?.add(informationView)
 
   try {
     const dartVersion = await getDartVersion()
@@ -106,7 +108,8 @@ export async function activate() {
 }
 
 export async function deactivate() {
-  await stopProcess(state.daemon)
+  await cancelSubscriptions(state.lspSubscriptions)
   await deactivateLsp()
-  await cancelSubscriptions()
+  await stopProcess(state.daemon)
+  await cancelSubscriptions(state.globalSubscriptions)
 }
