@@ -34,7 +34,6 @@ export const vars = {
 
 // Resgister subscriptions
 state.globalSubscriptions = new CompositeDisposable()
-state.lspSubscriptions = new CompositeDisposable()
 
 // Start color assistant
 const Colors = new DartColorAssistant()

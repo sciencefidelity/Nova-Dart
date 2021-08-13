@@ -4,6 +4,7 @@ import { vars, state } from "./main"
 import { addLspSubscriptions, cancelSubscriptions } from "./manageSubscriptions"
 
 export const activateLsp = async () => {
+  state.lspSubscriptions = new CompositeDisposable()
   if (state.client) {
     await cancelSubscriptions(state.lspSubscriptions)
     await deactivateLsp()
