@@ -1,5 +1,5 @@
 import { makeFileExecutable } from "./utils"
-import { keys } from "../main"
+import { keys } from "../globalVars"
 
 const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
 let path: string | null = null
