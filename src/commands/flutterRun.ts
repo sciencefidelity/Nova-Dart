@@ -1,6 +1,6 @@
 import { cleanPath } from "nova-extension-utils"
 import { wrapCommand } from "../utils/utils"
-import { state, keys } from "../main"
+import { state, keys } from "../globalVars"
 
 export function registerFlutterRun() {
   return nova.commands.register(keys.flutterRun, wrapCommand(flutterRun))

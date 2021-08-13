@@ -1,6 +1,6 @@
 import { informationView } from "./informationView"
 import { findDartPath } from "./utils/findDart"
-import { vars, state } from "./main"
+import { vars, state } from "./globalVars"
 import { addLspSubscriptions, cancelSubscriptions } from "./manageSubscriptions"
 
 export const activateLsp = async () => {

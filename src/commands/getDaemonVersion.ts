@@ -1,5 +1,5 @@
 import { wrapCommand } from "../utils/utils"
-import { state } from "../main"
+import { state } from "../globalVars"
 
 export const registerGetDaemonVersion = () => {
   return nova.commands.register(

@@ -1,5 +1,5 @@
 import { preferences } from "nova-extension-utils"
-import { keys, state, vars } from "./main"
+import { keys, state, vars } from "./globalVars"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { activateLsp } from "./activateLsp"
 

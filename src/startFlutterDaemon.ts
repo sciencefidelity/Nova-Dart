@@ -1,4 +1,4 @@
-import { state } from "./main"
+import { state } from "./globalVars"
 
 export async function startFlutterDeamon () {
   // eslint-disable-next-line no-unused-vars
