@@ -28,11 +28,10 @@ Support for syntax highlighting, language server protocol, auto formatting, clip
 
 ### Known bugs
 
-- The LSP is not completely stable and can crash.
 - Nova does not allow scrolling inside LSP hover windows and many of the Dart analysis docs are too long to fit on screen.
 - Syntax highlighting does not work inside LSP hover windows.
 - Key bindings do not work if two running extensions use the same key binding. I would like to use `option-shift-f` to format, as is used by Prettier and Dart Code, but it does not work if Prettier is also running. Auto format on save is not affected.
-- Some colours are as yet undecided and could change in the final syntax: `var` and `void`, `this` and `super`, dartdoc highlighting.
+- Some syntax colours are as yet undecided and could change in the final syntax: `this` and `super`, dartdoc highlighting.
 
 ### Contributing
 

@@ -1,3 +1,7 @@
+## Version 0.5.1
+
+Fix a bug that would show an alert when reloading the LSP.
+
 ## Version 0.5.0
 
 The Color Assistant is now fully functional.
