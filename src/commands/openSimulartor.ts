@@ -1,5 +1,5 @@
-import { wrapCommand } from "../utils/utils"
 import { keys } from "../globalVars"
+import { wrapCommand } from "../utils/utils"
 
 export function registerOpenSimulator() {
   return nova.commands.register(keys.openSimulator, wrapCommand(openSimulator))

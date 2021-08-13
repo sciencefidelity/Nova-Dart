@@ -9,7 +9,7 @@ export const keys = {
   hotReload: "sciencefidelity.dart.commands.hotReload",
   openEmulator: "sciencefidelity.dart.commands.openEmulator",
   openSimulator: "sciencefidelity.dart.commands.openSimulator",
-  openWorkspaceConfig: "sciencefidelity.dart.openWorkspaceConfig",
+  openWorkspaceConfig: "sciencefidelity.dart.commands.openWorkspaceConfig",
   reloadLspKey: "sciencefidelity.dart.commands.reloadLsp"
 }
 

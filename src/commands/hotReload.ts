@@ -1,5 +1,5 @@
-import { wrapCommand } from "../utils/utils"
 import { keys } from "../globalVars"
+import { wrapCommand } from "../utils/utils"
 
 export function registerHotReload() {
   return nova.commands.register(keys.hotReload, wrapCommand(hotReload))

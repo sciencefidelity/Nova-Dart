@@ -1,7 +1,7 @@
 import { preferences } from "nova-extension-utils"
-import { keys, state, vars } from "./globalVars"
-import { registerFormatDocument } from "./commands/formatDocument"
 import { activateLsp } from "./activateLsp"
+import { registerFormatDocument } from "./commands/formatDocument"
+import { keys, state, vars } from "./globalVars"
 
 export async function cancelSubscriptions(
   subscriptions: CompositeDisposable | null
