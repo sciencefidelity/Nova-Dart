@@ -1,16 +1,14 @@
 import { wrapCommand } from "../utils/utils"
+import { keys } from "../main"
 
-export const registerOpenEmulator = () => {
-  return nova.commands.register(
-    "sciencefidelity.dart.commands.openEmulator",
-    wrapCommand(openEmulator)
-  )
+export function registerOpenEmulator() {
+  return nova.commands.register(keys.openEmulator, wrapCommand(openEmulator))
 }
 
 // Find the name of the avd
 // TODO: Open an alert to let the user choose an avd
-const openEmulator = async () => {
-  return new Promise((resolve, reject) => {
+async function openEmulator() {
+  return new Promise<void>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["emulator", "-list-avds"],
       stdio: ["ignore", "pipe", "ignore"]
@@ -26,12 +24,12 @@ const openEmulator = async () => {
       }
     })
     process.start()
-  }) as Promise<void>
+  })
 }
 
 // Opens the Android Emulator
-const openAvd = async (line: string) => {
-  return new Promise((resolve, reject) => {
+async function openAvd(line: string) {
+  return new Promise<void>((resolve, reject) => {
     const avdName = line.trim()
     const process = new Process("/usr/bin/env", {
       args: ["emulator", "-avd", avdName],
@@ -46,5 +44,5 @@ const openAvd = async (line: string) => {
     })
     console.log(`Opening ${avdName}`)
     process.start()
-  }) as Promise<void>
+  })
 }

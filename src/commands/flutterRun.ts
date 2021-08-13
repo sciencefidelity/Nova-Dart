@@ -1,20 +1,18 @@
 import { cleanPath } from "nova-extension-utils"
 import { wrapCommand } from "../utils/utils"
-import { state } from "../main"
+import { state, keys } from "../main"
 
-// let appId: string | null
-
-export const registerFlutterRun = () => {
-  return nova.commands.register(
-    "sciencefidelity.dart.commands.flutterRun",
-    wrapCommand(flutterRun)
-  )
+export function registerFlutterRun() {
+  return nova.commands.register(keys.flutterRun, wrapCommand(flutterRun))
 }
 
-const flutterRun = () => {
+export function registerFlutterStop() {
+  return nova.commands.register(keys.flutterStop, wrapCommand(flutterStop))
+}
+
+function flutterRun() {
   return new Promise((resolve, reject) => {
     let path
-
     if (nova.inDevMode() && nova.workspace.path) {
       path = `${cleanPath(nova.workspace.path)}/test-workspace`
     } else if (nova.workspace.path) {
@@ -39,14 +37,7 @@ const flutterRun = () => {
   }) as Promise<void>
 }
 
-export const registerFlutterStop = () => {
-  return nova.commands.register(
-    "sciencefidelity.dart.commands.flutterStop",
-    wrapCommand(flutterStop)
-  )
-}
-
-const flutterStop = () => {
+function flutterStop() {
   return new Promise((resolve, reject) => {
     state.daemon?.request("app.stop").then(function (response) {
       console.log(JSON.parse(response))

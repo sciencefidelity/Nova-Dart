@@ -1,6 +1,6 @@
 import { state } from "./main"
 
-export const startFlutterDeamon = async () => {
+export async function startFlutterDeamon () {
   // eslint-disable-next-line no-unused-vars
   return new Promise((_resolve, _reject) => {
     if (nova.inDevMode()) {

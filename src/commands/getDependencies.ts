@@ -1,16 +1,17 @@
 import { wrapCommand } from "../utils/utils"
+import { keys } from "../main"
 
 export function registerGetDependencies() {
   return nova.commands.register(
-    "sciencefidelity.dart.commands.getDependencies",
+    keys.getDependencies,
     wrapCommand(getDependencies)
   )
 }
 
 // Fetch dependencies
 // eslint-disable-next-line no-unused-vars
-const getDependencies = () => {
-  return new Promise((resolve, reject) => {
+function getDependencies() {
+  return new Promise<void>((resolve, reject) => {
     console.log("Getting dependencies")
     let cwd = nova.workspace.path!
     if (nova.inDevMode()) {
@@ -50,5 +51,5 @@ const getDependencies = () => {
     dependencyNotification.body = "Fetching dependencies"
     nova.notifications.add(dependencyNotification)
     process.start()
-  }) as Promise<void>
+  })
 }

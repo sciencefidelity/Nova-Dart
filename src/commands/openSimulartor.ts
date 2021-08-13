@@ -1,15 +1,13 @@
 import { wrapCommand } from "../utils/utils"
+import { keys } from "../main"
 
-export const registerOpenSimulator = () => {
-  return nova.commands.register(
-    "sciencefidelity.dart.commands.openSimulator",
-    wrapCommand(openSimulator)
-  )
+export function registerOpenSimulator() {
+  return nova.commands.register(keys.openSimulator, wrapCommand(openSimulator))
 }
 
 // Opens the iOS Simulator
-const openSimulator = () => {
-  return new Promise((resolve, reject) => {
+function openSimulator() {
+  return new Promise<void>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
       args: ["open", "-a", "Simulator"],
       stdio: ["ignore", "ignore", "pipe"]
@@ -23,5 +21,5 @@ const openSimulator = () => {
     })
     console.log("Opening iOS Simulator")
     process.start()
-  }) as Promise<void>
+  })
 }

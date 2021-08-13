@@ -1,10 +1,11 @@
 import type * as lspTypes from "vscode-languageserver-protocol"
 import { applyLSPEdits } from "../applyLSPEdits"
 import { wrapCommand } from "../utils/utils"
+import { keys } from "../main"
 
-export const registerFormatDocument = (client: LanguageClient) => {
+export function registerFormatDocument(client: LanguageClient) {
   return nova.commands.register(
-    "sciencefidelity.dart.commands.formatDocument",
+    keys.formatDocument,
     wrapCommand(formatDocument)
   )
 

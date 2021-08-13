@@ -13,14 +13,22 @@ import { stopProcess } from "./utils/utils"
 import { cancelSubscriptions } from "./manageSubscriptions"
 
 export const keys = {
+  analyzerPath: "sciencefidelity.dart.config.analyzerPath",
   enableAnalyzer: "sciencefidelity.dart.config.enableAnalyzer",
+  flutterRun: "sciencefidelity.dart.commands.flutterRun",
+  flutterStop: "sciencefidelity.dart.commands.flutterStop",
   formatDocument: "sciencefidelity.dart.commands.formatDocument",
   formatDocumentOnSave: "sciencefidelity.dart.config.formatDocumentOnSave",
+  getDependencies: "sciencefidelity.dart.commands.getDependencies",
+  hotReload: "sciencefidelity.dart.commands.hotReload",
+  openEmulator: "sciencefidelity.dart.commands.openEmulator",
+  openSimulator: "sciencefidelity.dart.commands.openSimulator",
   openWorkspaceConfig: "sciencefidelity.dart.openWorkspaceConfig",
   reloadLspKey: "sciencefidelity.dart.commands.reloadLsp"
 }
 
 export const state = {
+  appId: null as string | null,
   client: null as LanguageClient | null,
   daemon: null as Process | null,
   globalSubscriptions: null as CompositeDisposable | null,
@@ -31,9 +39,6 @@ export const state = {
 export const vars = {
   syntaxes: ["dart"] as string[]
 }
-
-// Resgister subscriptions
-state.globalSubscriptions = new CompositeDisposable()
 
 // Start color assistant
 const Colors = new DartColorAssistant()
@@ -47,8 +52,10 @@ nova.commands.register(
   })
 )
 
+// register command to reload the LSP
 nova.commands.register(keys.reloadLspKey, reloadLsp)
 
+// watch the preferences for enable analysis server
 nova.config.onDidChange(
   keys.enableAnalyzer,
   async current => {
@@ -62,7 +69,11 @@ nova.config.onDidChange(
 
 export async function activate() {
   console.log("activating...")
-
+  // Resgister subscriptions
+  if (state.globalSubscriptions) {
+    state.globalSubscriptions.dispose()
+  }
+  state.globalSubscriptions = new CompositeDisposable()
   // register nova commands
   state.globalSubscriptions?.add(registerFlutterRun())
   state.globalSubscriptions?.add(registerFlutterStop())
@@ -71,7 +82,7 @@ export async function activate() {
   state.globalSubscriptions?.add(registerGetDaemonVersion())
   state.globalSubscriptions?.add(registerGetDependencies())
   state.globalSubscriptions?.add(informationView)
-
+  // get installed Dart and Flutter versions
   try {
     const dartVersion = await getDartVersion()
     informationView.dartVersion = dartVersion
@@ -84,7 +95,7 @@ export async function activate() {
   } catch {
     console.log("Flutter version not found")
   }
-
+  // start the LSP server
   if (
     nova.config.get(keys.enableAnalyzer, "boolean")
   ) {
@@ -102,12 +113,13 @@ export async function activate() {
       nova.workspace.showErrorMessage(err)
     }
   }
-
+  // start the Flutter Daemon
   startFlutterDeamon()
   informationView.reload()
 }
 
 export async function deactivate() {
+  await cancelSubscriptions(state.editorSubscriptions)
   await cancelSubscriptions(state.lspSubscriptions)
   await deactivateLsp()
   await stopProcess(state.daemon)

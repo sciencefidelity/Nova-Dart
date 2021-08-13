@@ -1,15 +1,13 @@
 import { wrapCommand } from "../utils/utils"
+import { keys } from "../main"
 
-export const registerHotReload = () => {
-  return nova.commands.register(
-    "sciencefidelity.dart.commands.hotReload",
-    wrapCommand(hotReload)
-  )
+export function registerHotReload() {
+  return nova.commands.register(keys.hotReload, wrapCommand(hotReload))
 }
 
-const hotReload = () => {
+function hotReload() {
   // eslint-disable-next-line no-unused-vars
-  return new Promise((_resolve, _reject) => {
+  return new Promise<void>((_resolve, _reject) => {
     console.log("Function not implemented")
-  }) as Promise<void>
+  })
 }

@@ -1,4 +1,4 @@
-export const openFile = async (uri: string) => {
+export async function openFile(uri: string) {
   const newEditor = await nova.workspace.openFile(uri)
   if (newEditor) {
     return newEditor

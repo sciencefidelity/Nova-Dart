@@ -1,10 +1,11 @@
 import { makeFileExecutable } from "./utils"
+import { keys } from "../main"
 
 const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
 let path: string | null = null
 
 export async function findDartPath() {
-  path = nova.config.get("sciencefidelity.dart.config.analyzerPath", "string")
+  path = nova.config.get(keys.analyzerPath, "string")
   if (path) {
     return path
   } else {
