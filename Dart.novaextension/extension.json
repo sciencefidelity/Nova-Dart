@@ -196,11 +196,11 @@
     "extensions": [
       {
         "title": "Preferences",
-        "command": "sciencefidelity.dart.openWorkspaceConfig"
+        "command": "sciencefidelity.dart.commands.openWorkspaceConfig"
       },
       {
         "title": "Restart Server",
-        "command": "sciencefidelity.dart.reload"
+        "command": "sciencefidelity.dart.commands.reload"
       },
       {
         "title": "Get Daemon Version",
