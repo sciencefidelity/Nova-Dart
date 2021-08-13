@@ -24,7 +24,8 @@ export const state = {
   client: null as LanguageClient | null,
   daemon: null as Process | null,
   globalSubscriptions: null as CompositeDisposable | null,
-  lspSubscriptions: null as CompositeDisposable | null
+  lspSubscriptions: null as CompositeDisposable | null,
+  editorSubscriptions: null as CompositeDisposable | null
 }
 
 export const vars = {

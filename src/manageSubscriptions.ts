@@ -3,7 +3,9 @@ import { keys, state, vars } from "./main"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { activateLsp } from "./activateLsp"
 
-export async function cancelSubscriptions(subscriptions: CompositeDisposable | null) {
+export async function cancelSubscriptions(
+  subscriptions: CompositeDisposable | null
+) {
   if (subscriptions) {
     subscriptions.dispose()
     subscriptions = null
@@ -34,36 +36,30 @@ export async function addLspSubscriptions() {
     )
     state.lspSubscriptions.add(registerFormatDocument(state.client))
   }
+  startEditorSubscriptions()
+}
 
+function startEditorSubscriptions() {
   state.lspSubscriptions?.add(
     nova.workspace.onDidAddTextEditor(editor => {
-      const editorDisposable = new CompositeDisposable()
-      state.lspSubscriptions?.add(editorDisposable)
+      state.editorSubscriptions = new CompositeDisposable()
+      state.lspSubscriptions?.add(state.editorSubscriptions)
       state.lspSubscriptions?.add(
         editor.onDidDestroy(() => {
-          editorDisposable.dispose()
-          state.daemon?.kill()
+          state.editorSubscriptions?.dispose()
+          state.editorSubscriptions = null
         })
       )
-
+      //prettier-ignore
       const setupListener = () => {
-        if (
-          !(vars.syntaxes as Array<string | null>).includes(
-            editor.document.syntax
-          )
-        ) {
-          return
-        }
-        const formatDocumentOnSave = preferences.getOverridableBoolean(
+        if (!(vars.syntaxes as Array<string | null>)
+          .includes(editor.document.syntax)) return
+        const formatOnSave = preferences.getOverridableBoolean(
           keys.formatDocumentOnSave
         )
-        if (!formatDocumentOnSave) {
-          return
-        }
+        if (!formatOnSave) return
         return editor.onWillSave(async editor => {
-          if (formatDocumentOnSave) {
-            await nova.commands.invoke(keys.formatDocument, editor)
-          }
+          await nova.commands.invoke(keys.formatDocument, editor)
         })
       }
 
@@ -73,18 +69,15 @@ export async function addLspSubscriptions() {
           willSaveListener?.dispose()
         }
       })
-
       const refreshListener = () => {
         willSaveListener?.dispose()
         willSaveListener = setupListener()
       }
-
-      // watch things that might change if this needs to happen or not
-      editorDisposable.add(editor.document.onDidChangeSyntax(refreshListener))
-      editorDisposable.add(
+      state.editorSubscriptions.add(editor.document.onDidChangeSyntax(refreshListener))
+      state.editorSubscriptions.add(
         nova.config.onDidChange(keys.formatDocumentOnSave, refreshListener)
       )
-      editorDisposable.add(
+      state.editorSubscriptions.add(
         nova.workspace.config.onDidChange(
           keys.formatDocumentOnSave,
           refreshListener

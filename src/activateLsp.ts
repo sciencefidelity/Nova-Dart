@@ -70,6 +70,7 @@ export const activateLsp = async () => {
 // Reload LSP
 export async function reloadLsp() {
   if (state.client) {
+    await cancelSubscriptions(state.editorSubscriptions)
     await cancelSubscriptions(state.lspSubscriptions)
     await deactivateLsp()
     console.log("reloading...")
