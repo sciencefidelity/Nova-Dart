@@ -91,8 +91,6 @@ export async function activate() {
 }
 
 export async function deactivate() {
-  await cancelSubscriptions(state.editorSubscriptions)
-  await cancelSubscriptions(state.lspSubscriptions)
   await deactivateLsp()
   await stopProcess(state.daemon)
   await cancelSubscriptions(state.globalSubscriptions)
