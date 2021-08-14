@@ -14,11 +14,7 @@ export async function getDartVersion() {
       console.log(line)
     })
     process.onDidExit(status => {
-      if (status === 0) {
-        resolve(str)
-      } else {
-        reject(status)
-      }
+      status === 0 ? resolve(str) : reject(status)
     })
     process.start()
   })
@@ -40,11 +36,7 @@ export function getFlutterVersion() {
       str = arr[0]
     })
     process.onDidExit(status => {
-      if (status === 0) {
-        resolve(str)
-      } else {
-        reject(status)
-      }
+      status === 0 ? resolve(str) : reject(status)
     })
     process.start()
   })

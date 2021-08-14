@@ -18,18 +18,13 @@ export async function addLspSubscriptions() {
     state.lspSubscriptions.add(
       state.client.onDidStop(err => {
         let message = "Dart Language Server stopped unexpectedly"
-        if (err) {
-          message += `:\n\n${err.toString()}`
-        } else {
-          message += "."
-        }
+        err ? message += `:\n\n${err.toString()}` : message += "."
+        // TODO: show this in the top right corner and not as an alert
         nova.workspace.showActionPanel(
           message,
           { buttons: ["Restart", "Ignore"] },
           index => {
-            if (index == 0) {
-              activateLsp(true)
-            }
+            if (index == 0) activateLsp(true)
           }
         )
       })

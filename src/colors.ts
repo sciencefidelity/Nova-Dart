@@ -11,7 +11,7 @@ export class DartColorAssistant implements ColorAssistant {
   constructor() {
     // Regexes
     // prettier-ignore
-    this.hexRegex = new RegExp("Color\\(0x([A-F0-9]{8})\\)", 'i')
+    this.hexRegex = new RegExp("Color\\(0x([A-F0-9]{8})\\)", "i")
     // prettier-ignore
     this.argbHexRegex = new RegExp("Color\\.fromARGB\\(\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2}),\\s*(0x[A-F0-9]{2})\\s*\\)", "i")
     // prettier-ignore

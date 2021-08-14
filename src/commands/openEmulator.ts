@@ -17,11 +17,7 @@ async function openEmulator() {
       await openAvd(line)
     })
     process.onDidExit(status => {
-      if (status === 0) {
-        resolve()
-      } else {
-        reject(status)
-      }
+      status === 0 ? resolve() : reject(status)
     })
     process.start()
   })
@@ -36,11 +32,7 @@ async function openAvd(line: string) {
       stdio: ["ignore", "ignore", "pipe"]
     })
     process.onDidExit(status => {
-      if (status === 0) {
-        resolve()
-      } else {
-        reject(status)
-      }
+      status === 0 ? resolve() : reject(status)
     })
     console.log(`Opening ${avdName}`)
     process.start()

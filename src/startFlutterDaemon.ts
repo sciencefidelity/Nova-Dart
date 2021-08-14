@@ -1,8 +1,7 @@
 import { state } from "./globalVars"
 
 export async function startFlutterDeamon () {
-  // eslint-disable-next-line no-unused-vars
-  return new Promise((_resolve, _reject) => {
+  return new Promise<void>((resolve, reject) => {
     if (nova.inDevMode()) {
       const daemonNotification = new NotificationRequest("daemon activated")
       daemonNotification.body = "Flutter Daemon is loading"
@@ -16,6 +15,9 @@ export async function startFlutterDeamon () {
     })
     state.daemon.onNotify("daemon.connected", message => {
       console.log(message)
+    })
+    state.daemon.onDidExit(status => {
+      status === 0 ? resolve() : reject(status)
     })
     state.daemon.start()
   })

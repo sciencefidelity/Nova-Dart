@@ -58,9 +58,7 @@ export async function activateLsp(reload: boolean) {
   try {
     state.client.start()
   } catch (err) {
-    if (nova.inDevMode()) {
-      console.error(err)
-    }
+    if (nova.inDevMode()) console.error(err)
   }
   // TODO: Do something with the Flutter outline
   // client.onNotification(
@@ -76,11 +74,8 @@ export async function activateLsp(reload: boolean) {
 
 // Reload LSP
 export async function reloadLsp() {
-  if (state.client) {
-    await deactivateLsp()
-    // false = "Activating..." | true = "Reloading..." in console
-    await activateLsp(true)
-  }
+  // false = "Activating..." | true = "Reloading..."
+  state.client ? await deactivateLsp() : await activateLsp(true)
 }
 
 export async function deactivateLsp() {

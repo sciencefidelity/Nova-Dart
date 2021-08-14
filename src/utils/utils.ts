@@ -4,24 +4,16 @@ export async function makeFileExecutable(file: string) {
       args: ["chmod", "u+x", file]
     })
     process.onDidExit(status => {
-      if (status === 0) {
-        resolve()
-      } else {
-        console.error("Failed to activate LSP")
-        reject(status)
-      }
+      status === 0 ? resolve() : reject(status)
     })
     process.start()
   })
 }
 
+// prettier-ignore
 export async function stopProcess(process: Process | null, terminateOrKill: string) {
   if (process) {
-    if (terminateOrKill === "terminate") {
-      process.terminate()
-    } else {
-      process.kill()
-    }
+    terminateOrKill === "terminate" ? process.terminate() : process.kill()
   }
   process = null
 }

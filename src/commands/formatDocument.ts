@@ -31,9 +31,7 @@ export function registerFormatDocument(client: LanguageClient) {
       documentFormatting
     )) as null | Array<lspTypes.TextEdit>
 
-    if (!changes) {
-      return
-    }
+    if (!changes) return
 
     applyLSPEdits(editor, changes)
   }

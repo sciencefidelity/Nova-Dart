@@ -6,14 +6,11 @@ let path: string | null = null
 
 export async function findDartPath() {
   path = nova.config.get(keys.analyzerPath, "string")
-  if (path) {
-    return path
-  } else {
-    try {
-      return (path = await findDart())
-    } catch (err) {
-      return err
-    }
+  if (path) return path
+  try {
+    return (path = await findDart())
+  } catch (err) {
+    return err
   }
 }
 
@@ -32,12 +29,9 @@ async function findDart() {
       throw new Error("Dart Analyzer not found.")
     })
     find.onDidExit(status => {
-      if (status === 0) {
-        reslove(analyzerPath)
-      } else {
-        // prettier-ignore
-        reject("Dart Analyzer not found, please add the path in the plugin config.")
-      }
+      status === 0
+        ? reslove(analyzerPath)
+        : reject("Dart Analyzer not found, add the path in extension config.")
     })
     find.start()
   })

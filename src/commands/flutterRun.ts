@@ -11,7 +11,7 @@ export function registerFlutterStop() {
 }
 
 function flutterRun() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     let path
     if (nova.inDevMode() && nova.workspace.path) {
       path = `${cleanPath(nova.workspace.path)}/test-workspace`
@@ -27,27 +27,19 @@ function flutterRun() {
       console.log(JSON.stringify(line))
     })
     process.onDidExit(status => {
-      if (status === 0) {
-        resolve()
-      } else {
-        reject(status)
-      }
+      status === 0 ? resolve() : reject(status)
     })
     process.start()
-  }) as Promise<void>
+  })
 }
 
 function flutterStop() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     state.daemon?.request("app.stop").then(function (response) {
       console.log(JSON.parse(response))
     })
     state.daemon?.onDidExit(status => {
-      if (status === 0) {
-        resolve()
-      } else {
-        reject(status)
-      }
+      status === 0 ? resolve() : reject(status)
     })
-  }) as Promise<void>
+  })
 }

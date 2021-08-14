@@ -29,19 +29,13 @@ nova.commands.register(keys.reloadLspKey, reloadLsp)
 
 // watch the preferences for enable analysis server
 nova.config.onDidChange(keys.enableAnalyzer, async current => {
-  if (current) {
-    // false = "Activating..." | true = "Reloading..." in console
-    activateLsp(false)
-  } else {
-    deactivateLsp()
-  }
+  // false = "Activating..." | true = "Reloading..."
+  current ? activateLsp(false) : deactivateLsp()
 })
 
 export async function activate() {
   // Resgister subscriptions
-  if (state.globalSubscriptions) {
-    state.globalSubscriptions.dispose()
-  }
+  if (state.globalSubscriptions) state.globalSubscriptions.dispose()
   state.globalSubscriptions = new CompositeDisposable()
   // register nova commands
   state.globalSubscriptions?.add(registerFlutterRun())
@@ -65,20 +59,18 @@ export async function activate() {
     console.log("Flutter version not found")
   }
   // start the LSP server
-  // false = "Activating..." | true = "Reloading..." in console
+  // false = "Activating..." | true = "Reloading..."
   await activateLsp(false)
   // start the Flutter Daemon
   startFlutterDeamon()
   Information.reload()
-
 }
 
 export async function deactivate() {
   if (state.client) await deactivateLsp()
   if (state.editorSubscriptions)
     await cancelSubscriptions(state.editorSubscriptions)
-  if (state.lspSubscriptions)
-    await cancelSubscriptions(state.lspSubscriptions)
+  if (state.lspSubscriptions) await cancelSubscriptions(state.lspSubscriptions)
   await stopProcess(state.daemon, "kill")
   await cancelSubscriptions(state.globalSubscriptions)
 }
