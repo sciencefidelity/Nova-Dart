@@ -3,22 +3,20 @@ import { activateLsp } from "./activateLsp"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
 
-export async function cancelSubscriptions(
-  subscriptions: CompositeDisposable | null
-) {
+export async function cancelSubs(subscriptions: CompositeDisposable | null) {
   if (subscriptions) {
     subscriptions.dispose()
     subscriptions = null
   }
 }
 
-export async function addLspSubscriptions() {
+export async function addLspSubs() {
   // Register format on save command
-  if (state.client && state.lspSubscriptions) {
-    state.lspSubscriptions.add(
+  if (state.client && state.lspSubs) {
+    state.lspSubs.add(
       state.client.onDidStop(err => {
         let message = "Dart Language Server stopped unexpectedly"
-        err ? message += `:\n\n${err.toString()}` : message += "."
+        err ? (message += `:\n\n${err.toString()}`) : (message += ".")
         // TODO: show this in the top right corner and not as an alert
         nova.workspace.showActionPanel(
           message,
@@ -29,20 +27,20 @@ export async function addLspSubscriptions() {
         )
       })
     )
-    state.lspSubscriptions.add(registerFormatDocument(state.client))
+    state.lspSubs.add(registerFormatDocument(state.client))
   }
-  startEditorSubscriptions()
+  startEditorSubs()
 }
 
-function startEditorSubscriptions() {
-  state.lspSubscriptions?.add(
+function startEditorSubs() {
+  state.lspSubs?.add(
     nova.workspace.onDidAddTextEditor(editor => {
-      state.editorSubscriptions = new CompositeDisposable()
-      state.lspSubscriptions?.add(state.editorSubscriptions)
-      state.lspSubscriptions?.add(
+      state.editorSubs = new CompositeDisposable()
+      state.lspSubs?.add(state.editorSubs)
+      state.lspSubs?.add(
         editor.onDidDestroy(() => {
-          state.editorSubscriptions?.dispose()
-          state.editorSubscriptions = null
+          state.editorSubs?.dispose()
+          state.editorSubs = null
         })
       )
       //prettier-ignore
@@ -59,7 +57,7 @@ function startEditorSubscriptions() {
       }
 
       let willSaveListener = setupListener()
-      state.lspSubscriptions?.add({
+      state.lspSubs?.add({
         dispose() {
           willSaveListener?.dispose()
         }
@@ -68,11 +66,11 @@ function startEditorSubscriptions() {
         willSaveListener?.dispose()
         willSaveListener = setupListener()
       }
-      state.editorSubscriptions.add(editor.document.onDidChangeSyntax(refreshListener))
-      state.editorSubscriptions.add(
+      state.editorSubs.add(editor.document.onDidChangeSyntax(refreshListener))
+      state.editorSubs.add(
         nova.config.onDidChange(keys.formatDocumentOnSave, refreshListener)
       )
-      state.editorSubscriptions.add(
+      state.editorSubs.add(
         nova.workspace.config.onDidChange(
           keys.formatDocumentOnSave,
           refreshListener

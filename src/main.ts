@@ -7,7 +7,7 @@ import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { keys, state } from "./globalVars"
 import { Information } from "./informationView"
-import { cancelSubscriptions } from "./manageSubscriptions"
+import { cancelSubs } from "./manageSubscriptions"
 import { startFlutterDeamon } from "./startFlutterDaemon"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
 import { stopProcess, wrapCommand } from "./utils/utils"
@@ -35,16 +35,16 @@ nova.config.onDidChange(keys.enableAnalyzer, async current => {
 
 export async function activate() {
   // Resgister subscriptions
-  if (state.lspSubscriptions) await cancelSubscriptions(state.lspSubscriptions)
-  state.globalSubscriptions = new CompositeDisposable()
-  // register nova commands
-  state.globalSubscriptions?.add(registerFlutterRun())
-  state.globalSubscriptions?.add(registerFlutterStop())
-  state.globalSubscriptions?.add(registerOpenSimulator())
-  state.globalSubscriptions?.add(registerOpenEmulator())
-  state.globalSubscriptions?.add(registerGetDaemonVersion())
-  state.globalSubscriptions?.add(registerGetDependencies())
-  state.globalSubscriptions?.add(Information)
+  if (state.lspSubs) await cancelSubs(state.lspSubs)
+  state.globalSubs = new CompositeDisposable()
+  // add commands to global Composite Disposable
+  state.globalSubs?.add(registerFlutterRun())
+  state.globalSubs?.add(registerFlutterStop())
+  state.globalSubs?.add(registerOpenSimulator())
+  state.globalSubs?.add(registerOpenEmulator())
+  state.globalSubs?.add(registerGetDaemonVersion())
+  state.globalSubs?.add(registerGetDependencies())
+  state.globalSubs?.add(Information)
 
   // find installed Dart and Flutter versions
   getDartVersion()
@@ -72,9 +72,8 @@ export async function activate() {
 
 export async function deactivate() {
   if (state.client) await deactivateLsp()
-  // prettier-ignore
-  if (state.editorSubscriptions) await cancelSubscriptions(state.editorSubscriptions)
-  if (state.lspSubscriptions) await cancelSubscriptions(state.lspSubscriptions)
+  if (state.editorSubs) await cancelSubs(state.editorSubs)
+  if (state.lspSubs) await cancelSubs(state.lspSubs)
   await stopProcess(state.daemon, "kill")
-  await cancelSubscriptions(state.globalSubscriptions)
+  await cancelSubs(state.globalSubs)
 }
