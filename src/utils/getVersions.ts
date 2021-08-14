@@ -2,27 +2,27 @@ const re = /\b[0-9]*\.[0-9]*\.[0-9]*\b/
 
 // Launches the Dart executable to determine its current version
 export async function getDartVersion() {
-  return new Promise<string>((resolve, reject) => {
+  return Promise.resolve().then(() => {
     const process = new Process("/usr/bin/env", {
       args: ["dart", "--version"],
       stdio: ["ignore", "ignore", "pipe"]
     })
     let str = ""
     process.onStderr(line => {
-      const arr = line.match(re) || ["unknown"]
+      const arr = line.match(re) ?? ["Unknown"]
       str = arr[0]
       console.log(line)
     })
     process.onDidExit(status => {
-      status === 0 ? resolve(str) : reject(status)
+      return status === 0 ? str : new Error(str)
     })
     process.start()
-  })
+  }) as Promise<string>
 }
 
 // Launches the Flutter executable to determine its current version
-export function getFlutterVersion() {
-  return new Promise<string>((resolve, reject) => {
+export async function getFlutterVersion() {
+  return Promise.resolve().then(() => {
     const process = new Process("/usr/bin/env", {
       args: ["flutter", "--version"],
       stdio: ["ignore", "pipe", "ignore"]
@@ -32,12 +32,12 @@ export function getFlutterVersion() {
     process.onStdout(line => {
       console.log(line)
       output.push(line)
-      const arr = output.toString().match(re) || ["Unknown"]
+      const arr = output.toString().match(re) ?? ["Unknown"]
       str = arr[0]
     })
     process.onDidExit(status => {
-      status === 0 ? resolve(str) : reject(status)
+      return status === 0 ? str : new Error(str)
     })
     process.start()
-  })
+  }) as Promise<string>
 }
