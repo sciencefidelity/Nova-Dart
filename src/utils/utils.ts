@@ -10,6 +10,31 @@ export async function makeFileExecutable(file: string) {
   })
 }
 
+// interface ShowActionableError {
+//   id?: string,
+//   title?: string,
+//   body?: string,
+//   actions?: string[],
+//   callback?: any
+// }
+
+export const showActionableError = (
+  id: string,
+  title: string,
+  body: string,
+  actions: string[],
+  callback: any
+) => {
+  const request = new NotificationRequest(id)
+  request.title = nova.localize(title)
+  request.body = nova.localize(body)
+  request.actions = actions.map(action => nova.localize(action))
+  nova.notifications
+    .add(request)
+    .then(response => callback(response.actionIdx))
+    .catch(err => console.error(err, err.stack))
+}
+
 // prettier-ignore
 export async function stopProcess(process: Process | null, terminateOrKill: string) {
   if (process) {

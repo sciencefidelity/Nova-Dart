@@ -2,6 +2,7 @@ import { preferences } from "nova-extension-utils"
 import { activateLsp } from "./activateLsp"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
+import { showActionableError } from "./utils/utils"
 
 export async function cancelSubs(subscriptions: CompositeDisposable | null) {
   if (subscriptions) {
@@ -14,15 +15,20 @@ export async function addLspSubs() {
   // Register format on save command
   if (state.client && state.lspSubs) {
     state.lspSubs.add(
+      // show alert if LSP crashes
       state.client.onDidStop(err => {
-        let message = "Dart Language Server stopped unexpectedly"
-        err ? (message += `:\n\n${err.toString()}`) : (message += ".")
-        // TODO: show this in the top right corner and not as an alert
-        nova.workspace.showActionPanel(
-          message,
-          { buttons: ["Restart", "Ignore"] },
-          index => {
-            if (index == 0) activateLsp(true)
+        showActionableError(
+          "analyzer-stopped",
+          "Dart Language Server stopped unexpectedly",
+          (err && err.toString()) ||
+            "Please report this, along with any output in the console",
+          ["Restart", "Ignore"],
+          (r: any) => {
+            switch (r) {
+              case 0:
+                activateLsp(true)
+                break
+            }
           }
         )
       })
