@@ -11,8 +11,8 @@ export async function activateLsp(reload: boolean) {
     notification.body = "Dart LSP is loading"
     nova.notifications.add(notification)
   }
-  // prettier-ignore
-  reload ? Info.status = "Reloading..." : Info.status = "Activating..."
+
+  reload ? (Info.status = "Reloading...") : (Info.status = "Activating...")
   state.lspSubs = new CompositeDisposable()
   let analyzerPath: string | null = null
   try {
