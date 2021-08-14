@@ -35,7 +35,7 @@ nova.config.onDidChange(keys.enableAnalyzer, async current => {
 
 export async function activate() {
   // Resgister subscriptions
-  if (state.globalSubscriptions) state.globalSubscriptions.dispose()
+  if (state.lspSubscriptions) await cancelSubscriptions(state.lspSubscriptions)
   state.globalSubscriptions = new CompositeDisposable()
   // register nova commands
   state.globalSubscriptions?.add(registerFlutterRun())
@@ -45,22 +45,26 @@ export async function activate() {
   state.globalSubscriptions?.add(registerGetDaemonVersion())
   state.globalSubscriptions?.add(registerGetDependencies())
   state.globalSubscriptions?.add(Information)
-  // get installed Dart and Flutter versions
-  try {
-    const dartVersion = await getDartVersion()
-    Information.dartVersion = dartVersion
-  } catch {
-    console.log("Dart version not found")
-  }
-  try {
-    const flutterVersion = await getFlutterVersion()
-    Information.flutterVersion = flutterVersion
-  } catch {
-    console.log("Flutter version not found")
-  }
+
+  // find installed Dart and Flutter versions
+  getDartVersion()
+    .then(response => (Information.dartVersion = response))
+    .catch(() => console.log("Dart version not found"))
+
+  getFlutterVersion()
+    .then(response => (Information.flutterVersion = response))
+    .catch(() => console.log("Flutter version not found"))
+
   // start the LSP server
   // false = "Activating..." | true = "Reloading..."
-  activateLsp(false)
+  if (nova.config.get(keys.enableAnalyzer, "boolean")) {
+    try {
+      activateLsp(false)
+    } catch (err) {
+      console.error(err)
+      throw new Error(err)
+    }
+  }
   // start the Flutter Daemon
   startFlutterDeamon()
   Information.reload()
@@ -68,8 +72,8 @@ export async function activate() {
 
 export async function deactivate() {
   if (state.client) await deactivateLsp()
-  if (state.editorSubscriptions)
-    await cancelSubscriptions(state.editorSubscriptions)
+  // prettier-ignore
+  if (state.editorSubscriptions) await cancelSubscriptions(state.editorSubscriptions)
   if (state.lspSubscriptions) await cancelSubscriptions(state.lspSubscriptions)
   await stopProcess(state.daemon, "kill")
   await cancelSubscriptions(state.globalSubscriptions)

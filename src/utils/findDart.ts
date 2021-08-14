@@ -28,10 +28,11 @@ async function findDart() {
     find.onStderr(() => {
       throw new Error("Dart Analyzer not found.")
     })
+    // prettier-ignore
     find.onDidExit(status => {
       status === 0
         ? reslove(analyzerPath)
-        : reject("Dart Analyzer not found, add the path in extension config.")
+        : reject("Path to Dart Analyzer not found, please add it in the config.")
     })
     find.start()
   })

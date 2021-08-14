@@ -1,21 +1,20 @@
-import { keys, state, vars } from "./globalVars"
+import { state, vars } from "./globalVars"
 import { Information } from "./informationView"
 import { addLspSubscriptions, cancelSubscriptions } from "./manageSubscriptions"
 import { findDartPath } from "./utils/findDart"
 
 export async function activateLsp(reload: boolean) {
-  if (!nova.config.get(keys.enableAnalyzer, "boolean")) return
   if (state.client) await deactivateLsp()
   reload ? console.log("Reloading...") : console.log("Activating...")
-  if (nova.inDevMode()) {
+  if (nova.inDevMode() && !reload) {
     const notification = new NotificationRequest("activated")
     notification.body = "Dart LSP is loading"
     nova.notifications.add(notification)
   }
+  // prettier-ignore
+  reload ? Information.status = "Reloading..." : Information.status = "Activating..."
   state.lspSubscriptions = new CompositeDisposable()
-
-  Information.status = "Activating..."
-  let analyzerPath = null
+  let analyzerPath: string | null = null
   try {
     analyzerPath = await findDartPath()
   } catch (err) {
@@ -54,12 +53,13 @@ export async function activateLsp(reload: boolean) {
     serverOptions,
     clientOptions
   )
-  await addLspSubscriptions()
   try {
     state.client.start()
   } catch (err) {
-    if (nova.inDevMode()) console.error(err)
+    console.error(err)
+    throw new Error(err)
   }
+  await addLspSubscriptions()
   // TODO: Do something with the Flutter outline
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
@@ -74,8 +74,9 @@ export async function activateLsp(reload: boolean) {
 
 // Reload LSP
 export async function reloadLsp() {
+  if (state.client) await deactivateLsp()
   // false = "Activating..." | true = "Reloading..."
-  state.client ? await deactivateLsp() : await activateLsp(true)
+  activateLsp(true)
 }
 
 export async function deactivateLsp() {
