@@ -60,7 +60,7 @@ export async function activate() {
   }
   // start the LSP server
   // false = "Activating..." | true = "Reloading..."
-  await activateLsp(false)
+  activateLsp(false)
   // start the Flutter Daemon
   startFlutterDeamon()
   Information.reload()
