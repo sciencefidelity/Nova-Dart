@@ -200,7 +200,7 @@
       },
       {
         "title": "Restart Server",
-        "command": "sciencefidelity.dart.commands.reload"
+        "command": "sciencefidelity.dart.commands.reloadLsp"
       },
       {
         "title": "Get Daemon Version",
