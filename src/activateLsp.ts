@@ -1,5 +1,5 @@
 import { state, vars } from "./globalVars"
-import { Information } from "./informationView"
+import { Info } from "./informationView"
 import { addLspSubs, cancelSubs } from "./manageSubscriptions"
 import { findDartPath } from "./utils/findDart"
 
@@ -12,7 +12,7 @@ export async function activateLsp(reload: boolean) {
     nova.notifications.add(notification)
   }
   // prettier-ignore
-  reload ? Information.status = "Reloading..." : Information.status = "Activating..."
+  reload ? Info.status = "Reloading..." : Info.status = "Activating..."
   state.lspSubs = new CompositeDisposable()
   let analyzerPath: string | null = null
   try {
@@ -68,8 +68,8 @@ export async function activateLsp(reload: boolean) {
   //   }
   // )
   console.log("LSP Running")
-  Information.status = "Running"
-  Information.reload()
+  Info.status = "Running"
+  Info.reload()
 }
 
 // Reload LSP
@@ -85,6 +85,6 @@ export async function deactivateLsp() {
     await cancelSubs(state.lspSubs)
     state.client.stop()
     state.client = null
-    Information.status = "Inactive"
+    Info.status = "Inactive"
   }
 }

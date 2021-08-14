@@ -70,4 +70,4 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
   }
 }
 
-export const Information = new InformationView()
+export const Info = new InformationView()

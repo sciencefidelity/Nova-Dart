@@ -6,7 +6,7 @@ import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { keys, state } from "./globalVars"
-import { Information } from "./informationView"
+import { Info } from "./informationView"
 import { cancelSubs } from "./manageSubscriptions"
 import { startFlutterDeamon } from "./startFlutterDaemon"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
@@ -44,15 +44,15 @@ export async function activate() {
   state.globalSubs?.add(registerOpenEmulator())
   state.globalSubs?.add(registerGetDaemonVersion())
   state.globalSubs?.add(registerGetDependencies())
-  state.globalSubs?.add(Information)
+  state.globalSubs?.add(Info)
 
   // find installed Dart and Flutter versions
   getDartVersion()
-    .then(response => (Information.dartVersion = response))
+    .then(response => (Info.dartVersion = response))
     .catch(() => console.log("Dart version not found"))
 
   getFlutterVersion()
-    .then(response => (Information.flutterVersion = response))
+    .then(response => (Info.flutterVersion = response))
     .catch(() => console.log("Flutter version not found"))
 
   // start the LSP server
@@ -67,7 +67,7 @@ export async function activate() {
   }
   // start the Flutter Daemon
   startFlutterDeamon()
-  Information.reload()
+  Info.reload()
 }
 
 export async function deactivate() {
