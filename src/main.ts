@@ -35,7 +35,7 @@ nova.config.onDidChange(keys.enableAnalyzer, async current => {
 
 export async function activate() {
   // Resgister subscriptions
-  if (state.lspSubs) await cancelSubs(state.lspSubs)
+  state.lspSubs && await cancelSubs(state.lspSubs)
   state.globalSubs = new CompositeDisposable()
   // add commands to global Composite Disposable
   state.globalSubs?.add(registerFlutterRun())
@@ -70,10 +70,11 @@ export async function activate() {
   Info.reload()
 }
 
+// deactivate everything when the plugin in deactivated
 export async function deactivate() {
-  if (state.client) await deactivateLsp()
-  if (state.editorSubs) await cancelSubs(state.editorSubs)
-  if (state.lspSubs) await cancelSubs(state.lspSubs)
+  state.client && await deactivateLsp()
+  state.editorSubs && await cancelSubs(state.editorSubs)
+  state.lspSubs && await cancelSubs(state.lspSubs)
   await stopProcess(state.daemon, "kill")
-  await cancelSubs(state.globalSubs)
+  cancelSubs(state.globalSubs)
 }

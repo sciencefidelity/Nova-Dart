@@ -4,15 +4,16 @@ import { addLspSubs, cancelSubs } from "./manageSubscriptions"
 import { findDartPath } from "./utils/findDart"
 
 export async function activateLsp(reload: boolean) {
-  if (state.client) await deactivateLsp()
+  state.client && await deactivateLsp()
+
   reload ? console.log("Reloading...") : console.log("Activating...")
+  reload ? (Info.status = "Reloading...") : (Info.status = "Activating...")
   if (nova.inDevMode() && !reload) {
     const notification = new NotificationRequest("activated")
     notification.body = "Dart LSP is loading"
     nova.notifications.add(notification)
   }
 
-  reload ? (Info.status = "Reloading...") : (Info.status = "Activating...")
   state.lspSubs = new CompositeDisposable()
   let analyzerPath: string | null = null
   try {
