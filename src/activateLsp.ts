@@ -1,6 +1,6 @@
 import { state, vars } from "./globalVars"
 import { Information } from "./informationView"
-import { addLspSubscriptions, cancelSubscriptions } from "./manageSubscriptions"
+import { addLspSubs, cancelSubs } from "./manageSubscriptions"
 import { findDartPath } from "./utils/findDart"
 
 export async function activateLsp(reload: boolean) {
@@ -13,7 +13,7 @@ export async function activateLsp(reload: boolean) {
   }
   // prettier-ignore
   reload ? Information.status = "Reloading..." : Information.status = "Activating..."
-  state.lspSubscriptions = new CompositeDisposable()
+  state.lspSubs = new CompositeDisposable()
   let analyzerPath: string | null = null
   try {
     analyzerPath = await findDartPath()
@@ -59,7 +59,7 @@ export async function activateLsp(reload: boolean) {
     console.error(err)
     throw new Error(err)
   }
-  await addLspSubscriptions()
+  await addLspSubs()
   // TODO: Do something with the Flutter outline
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
@@ -81,8 +81,8 @@ export async function reloadLsp() {
 
 export async function deactivateLsp() {
   if (state.client) {
-    await cancelSubscriptions(state.editorSubscriptions)
-    await cancelSubscriptions(state.lspSubscriptions)
+    await cancelSubs(state.editorSubs)
+    await cancelSubs(state.lspSubs)
     state.client.stop()
     state.client = null
     Information.status = "Inactive"
