@@ -7,6 +7,7 @@ export async function makeFileExecutable(file: string) {
       if (status === 0) {
         resolve()
       } else {
+        console.error("Failed to activate LSP")
         reject(status)
       }
     })
@@ -14,11 +15,15 @@ export async function makeFileExecutable(file: string) {
   })
 }
 
-export async function stopProcess(process: Process | null) {
+export async function stopProcess(process: Process | null, terminateOrKill: string) {
   if (process) {
-    process.terminate()
-    process = null
+    if (terminateOrKill === "terminate") {
+      process.terminate()
+    } else {
+      process.kill()
+    }
   }
+  process = null
 }
 
 export function wrapCommand(

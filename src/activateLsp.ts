@@ -1,15 +1,20 @@
-import { state, vars } from "./globalVars"
-import { informationView } from "./informationView"
+import { keys, state, vars } from "./globalVars"
+import { Information } from "./informationView"
 import { addLspSubscriptions, cancelSubscriptions } from "./manageSubscriptions"
 import { findDartPath } from "./utils/findDart"
 
-export const activateLsp = async () => {
-  state.lspSubscriptions = new CompositeDisposable()
-  if (state.client) {
-    await cancelSubscriptions(state.lspSubscriptions)
-    await deactivateLsp()
+export async function activateLsp(reload: boolean) {
+  if (!nova.config.get(keys.enableAnalyzer, "boolean")) return
+  if (state.client) await deactivateLsp()
+  reload ? console.log("Reloading...") : console.log("Activating...")
+  if (nova.inDevMode()) {
+    const notification = new NotificationRequest("activated")
+    notification.body = "Dart LSP is loading"
+    nova.notifications.add(notification)
   }
-  informationView.status = "Activating..."
+  state.lspSubscriptions = new CompositeDisposable()
+
+  Information.status = "Activating..."
   let analyzerPath = null
   try {
     analyzerPath = await findDartPath()
@@ -57,23 +62,24 @@ export const activateLsp = async () => {
       console.error(err)
     }
   }
+  // TODO: Do something with the Flutter outline
   // client.onNotification(
   //   "dart/textDocument/publishFlutterOutline",
   //   notification => {
   //     console.log(JSON.stringify(notification))
   //   }
   // )
-
-  informationView.status = "Running"
-  informationView.reload()
+  console.log("LSP Running")
+  Information.status = "Running"
+  Information.reload()
 }
 
 // Reload LSP
 export async function reloadLsp() {
   if (state.client) {
     await deactivateLsp()
-    console.log("reloading...")
-    await activateLsp()
+    // false = "Activating..." | true = "Reloading..." in console
+    await activateLsp(true)
   }
 }
 
@@ -83,5 +89,6 @@ export async function deactivateLsp() {
     await cancelSubscriptions(state.lspSubscriptions)
     state.client.stop()
     state.client = null
+    Information.status = "Inactive"
   }
 }

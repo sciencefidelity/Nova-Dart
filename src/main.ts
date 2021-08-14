@@ -6,7 +6,7 @@ import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { keys, state } from "./globalVars"
-import { informationView } from "./informationView"
+import { Information } from "./informationView"
 import { cancelSubscriptions } from "./manageSubscriptions"
 import { startFlutterDeamon } from "./startFlutterDaemon"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
@@ -28,19 +28,16 @@ nova.commands.register(
 nova.commands.register(keys.reloadLspKey, reloadLsp)
 
 // watch the preferences for enable analysis server
-nova.config.onDidChange(
-  keys.enableAnalyzer,
-  async current => {
-    if (current) {
-      activateLsp()
-    } else {
-      deactivateLsp()
-    }
+nova.config.onDidChange(keys.enableAnalyzer, async current => {
+  if (current) {
+    // false = "Activating..." | true = "Reloading..." in console
+    activateLsp(false)
+  } else {
+    deactivateLsp()
   }
-)
+})
 
 export async function activate() {
-  console.log("activating...")
   // Resgister subscriptions
   if (state.globalSubscriptions) {
     state.globalSubscriptions.dispose()
@@ -53,45 +50,35 @@ export async function activate() {
   state.globalSubscriptions?.add(registerOpenEmulator())
   state.globalSubscriptions?.add(registerGetDaemonVersion())
   state.globalSubscriptions?.add(registerGetDependencies())
-  state.globalSubscriptions?.add(informationView)
+  state.globalSubscriptions?.add(Information)
   // get installed Dart and Flutter versions
   try {
     const dartVersion = await getDartVersion()
-    informationView.dartVersion = dartVersion
+    Information.dartVersion = dartVersion
   } catch {
     console.log("Dart version not found")
   }
   try {
     const flutterVersion = await getFlutterVersion()
-    informationView.flutterVersion = flutterVersion
+    Information.flutterVersion = flutterVersion
   } catch {
     console.log("Flutter version not found")
   }
   // start the LSP server
-  if (
-    nova.config.get(keys.enableAnalyzer, "boolean")
-  ) {
-    if (nova.inDevMode()) {
-      const notification = new NotificationRequest("activated")
-      notification.body = "Dart LSP is loading"
-      nova.notifications.add(notification)
-    }
-    try {
-      await activateLsp()
-      console.log("LSP Activated")
-    } catch (err) {
-      console.error("Failed to activate LSP")
-      console.error(err)
-      nova.workspace.showErrorMessage(err)
-    }
-  }
+  // false = "Activating..." | true = "Reloading..." in console
+  await activateLsp(false)
   // start the Flutter Daemon
   startFlutterDeamon()
-  informationView.reload()
+  Information.reload()
+
 }
 
 export async function deactivate() {
-  await deactivateLsp()
-  await stopProcess(state.daemon)
+  if (state.client) await deactivateLsp()
+  if (state.editorSubscriptions)
+    await cancelSubscriptions(state.editorSubscriptions)
+  if (state.lspSubscriptions)
+    await cancelSubscriptions(state.lspSubscriptions)
+  await stopProcess(state.daemon, "kill")
   await cancelSubscriptions(state.globalSubscriptions)
 }

@@ -28,7 +28,7 @@ export async function addLspSubscriptions() {
           { buttons: ["Restart", "Ignore"] },
           index => {
             if (index == 0) {
-              activateLsp()
+              activateLsp(true)
             }
           }
         )
