@@ -10,14 +10,6 @@ export async function makeFileExecutable(file: string) {
   })
 }
 
-// interface ShowActionableError {
-//   id?: string,
-//   title?: string,
-//   body?: string,
-//   actions?: string[],
-//   callback?: any
-// }
-
 export const showActionableError = (
   id: string,
   title: string,
