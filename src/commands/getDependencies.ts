@@ -32,8 +32,8 @@ function getDependencies() {
     })
     console.log("Fetching dependencies")
     const dependencyNotification = new NotificationRequest("dependencies")
-    // prettier-ignore
-    dependencyNotification.body = "Fetching dependencies. \nMore info is in the extension console."
+    dependencyNotification.body =
+      "Fetching dependencies. \nMore info is in the extension console."
     nova.notifications.add(dependencyNotification)
     process.start()
   })

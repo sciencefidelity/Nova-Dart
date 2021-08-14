@@ -1,6 +1,6 @@
 import { state } from "./globalVars"
 
-export async function startFlutterDeamon () {
+export async function startFlutterDeamon() {
   return new Promise<void>((resolve, reject) => {
     if (nova.inDevMode()) {
       const daemonNotification = new NotificationRequest("daemon activated")

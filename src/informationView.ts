@@ -19,14 +19,14 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
   }
   public set status(value: string) {
     this._statusElement.value = value
-    this._treeView.reload(this._statusElement);
+    this._treeView.reload(this._statusElement)
   }
 
   private readonly _dartVersionElement: Element = {
     title: "Dart SDK",
     value: "",
     identifier: "dartVersion"
-  };
+  }
   public set dartVersion(value: string) {
     this._dartVersionElement.value = value
     this._treeView.reload(this._dartVersionElement)
@@ -36,7 +36,7 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
     title: "Flutter SDK",
     value: "",
     identifier: "flutterVersion"
-  };
+  }
   public set flutterVersion(value: string) {
     this._flutterVersionElement.value = value
     this._treeView.reload(this._flutterVersionElement)
@@ -52,7 +52,7 @@ export class InformationView implements TreeDataProvider<Element>, Disposable {
         this._statusElement,
         this._dartVersionElement,
         this._flutterVersionElement
-      ];
+      ]
     }
     return []
   }
