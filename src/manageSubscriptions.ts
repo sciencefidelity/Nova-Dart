@@ -23,7 +23,7 @@ export async function addLspSubs() {
           (err && err.toString()) ||
             "Please report this, along with any output in the console",
           ["Restart", "Ignore"],
-          (r: any) => {
+          (r: number) => {
             switch (r) {
               case 0:
                 activateLsp(true)
