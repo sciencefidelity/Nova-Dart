@@ -13,11 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "removeComments": true
   },
-  "types": [
-    "jest",
-    "node",
-    "nova-editor-node"
-  ],
+  "types": ["jest", "node", "nova-editor-node"],
   "paths": {
     "~/*": ["./src/*"],
     "@/*": ["./src/*"]
