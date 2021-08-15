@@ -195,6 +195,10 @@
   "commands": {
     "extensions": [
       {
+        "title": "Create New Flutter App",
+        "command": "sciencefidelity.dart.commands.flutterCreate",
+      },
+      {
         "title": "Preferences",
         "command": "sciencefidelity.dart.commands.openWorkspaceConfig"
       },

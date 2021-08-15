@@ -1,5 +1,6 @@
 import { activateLsp, deactivateLsp, reloadLsp } from "./activateLsp"
 import { DartColorAssistant } from "./colors"
+import { flutterCreate } from "./commands/flutterCreate"
 import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun"
 import { registerGetDaemonVersion } from "./commands/getDaemonVersion"
 import { registerGetDependencies } from "./commands/getDependencies"
@@ -26,6 +27,7 @@ nova.commands.register(
 
 // register command to reload the LSP
 nova.commands.register(keys.reloadLspKey, reloadLsp)
+nova.commands.register(keys.flutterCreate, flutterCreate)
 
 // watch the preferences for enable analysis server
 nova.config.onDidChange(keys.enableAnalyzer, async current => {

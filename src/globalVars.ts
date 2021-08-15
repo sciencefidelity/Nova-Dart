@@ -1,6 +1,7 @@
 export const keys = {
   analyzerPath: "sciencefidelity.dart.config.analyzerPath",
   enableAnalyzer: "sciencefidelity.dart.config.enableAnalyzer",
+  flutterCreate: "sciencefidelity.dart.commands.flutterCreate",
   flutterRun: "sciencefidelity.dart.commands.flutterRun",
   flutterStop: "sciencefidelity.dart.commands.flutterStop",
   formatDocument: "sciencefidelity.dart.commands.formatDocument",
