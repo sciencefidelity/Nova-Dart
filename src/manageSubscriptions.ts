@@ -76,11 +76,9 @@ function startEditorSubs() {
       state.editorSubs.add(
         nova.config.onDidChange(keys.formatDocumentOnSave, refreshListener)
       )
+      //prettier-ignore
       state.editorSubs.add(
-        nova.workspace.config.onDidChange(
-          keys.formatDocumentOnSave,
-          refreshListener
-        )
+        nova.workspace.config.onDidChange(keys.formatDocumentOnSave, refreshListener)
       )
     })
   )
