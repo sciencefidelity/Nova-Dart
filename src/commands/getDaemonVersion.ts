@@ -10,8 +10,5 @@ export function registerGetDaemonVersion() {
 
 async function getDaemonVersion() {
   console.log("Getting daemon version")
-  state.daemon?.request("daemon.version").then((reply) => {
-    console.log("message sent")
-    console.log(reply.result)
-  })
+  state.jsonRpc?.notify("daemon.version")
 }

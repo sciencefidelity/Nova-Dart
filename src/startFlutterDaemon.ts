@@ -13,9 +13,7 @@ export async function startFlutterDeamon() {
       args: ["flutter", "daemon"],
       stdio: "jsonrpc"
     })
-    state.daemon.onNotify("daemon.connected", message => {
-      console.log(message)
-    })
+    state.jsonRpc?.notify("daemon.connected")
     state.daemon.onDidExit(status => {
       status === 0 ? resolve() : reject(status)
     })

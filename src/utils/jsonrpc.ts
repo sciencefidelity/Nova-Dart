@@ -101,7 +101,7 @@ class JsonRpcBuffer extends EventEmitter {
   }
 }
 
-class JsonRpcService {
+export class JsonRpcService {
   readStream: any
   writeStream: any
   requestHandlers: Map<any, any>
@@ -176,7 +176,7 @@ class JsonRpcService {
     })
   }
 
-  notify(method: string, params: string) {
+  notify(method: string, params?: string) {
     this.write({ method, params })
   }
 
@@ -192,5 +192,3 @@ class JsonRpcService {
     this.writeStream.write(responseBuffer)
   }
 }
-
-module.exports = JsonRpcService

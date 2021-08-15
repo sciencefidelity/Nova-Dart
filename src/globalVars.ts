@@ -1,3 +1,5 @@
+import { JsonRpcService } from "./utils/jsonrpc"
+
 export const keys = {
   analyzerPath: "sciencefidelity.dart.config.analyzerPath",
   enableAnalyzer: "sciencefidelity.dart.config.enableAnalyzer",
@@ -20,6 +22,7 @@ export const state = {
   daemon: null as Process | null,
   editorSubs: null as CompositeDisposable | null,
   globalSubs: null as CompositeDisposable | null,
+  jsonRpc: null as JsonRpcService | null,
   lspSubs: null as CompositeDisposable | null
 }
 

@@ -8,6 +8,6 @@ export function registerHotReload() {
 function hotReload() {
   // eslint-disable-next-line no-unused-vars
   return new Promise<void>((_resolve, _reject) => {
-    console.log("Function not implemented")
+    console.log("Reloading")
   })
 }

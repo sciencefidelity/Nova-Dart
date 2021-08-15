@@ -7,6 +7,7 @@ import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { keys, state } from "./globalVars"
+import { JsonRpcService } from "./utils/jsonrpc"
 import { Info } from "./informationView"
 import { cancelSubs } from "./manageSubscriptions"
 import { startFlutterDeamon } from "./startFlutterDaemon"
@@ -16,6 +17,8 @@ import { stopProcess, wrapCommand } from "./utils/utils"
 // Start color assistant
 const Colors = new DartColorAssistant()
 nova.assistants.registerColorAssistant(["dart"], Colors)
+
+state.jsonRpc = new JsonRpcService(process.stdin, process.stdout)
 
 // Register command to open workspace config
 nova.commands.register(
