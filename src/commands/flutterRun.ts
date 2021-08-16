@@ -1,12 +1,23 @@
 import { cleanPath } from "nova-extension-utils"
-import { keys, state } from "../globalVars"
-import { wrapCommand } from "../utils/utils"
+import { keys, state, vars } from "../globalVars"
+import { stopProcess, wrapCommand } from "../utils/utils"
+
+// interface Message {
+//   event?: string
+//   params?: {
+//     appId: string
+//     deviceId: string
+//     directory: string
+//     supportsRestart: boolean
+//     launchMode: string
+//   }
+// }
 
 export function registerFlutterRun() {
   return nova.commands.register(keys.flutterRun, wrapCommand(flutterRun))
 }
 
-export function registerFlutterStop() {
+function registerFlutterStop() {
   return nova.commands.register(keys.flutterStop, wrapCommand(flutterStop))
 }
 
@@ -18,28 +29,42 @@ function flutterRun() {
     } else if (nova.workspace.path) {
       path = cleanPath(nova.workspace.path)
     }
-    const process = new Process("usr/bin/env", {
+    state.runProcess = new Process("usr/bin/env", {
       args: ["flutter", "run", "--machine"],
       cwd: path,
-      stdio: ["ignore", "pipe", "ignore"]
+      stdio: "jsonrpc"
     })
-    process.onStdout(line => {
-      console.log(JSON.stringify(line))
+    // let obj: Message = {}
+    // state.runProcess.onStdout(line => {
+    //   if (line.charAt(0) === "[") {
+    //     obj = JSON.parse(line.trim().slice(1, line.length - 2))
+    //     obj.params?.appId && (vars.appId = obj.params.appId)
+    //     vars.appId && console.log(`App ID: ${vars.appId}`)
+    //   }
+    // })
+    state.runProcess.onNotify("app.start", message => {
+      console.log(message.result)
+      vars.appId = message.result.params.appId
     })
-    process.onDidExit(status => {
+    state.runProcess.onDidExit(status => {
+      console.log("Exiting")
       status === 0 ? resolve() : reject(status)
     })
-    process.start()
+    state.runProcess.start()
+    state.runSubs = new CompositeDisposable()
+    state.runSubs.add(registerFlutterStop())
   })
 }
 
-function flutterStop() {
-  return new Promise<void>((resolve, reject) => {
-    state.daemon?.request("app.stop").then(function (response) {
-      console.log(JSON.parse(response))
-    })
-    state.daemon?.onDidExit(status => {
-      status === 0 ? resolve() : reject(status)
-    })
+async function flutterStop() {
+  return new Promise<void>(() => {
+    console.log(vars.appId)
+    const method = "app.stop"
+    const params = {appId: `${vars.appId}`}
+    state.runProcess?.request(method, params)
+  }).then(reply => {
+    console.log(reply)
+    vars.appId = undefined
+    stopProcess(state.runProcess, "kill")
   })
 }
