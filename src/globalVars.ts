@@ -1,5 +1,3 @@
-import { JsonRpcService } from "./utils/jsonrpc"
-
 export const keys = {
   analyzerPath: "sciencefidelity.dart.config.analyzerPath",
   enableAnalyzer: "sciencefidelity.dart.config.enableAnalyzer",
@@ -20,12 +18,16 @@ export const state = {
   appId: null as string | null,
   client: null as LanguageClient | null,
   daemon: null as Process | null,
+  daemonSubs: null as CompositeDisposable | null,
+  runSubs: null as CompositeDisposable | null,
   editorSubs: null as CompositeDisposable | null,
   globalSubs: null as CompositeDisposable | null,
-  jsonRpc: null as JsonRpcService | null,
-  lspSubs: null as CompositeDisposable | null
+  lspSubs: null as CompositeDisposable | null,
+  runProcess: null as Process | null
 }
 
 export const vars = {
+  appId: undefined as string | undefined,
+  outline: undefined as any,
   syntaxes: ["dart"] as string[]
 }

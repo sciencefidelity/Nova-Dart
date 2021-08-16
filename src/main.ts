@@ -1,24 +1,21 @@
 import { activateLsp, deactivateLsp, reloadLsp } from "./activateLsp"
 import { DartColorAssistant } from "./colors"
 import { flutterCreate } from "./commands/flutterCreate"
-import { registerFlutterRun, registerFlutterStop } from "./commands/flutterRun"
-import { registerGetDaemonVersion } from "./commands/getDaemonVersion"
+// import { registerFlutterRun } from "./commands/flutterRun"
+import { registerFlutterRun } from "./flutterRunService"
 import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { keys, state } from "./globalVars"
-import { JsonRpcService } from "./utils/jsonrpc"
 import { Info } from "./informationView"
 import { cancelSubs } from "./manageSubscriptions"
-import { startFlutterDeamon } from "./startFlutterDaemon"
+// import { startFlutterDeamon } from "./startFlutterDaemon"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
-import { stopProcess, wrapCommand } from "./utils/utils"
+import { wrapCommand } from "./utils/utils"
 
 // Start color assistant
 const Colors = new DartColorAssistant()
 nova.assistants.registerColorAssistant(["dart"], Colors)
-
-state.jsonRpc = new JsonRpcService(process.stdin, process.stdout)
 
 // Register command to open workspace config
 nova.commands.register(
@@ -44,10 +41,8 @@ export async function activate() {
   state.globalSubs = new CompositeDisposable()
   // add commands to global Composite Disposable
   state.globalSubs?.add(registerFlutterRun())
-  state.globalSubs?.add(registerFlutterStop())
   state.globalSubs?.add(registerOpenSimulator())
   state.globalSubs?.add(registerOpenEmulator())
-  state.globalSubs?.add(registerGetDaemonVersion())
   state.globalSubs?.add(registerGetDependencies())
   state.globalSubs?.add(Info)
 
@@ -71,7 +66,7 @@ export async function activate() {
     }
   }
   // start the Flutter Daemon
-  startFlutterDeamon()
+  // startFlutterDeamon()
   Info.reload()
 }
 
@@ -80,6 +75,6 @@ export async function deactivate() {
   state.client && await deactivateLsp()
   state.editorSubs && await cancelSubs(state.editorSubs)
   state.lspSubs && await cancelSubs(state.lspSubs)
-  await stopProcess(state.daemon, "kill")
+  // await stopProcess(state.daemon, "kill")
   cancelSubs(state.globalSubs)
 }
