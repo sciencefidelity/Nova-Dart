@@ -1,5 +1,5 @@
-import { state } from "../globalVars"
 import { wrapCommand } from "../utils/utils"
+import { state } from "../globalVars"
 
 export function registerGetDaemonVersion() {
   return nova.commands.register(
@@ -9,6 +9,10 @@ export function registerGetDaemonVersion() {
 }
 
 async function getDaemonVersion() {
-  console.log("Getting daemon version")
-  state.jsonRpc?.notify("daemon.version")
+  return new Promise<void>(() => {
+    console.log("Getting daemon version")
+    state.daemon?.request("version()").then(reply => {
+      console.log(reply)
+    })
+  })
 }
