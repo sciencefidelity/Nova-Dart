@@ -4,7 +4,7 @@ import { addLspSubs, cancelSubs } from "./manageSubscriptions"
 import { findDartPath } from "./utils/findDart"
 
 export async function activateLsp(reload: boolean) {
-  state.client && await deactivateLsp()
+  state.client && (await deactivateLsp())
 
   reload ? console.log("Reloading...") : console.log("Activating...")
   reload ? (Info.status = "Reloading...") : (Info.status = "Activating...")
@@ -62,12 +62,12 @@ export async function activateLsp(reload: boolean) {
   }
   await addLspSubs()
   // TODO: Do something with the Flutter outline
-  // client.onNotification(
-  //   "dart/textDocument/publishFlutterOutline",
-  //   notification => {
-  //     console.log(JSON.stringify(notification))
-  //   }
-  // )
+  state.client.onNotification(
+    "dart/textDocument/publishFlutterOutline",
+    (notification) => {
+      vars.outline = notification
+    }
+  )
   console.log("LSP Running")
   Info.status = "Running"
   Info.reload()
