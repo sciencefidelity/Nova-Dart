@@ -1,3 +1,5 @@
+import { DartLanguageClient } from "./dartLspService"
+
 export const keys = {
   analyzerPath: "sciencefidelity.dart.config.analyzerPath",
   enableAnalyzer: "sciencefidelity.dart.config.enableAnalyzer",
@@ -16,7 +18,7 @@ export const keys = {
 
 export const state = {
   appId: null as string | null,
-  client: null as LanguageClient | null,
+  client: null as DartLanguageClient | null,
   daemon: null as Process | null,
   daemonSubs: null as CompositeDisposable | null,
   runSubs: null as CompositeDisposable | null,
@@ -27,6 +29,7 @@ export const state = {
 }
 
 export const vars = {
+  analysisServer: undefined as string | undefined,
   appId: undefined as string | undefined,
   outline: undefined as any,
   syntaxes: ["dart"] as string[]

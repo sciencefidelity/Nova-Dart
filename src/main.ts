@@ -1,4 +1,5 @@
-import { activateLsp, deactivateLsp, reloadLsp } from "./activateLsp"
+// import { activateLsp, deactivateLsp, reloadLsp } from "./activateLsp"
+import { DartLanguageClient } from "./dartLspService"
 import { DartColorAssistant } from "./colors"
 import { flutterCreate } from "./commands/flutterCreate"
 // import { registerFlutterRun } from "./commands/flutterRun"
@@ -7,7 +8,7 @@ import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { keys, state } from "./globalVars"
-import { Info } from "./informationView"
+import { Info as info } from "./informationView"
 import { cancelSubs } from "./manageSubscriptions"
 // import { startFlutterDeamon } from "./startFlutterDaemon"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
@@ -26,13 +27,11 @@ nova.commands.register(
 )
 
 // register command to reload the LSP
-nova.commands.register(keys.reloadLspKey, reloadLsp)
 nova.commands.register(keys.flutterCreate, flutterCreate)
 
 // watch the preferences for enable analysis server
 nova.config.onDidChange(keys.enableAnalyzer, async current => {
-  // false = "Activating..." | true = "Reloading..."
-  current ? activateLsp(false) : deactivateLsp()
+  current ? state.client?.activate(true) : state.client?.deactivate()
 })
 
 export async function activate() {
@@ -44,35 +43,36 @@ export async function activate() {
   state.globalSubs?.add(registerOpenSimulator())
   state.globalSubs?.add(registerOpenEmulator())
   state.globalSubs?.add(registerGetDependencies())
-  state.globalSubs?.add(Info)
+  state.globalSubs?.add(info)
 
   // find installed Dart and Flutter versions
   getDartVersion()
-    .then(response => (Info.dartVersion = response))
+    .then(response => (info.dartVersion = response))
     .catch(() => console.log("Dart version not found"))
 
   getFlutterVersion()
-    .then(response => (Info.flutterVersion = response))
+    .then(response => (info.flutterVersion = response))
     .catch(() => console.log("Flutter version not found"))
 
   // start the LSP server
-  // false = "Activating..." | true = "Reloading..."
+  state.client = new DartLanguageClient()
   if (nova.config.get(keys.enableAnalyzer, "boolean")) {
     try {
-      activateLsp(false)
+      state.client.activate(true)
     } catch (err) {
       console.error(err)
       throw new Error(err)
     }
+    nova.commands.register(keys.reloadLspKey, state.client.reload)
   }
   // start the Flutter Daemon
   // startFlutterDeamon()
-  Info.reload()
+  info.reload()
 }
 
 // deactivate everything when the plugin in deactivated
 export async function deactivate() {
-  state.client && await deactivateLsp()
+  await state.client?.deactivate()
   state.editorSubs && await cancelSubs(state.editorSubs)
   state.lspSubs && await cancelSubs(state.lspSubs)
   // await stopProcess(state.daemon, "kill")

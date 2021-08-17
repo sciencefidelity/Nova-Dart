@@ -1,5 +1,6 @@
 import { preferences } from "nova-extension-utils"
-import { activateLsp } from "./activateLsp"
+// import { activateLsp } from "./activateLsp"
+import { activate } from "./main"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
 import { showActionableError } from "./utils/utils"
@@ -26,7 +27,7 @@ export async function addLspSubs() {
           (r: number) => {
             switch (r) {
               case 0:
-                activateLsp(true)
+                activate()
                 break
             }
           }
