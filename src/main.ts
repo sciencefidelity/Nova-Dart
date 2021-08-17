@@ -58,7 +58,8 @@ export async function activate() {
   state.client = new DartLanguageClient()
   if (nova.config.get(keys.enableAnalyzer, "boolean")) {
     try {
-      state.client.activate(true)
+      // false means the LSP is not active when called
+      state.client.activate(false)
     } catch (err) {
       console.error(err)
       throw new Error(err)
