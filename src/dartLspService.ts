@@ -74,7 +74,6 @@ export class DartLanguageClient {
       args: _args,
       env: _env
     }
-
     const clientOptions = {
       initializationOptions: {
         onlyAnalyzeProjectsWithOpenFiles: true,
@@ -104,6 +103,10 @@ export class DartLanguageClient {
       "dart/textDocument/publishFlutterOutline",
       notification => {
         vars.outline = notification
+        console.log(notification)
+        console.log(vars.outline)
+        console.log(JSON.stringify(notification))
+        console.log(JSON.stringify(vars.outline))
       }
     )
     console.log("LSP Running")
