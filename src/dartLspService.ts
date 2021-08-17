@@ -1,4 +1,4 @@
-import { preferences } from "nova-extension-utils"
+import { preferences, cleanPath } from "nova-extension-utils"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
@@ -46,27 +46,33 @@ export class DartLanguageClient {
     console.log(`Analyzer path is: ${analysisServer}`)
 
     let _args = ["dart", `${analysisServer}`, "--lsp"]
-
+    let _env = {}
     // enable logs in dev mode
     if (nova.inDevMode()) {
       const runFile = nova.path.join(nova.extension.path, "run.sh")
       await makeFileExecutable(runFile)
       const logDir = nova.path.join(nova.workspace.path!, "logs")
-      await new Promise<void>(() => {
+      await new Promise<void>((resolve, reject) => {
         const p = new Process("/usr/bin/env", {
           args: ["mkdir", "-p", logDir]
         })
+        p.onDidExit((status) => (status === 0 ? resolve() : reject()))
         p.start()
       })
       console.log("logging to", logDir)
-      const outLog = nova.path.join(logDir, "languageServer.log")
+      const outLog = nova.path.join(logDir, "lsp.log")
       _args = ["bash", "-c", `"${runFile}" | tee "${outLog}"`]
+      _env = {
+        WORKSPACE_DIR: `${cleanPath(nova.workspace.path!)}/test-workspace` ?? "",
+        INSTALL_DIR: analysisServer,
+      }
     }
 
     const serverOptions: ServerOptions = {
       type: "stdio",
       path: "/usr/bin/env",
-      args: _args
+      args: _args,
+      env: _env
     }
 
     const clientOptions = {

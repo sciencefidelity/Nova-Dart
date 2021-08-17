@@ -2,5 +2,5 @@
 cd "$WORKSPACE_DIR"
 
 dart \
-"$INSTALL_DIR/analysis_server.dart.snapshot" \
+"$INSTALL_DIR" \
 --lsp
