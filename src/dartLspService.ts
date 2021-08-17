@@ -5,6 +5,7 @@ import { info } from "./informationView"
 import { cancelSubs } from "./manageSubscriptions"
 import { findDartPath } from "./utils/findDart"
 import { showActionableError } from "./utils/utils"
+import { makeFileExecutable } from "./utils/utils"
 
 export class DartLanguageClient {
   languageClient: LanguageClient | null
@@ -44,10 +45,28 @@ export class DartLanguageClient {
       )}/analysis_server.dart.snapshot`
     console.log(`Analyzer path is: ${analysisServer}`)
 
+    let _args = ["dart", `${analysisServer}`, "--lsp"]
+
+    // enable logs in dev mode
+    if (nova.inDevMode()) {
+      const runFile = nova.path.join(nova.extension.path, "run.sh")
+      await makeFileExecutable(runFile)
+      const logDir = nova.path.join(nova.workspace.path!, "logs")
+      await new Promise<void>(() => {
+        const p = new Process("/usr/bin/env", {
+          args: ["mkdir", "-p", logDir]
+        })
+        p.start()
+      })
+      console.log("logging to", logDir)
+      const outLog = nova.path.join(logDir, "languageServer.log")
+      _args = ["bash", "-c", `"${runFile}" | tee "${outLog}"`]
+    }
+
     const serverOptions: ServerOptions = {
       type: "stdio",
       path: "/usr/bin/env",
-      args: ["dart", `${analysisServer}`, "--lsp"]
+      args: _args
     }
 
     const clientOptions = {
