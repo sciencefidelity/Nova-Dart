@@ -1,6 +1,7 @@
 import { cleanPath } from "nova-extension-utils"
 import { keys, state } from "./globalVars"
 import { wrapCommand } from "./utils/utils"
+import { makeFileExecutable } from "./utils/utils"
 
 let path: string
 if (nova.inDevMode() && nova.workspace.path) {
@@ -12,30 +13,65 @@ if (nova.inDevMode() && nova.workspace.path) {
 export class FlutterRunService {
   appId: string | undefined
   path: string
+  pid: number | null
   process: Process | null
+  wsUri: string | undefined
 
   constructor() {
     this.appId = undefined
     this.path = path
+    this.pid = null
     this.process = null
+    this.reload = this.reload.bind(this)
     this.run = this.run.bind(this)
     this.stop = this.stop.bind(this)
-    this.reload = this.reload.bind(this)
+    this.wsUri = undefined
   }
 
-  run() {
+  async run() {
     console.log("Running app")
+
+    let _args = ["flutter", "run", "--machine"]
+    let _env = {}
+    // log daemon output in dev mode
+    if (nova.inDevMode()) {
+      const appFile = nova.path.join(nova.extension.path, "app.sh")
+      await makeFileExecutable(appFile)
+      const logDir = nova.path.join(nova.workspace.path!, "logs")
+      await new Promise<void>((resolve, reject) => {
+        const p = new Process("/usr/bin/env", {
+          args: ["mkdir", "-p", logDir]
+        })
+        p.onDidExit((status) => (status === 0 ? resolve() : reject()))
+        p.start()
+      })
+      console.log("logging to", logDir)
+      const outLog = nova.path.join(logDir, "app.log")
+      _args = ["bash", "-c", `"${appFile}" | tee "${outLog}"`]
+      _env = {
+        WORKSPACE_DIR: `${cleanPath(nova.workspace.path!)}/test-workspace` ?? "",
+      }
+    }
+
     const client = new Process("usr/bin/env", {
-      args: ["flutter", "run", "--machine"],
+      args: _args,
+      env: _env,
       cwd: this.path,
       stdio: "jsonrpc"
     })
     this.process = client
     // this.process.onStdout(line => console.log(line))
-    this.process.onNotify("app.start", message => {
+    this.process.onNotify("app.started", message => {
+      console.log("started message")
       console.log(message.result)
       this.appId = message.result.params.appId
     })
+    this.process.onNotify("app.debugPort", message => {
+      console.log("port message")
+      console.log(message.result)
+      this.wsUri = message.result.params.wsUri
+    })
+    // nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
     nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
     nova.commands.register(keys.hotReload, wrapCommand(this.reload))
     nova.commands.register(keys.flutterRun, () =>
@@ -55,9 +91,8 @@ export class FlutterRunService {
     //   this.appId = undefined
     // })
     console.log("Stopping app")
-    console.log(this.process)
     if (this.process) {
-      this.process.kill()
+      this.process.terminate()
     } else {
       console.log("App not running")
     }
@@ -66,7 +101,6 @@ export class FlutterRunService {
 
   reload() {
     console.log("Reloading")
-    console.log(this.process)
   }
 }
 
