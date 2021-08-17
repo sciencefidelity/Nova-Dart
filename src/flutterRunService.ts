@@ -28,14 +28,14 @@ export class FlutterRunService {
     const client = new Process("usr/bin/env", {
       args: ["flutter", "run", "--machine"],
       cwd: this.path,
-      stdio: "pipe"
+      stdio: "jsonrpc"
     })
     this.process = client
-    this.process.onStdout(line => console.log(line))
-    // this.process.onNotify("app.start", message => {
-    //   console.log(message.result)
-    //   this.appId = message.result.params.appId
-    // })
+    // this.process.onStdout(line => console.log(line))
+    this.process.onNotify("app.start", message => {
+      console.log(message.result)
+      this.appId = message.result.params.appId
+    })
     nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
     nova.commands.register(keys.hotReload, wrapCommand(this.reload))
     nova.commands.register(keys.flutterRun, () =>
