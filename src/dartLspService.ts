@@ -10,14 +10,19 @@ export class DartLanguageClient {
   languageClient: LanguageClient | null
   constructor() {
     this.languageClient = null
+    this.activate = this.activate.bind(this)
+    this.deactivate = this.deactivate.bind(this)
+    this.reload = this.reload.bind(this)
+    this.subscribe = this.subscribe.bind(this)
+    this.startSubs = this.startSubs.bind(this)
   }
 
   // start the language client
   async activate(active: boolean) {
-    await this.deactivate()
-    active ? console.log("Activating...") : console.log("Reloading...")
-    active ? (info.status = "Activating...") : (info.status = "Reloading...")
-    if (nova.inDevMode() && this.reload) {
+    if (this.languageClient) await this.deactivate()
+    active ? console.log("Reloading...") : console.log("Activating...")
+    active ? (info.status = "Reloading...") : (info.status = "Activating...")
+    if (nova.inDevMode() && !active) {
       const notification = new NotificationRequest("activated")
       notification.body = "Dart LSP is loading"
       nova.notifications.add(notification)
@@ -83,26 +88,27 @@ export class DartLanguageClient {
 
   // stop the language client
   async deactivate() {
+    this.languageClient?.stop()
     await cancelSubs(state.editorSubs)
     await cancelSubs(state.lspSubs)
-    this.languageClient?.stop()
+    this.languageClient = null
     info.status = "Inactive"
   }
 
   // reload the language client
   async reload() {
     await this.deactivate()
-    // false means the LSP is not active when function is called
-    this.activate(false)
+    // true means the LSP is active when called
+    this.activate(true)
   }
 
   // add disposables
   async subscribe() {
-
     // show alert if LSP crashes
     this.languageClient &&
       state.lspSubs?.add(
         this.languageClient.onDidStop((err: any) => {
+          info.status = "Inactive"
           showActionableError(
             "analyzer-stopped",
             "Dart Language Server stopped unexpectedly,",
@@ -112,14 +118,14 @@ export class DartLanguageClient {
             (r: number) => {
               switch (r) {
                 case 0:
-                  this.activate(true)
+                  // false means the LSP is not active when called
+                  this.activate(false)
                   break
               }
             }
           )
         })
       )
-
     // Register format on save command
     this.languageClient &&
       state.lspSubs?.add(registerFormatDocument(this.languageClient))
