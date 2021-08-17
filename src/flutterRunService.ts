@@ -42,14 +42,14 @@ export class FlutterRunService {
         const p = new Process("/usr/bin/env", {
           args: ["mkdir", "-p", logDir]
         })
-        p.onDidExit((status) => (status === 0 ? resolve() : reject()))
+        p.onDidExit(status => (status === 0 ? resolve() : reject()))
         p.start()
       })
       console.log("logging to", logDir)
       const outLog = nova.path.join(logDir, "app.log")
       _args = ["bash", "-c", `"${appFile}" | tee "${outLog}"`]
       _env = {
-        WORKSPACE_DIR: `${cleanPath(nova.workspace.path!)}/test-workspace` ?? "",
+        WORKSPACE_DIR: `${cleanPath(nova.workspace.path!)}/test-workspace` ?? ""
       }
     }
 
@@ -84,12 +84,12 @@ export class FlutterRunService {
   }
 
   stop() {
-    // const method = "app.stop"
-    // const params = { appId: `${this.appId}` }
-    // this.process?.request(method, params).then(reply => {
-    //   console.log(reply)
-    //   this.appId = undefined
-    // })
+    const method = "app.stop"
+    const params = { appId: `${this.appId}` }
+    this.process?.request(method, params).then(reply => {
+      console.log(reply)
+      this.appId = undefined
+    })
     console.log("Stopping app")
     if (this.process) {
       this.process.terminate()
