@@ -1,6 +1,7 @@
 import { cleanPath } from "nova-extension-utils"
 import { keys, state, vars } from "./globalVars"
 import { makeFileExecutable, wrapCommand } from "./utils/utils"
+import { Message } from "./interfaces/interfaces"
 
 let path: string
 if (nova.inDevMode() && nova.workspace.path) {
@@ -56,15 +57,23 @@ export class FlutterRunService {
       args: _args,
       env: _env,
       cwd: this.path,
-      stdio: ["ignore", "pipe", "ignore"]
+      stdio: "pipe"
     })
     this.process = client
     this.process.onStdout(line => {
       if (line.charAt(0) === "[") {
-        const obj = JSON.parse(line.trim().slice(1, line.length - 2))
+        const obj: Message = JSON.parse(line.trim().slice(1, line.length - 2))
         if (obj.event === "daemon.connected") {
-          vars.runPid = obj.params.pid
-          console.log(`Pid: ${vars.runPid}`)
+          obj.params && (vars.runPid = obj.params.pid)
+          console.log(`pid: ${vars.runPid}`)
+        }
+        if (obj.event === "app.debugPort") {
+          obj.params && (vars.wsUri = obj.params.wsUri)
+          console.log(`wsUri: ${vars.wsUri}`)
+        }
+        if (obj.event === "app.started") {
+          obj.params && (vars.appId = obj.params.appId)
+          console.log(`appId: ${vars.appId}`)
         }
       }
     })
@@ -83,7 +92,6 @@ export class FlutterRunService {
     //   console.log(message.result)
     //   this.wsUri = message.result.params.wsUri
     // })
-    // nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
     nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
     nova.commands.register(keys.hotReload, wrapCommand(this.reload))
     nova.commands.register(keys.flutterRun, () =>
@@ -96,23 +104,30 @@ export class FlutterRunService {
   }
 
   stop() {
+    console.log("Stopping app")
     // const method = "app.stop"
-    // const params = { appId: `${this.appId}` }
+    // const params = { appId: "1be70571-831b-431a-b239-9bf8cb418677" }
     // this.process?.request(method, params).then(reply => {
     //   console.log(reply)
     //   this.appId = undefined
     // })
-    console.log("Stopping app")
-    if (this.process) {
-      this.process.terminate()
-    } else {
-      console.log("App not running")
-    }
+    this.process!.terminate()
+    // if (this.process) {
+    //   this.process.terminate()
+    // } else {
+    //   console.log("App not running")
+    // }
     nova.commands.register(keys.flutterRun, wrapCommand(flutterRun))
   }
 
   reload() {
     console.log("Reloading")
+    // const method = "app.restart"
+    // const params = { appId: "1be70571-831b-431a-b239-9bf8cb418677" }
+    // this.process?.request(method, params).then(reply => {
+    //   console.log(reply)
+    //   this.appId = undefined
+    // })
   }
 }
 

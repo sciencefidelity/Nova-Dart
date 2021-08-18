@@ -38,5 +38,6 @@ export const vars = {
   daemonPid: undefined as number | undefined,
   outline: undefined as any,
   runPid: undefined as number | undefined,
-  syntaxes: ["dart"] as string[]
+  syntaxes: ["dart"] as string[],
+  wsUri: undefined as string | undefined
 }

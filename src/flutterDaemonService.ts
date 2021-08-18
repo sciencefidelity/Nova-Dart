@@ -42,7 +42,7 @@ export class FlutterDaemonService {
     const daemon = new Process("/usr/bin/env", {
       args: _args,
       env: _env,
-      stdio: ["ignore", "pipe", "ignore"]
+      stdio: "pipe"
     })
     this.process = daemon
     this.process.onStdout(line => {
@@ -69,5 +69,9 @@ export class FlutterDaemonService {
 
   version() {
     console.log("Getting Daemon version")
+    // const method = "daemon.version"
+    // this.process?.request(method, null).then(reply => {
+    //   console.log(reply)
+    // })
   }
 }

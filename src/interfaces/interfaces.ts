@@ -9,9 +9,11 @@ export interface ColorStrings {
 }
 
 export interface Message {
+  event: string
   params?: {
-    appId?: string
+    appId?: string | undefined
     pid?: number | undefined
+    wsUri?: string | undefined
   }
 }
 
