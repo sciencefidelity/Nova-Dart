@@ -1,3 +1,10 @@
+export async function cancelSubs(subscriptions: CompositeDisposable | null) {
+  if (subscriptions) {
+    subscriptions.dispose()
+    subscriptions = null
+  }
+}
+
 export async function makeFileExecutable(file: string) {
   return new Promise<void>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {

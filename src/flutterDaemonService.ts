@@ -1,15 +1,15 @@
 import { cleanPath } from "nova-extension-utils"
-import { state } from "./globalVars"
-import { makeFileExecutable } from "./utils/utils"
+import { keys, state } from "./globalVars"
+import { makeFileExecutable, wrapCommand } from "./utils/utils"
 
 export class FlutterDaemonService {
   process: Process | null
-
   constructor() {
-    this.pid = null
+    // this.pid = null
     this.process = null
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
+    this.version = this.version.bind(this)
   }
 
   async start() {
@@ -28,14 +28,14 @@ export class FlutterDaemonService {
         const p = new Process("/usr/bin/env", {
           args: ["mkdir", "-p", logDir]
         })
-        p.onDidExit((status) => (status === 0 ? resolve() : reject()))
+        p.onDidExit(status => (status === 0 ? resolve() : reject()))
         p.start()
       })
       console.log("logging to", logDir)
-      const outLog = nova.path.join(logDir, "app.log")
+      const outLog = nova.path.join(logDir, "daemon.log")
       _args = ["bash", "-c", `"${daemonFile}" | tee "${outLog}"`]
       _env = {
-        WORKSPACE_DIR: `${cleanPath(nova.workspace.path!)}/test-workspace` ?? "",
+        WORKSPACE_DIR: `${cleanPath(nova.workspace.path!)}/test-workspace` ?? ""
       }
     }
 
@@ -44,18 +44,21 @@ export class FlutterDaemonService {
       env: _env,
       stdio: "jsonrpc"
     })
-
     this.process = daemon
-
     this.process.onDidExit(() => {
       console.log("Daemon terminated")
     })
     this.process.start()
     state.daemonSubs = new CompositeDisposable()
-    state.daemonSubs.add(registerGetDaemonVersion())
+    nova.commands.register(keys.getDaemonVersion, wrapCommand(this.stop))
+    nova.commands.register(keys.getDaemonVersion, wrapCommand(this.version))
   }
 
   stop() {
     console.log("Daemon stopping")
+  }
+
+  version() {
+    console.log("Getting Daemon version")
   }
 }

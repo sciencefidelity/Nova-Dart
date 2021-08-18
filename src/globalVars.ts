@@ -10,6 +10,7 @@ export const keys = {
   flutterStop: "sciencefidelity.dart.commands.flutterStop",
   formatDocument: "sciencefidelity.dart.commands.formatDocument",
   formatDocumentOnSave: "sciencefidelity.dart.config.formatDocumentOnSave",
+  getDaemonVersion: "sciencefidelity.dart.commands.getDaemonVersion",
   getDependencies: "sciencefidelity.dart.commands.getDependencies",
   hotReload: "sciencefidelity.dart.commands.hotReload",
   openEmulator: "sciencefidelity.dart.commands.openEmulator",
