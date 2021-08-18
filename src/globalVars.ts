@@ -1,5 +1,6 @@
 import { DartLanguageClient } from "./dartLspService"
 import { FlutterRunService } from "./flutterRunService"
+import { FlutterDaemonService } from "./flutterDaemonService"
 
 export const keys = {
   analyzerPath: "sciencefidelity.dart.config.analyzerPath",
@@ -20,7 +21,7 @@ export const keys = {
 export const state = {
   appId: null as string | null,
   client: null as DartLanguageClient | null,
-  daemon: null as Process | null,
+  daemon: null as FlutterDaemonService | null,
   daemonSubs: null as CompositeDisposable | null,
   flutterRunService: null as FlutterRunService | null,
   editorSubs: null as CompositeDisposable | null,

@@ -2,7 +2,6 @@
 import { DartLanguageClient } from "./dartLspService"
 import { DartColorAssistant } from "./colors"
 import { flutterCreate } from "./commands/flutterCreate"
-// import { registerFlutterRun } from "./commands/flutterRun"
 import { registerFlutterRun } from "./flutterRunService"
 import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
@@ -10,7 +9,7 @@ import { registerOpenSimulator } from "./commands/openSimulartor"
 import { keys, state } from "./globalVars"
 import { info } from "./informationView"
 import { cancelSubs } from "./manageSubscriptions"
-// import { startFlutterDeamon } from "./startFlutterDaemon"
+import { FlutterDaemonService } from "./flutterDaemonService"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
 import { wrapCommand } from "./utils/utils"
 
@@ -67,7 +66,8 @@ export async function activate() {
     nova.commands.register(keys.reloadLspKey, state.client.reload)
   }
   // start the Flutter Daemon
-  // startFlutterDeamon()
+  state.daemon = new FlutterDaemonService()
+  state.daemon.start()
   info.reload()
 }
 
@@ -76,6 +76,6 @@ export async function deactivate() {
   await state.client?.deactivate()
   state.editorSubs && await cancelSubs(state.editorSubs)
   state.lspSubs && await cancelSubs(state.lspSubs)
-  // await stopProcess(state.daemon, "kill")
+  state.daemon?.stop()
   cancelSubs(state.globalSubs)
 }
