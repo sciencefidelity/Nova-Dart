@@ -3,6 +3,7 @@ import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
 import { findDartPath } from "./utils/findDart"
+import { wrapCommand } from "./utils/utils"
 // prettier-ignore
 import { cancelSubs, makeFileExecutable, showActionableError } from "./utils/utils"
 
@@ -15,6 +16,7 @@ export class DartLanguageClient {
     this.reload = this.reload.bind(this)
     this.subscribe = this.subscribe.bind(this)
     this.startSubs = this.startSubs.bind(this)
+    this.debugPort = this.debugPort.bind(this)
   }
 
   // start the language client
@@ -85,12 +87,13 @@ export class DartLanguageClient {
       syntaxes: vars.syntaxes
     }
 
-    this.languageClient = new LanguageClient(
+    const client = new LanguageClient(
       "sciencefidelity.dart",
       "Dart Language Server",
       serverOptions,
       clientOptions
     )
+    this.languageClient = client
     try {
       this.languageClient.start()
     } catch (err) {
@@ -105,9 +108,16 @@ export class DartLanguageClient {
         vars.outline = notification
       }
     )
+    nova.commands.register(keys.diagnosticServer, wrapCommand(this.debugPort))
     console.log("LSP Running")
     info.status = "Running"
     info.reload()
+  }
+
+  debugPort() {
+    this.languageClient
+      ?.sendRequest("dart/diagnosticServer")
+      .then(value => console.log("Debug port", JSON.stringify(value)))
   }
 
   // stop the language client

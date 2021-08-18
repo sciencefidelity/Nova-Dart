@@ -199,6 +199,10 @@
         "command": "sciencefidelity.dart.commands.flutterCreate",
       },
       {
+        "title": "Get Debug Port",
+        "command": "sciencefidelity.dart.commands.diagnosticServer",
+      },
+      {
         "title": "Preferences",
         "command": "sciencefidelity.dart.commands.openWorkspaceConfig"
       },

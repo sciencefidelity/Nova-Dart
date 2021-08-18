@@ -4,6 +4,7 @@ import { FlutterRunService } from "./flutterRunService"
 
 export const keys = {
   analyzerPath: "sciencefidelity.dart.config.analyzerPath",
+  diagnosticServer: "sciencefidelity.dart.commands.diagnosticServer",
   enableAnalyzer: "sciencefidelity.dart.config.enableAnalyzer",
   flutterCreate: "sciencefidelity.dart.commands.flutterCreate",
   flutterRun: "sciencefidelity.dart.commands.flutterRun",

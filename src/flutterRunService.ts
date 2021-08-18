@@ -53,13 +53,13 @@ export class FlutterRunService {
       }
     }
 
-    const client = new Process("usr/bin/env", {
+    this.process = new Process("usr/bin/env", {
       args: _args,
       env: _env,
       cwd: this.path,
       stdio: "pipe"
     })
-    this.process = client
+    // this.process = client
     this.process.onStdout(line => {
       if (line.charAt(0) === "[") {
         const obj: Message = JSON.parse(line.trim().slice(1, line.length - 2))
