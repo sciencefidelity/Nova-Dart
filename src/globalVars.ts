@@ -35,6 +35,8 @@ export const state = {
 export const vars = {
   analysisServer: undefined as string | undefined,
   appId: undefined as string | undefined,
+  daemonPid: undefined as number | undefined,
   outline: undefined as any,
+  runPid: undefined as number | undefined,
   syntaxes: ["dart"] as string[]
 }

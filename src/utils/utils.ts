@@ -5,6 +5,16 @@ export async function cancelSubs(subscriptions: CompositeDisposable | null) {
   }
 }
 
+export async function cleanPid(pid: number) {
+  return new Promise<void>((resolve, reject) => {
+    const p = new Process("usr/bin/env", {
+      args: ["kill", pid.toString()],
+      stdio: ["ignore", "ignore", "ignore"]
+    })
+    p.onDidExit(status => (status === 0 ? resolve() : reject(status)))
+  })
+}
+
 export async function makeFileExecutable(file: string) {
   return new Promise<void>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {

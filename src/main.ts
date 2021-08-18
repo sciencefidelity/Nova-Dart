@@ -6,12 +6,12 @@ import { registerFlutterRun } from "./flutterRunService"
 import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
-import { keys, state } from "./globalVars"
+import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
 import { cancelSubs } from "./utils/utils"
 import { FlutterDaemonService } from "./flutterDaemonService"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
-import { wrapCommand } from "./utils/utils"
+import { cleanPid, wrapCommand } from "./utils/utils"
 
 // Start color assistant
 const Colors = new DartColorAssistant()
@@ -77,5 +77,7 @@ export async function deactivate() {
   state.editorSubs && await cancelSubs(state.editorSubs)
   state.lspSubs && await cancelSubs(state.lspSubs)
   state.daemon?.stop()
+  vars.daemonPid && cleanPid(vars.daemonPid)
+  vars.runPid && cleanPid(vars.runPid)
   cancelSubs(state.globalSubs)
 }

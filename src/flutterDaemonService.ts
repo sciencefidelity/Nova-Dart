@@ -1,11 +1,11 @@
 import { cleanPath } from "nova-extension-utils"
-import { keys, state } from "./globalVars"
+import { keys, state, vars } from "./globalVars"
 import { makeFileExecutable, wrapCommand } from "./utils/utils"
+import { Message } from "./interfaces/interfaces"
 
 export class FlutterDaemonService {
   process: Process | null
   constructor() {
-    // this.pid = null
     this.process = null
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
@@ -45,17 +45,25 @@ export class FlutterDaemonService {
       stdio: "jsonrpc"
     })
     this.process = daemon
+    let obj: Message = {}
+    this.process.onStdout(line => {
+      if (line.startsWith("[{") && line.endsWith("}]")) {
+        obj = JSON.parse(line.trim().slice(1, line.length - 2))
+        obj.params && (vars.daemonPid = obj.params.pid)
+        console.log(`Pid: ${vars.daemonPid}`)
+      }
+    })
     this.process.onDidExit(() => {
       console.log("Daemon terminated")
     })
-    this.process.start()
     state.daemonSubs = new CompositeDisposable()
-    nova.commands.register(keys.getDaemonVersion, wrapCommand(this.stop))
     nova.commands.register(keys.getDaemonVersion, wrapCommand(this.version))
+    this.process.start()
   }
 
   stop() {
     console.log("Daemon stopping")
+    this.process?.terminate()
   }
 
   version() {
