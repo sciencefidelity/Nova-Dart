@@ -59,7 +59,7 @@ export class DartLanguageClient {
         p.onDidExit((status) => (status === 0 ? resolve() : reject()))
         p.start()
       })
-      console.log("logging to", logDir)
+      console.log("Logging to", logDir + "/lsp.log")
       const outLog = nova.path.join(logDir, "lsp.log")
       _args = ["bash", "-c", `"${runFile}" | tee "${outLog}"`]
       _env = {
@@ -103,10 +103,6 @@ export class DartLanguageClient {
       "dart/textDocument/publishFlutterOutline",
       notification => {
         vars.outline = notification
-        console.log(notification)
-        console.log(vars.outline)
-        console.log(JSON.stringify(notification))
-        console.log(JSON.stringify(vars.outline))
       }
     )
     console.log("LSP Running")

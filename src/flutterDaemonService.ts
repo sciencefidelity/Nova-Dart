@@ -1,7 +1,7 @@
 import { cleanPath } from "nova-extension-utils"
 import { keys, state, vars } from "./globalVars"
 import { makeFileExecutable, wrapCommand } from "./utils/utils"
-import { Message } from "./interfaces/interfaces"
+// import { Message } from "./interfaces/interfaces"
 
 export class FlutterDaemonService {
   process: Process | null
@@ -31,7 +31,7 @@ export class FlutterDaemonService {
         p.onDidExit(status => (status === 0 ? resolve() : reject()))
         p.start()
       })
-      console.log("logging to", logDir)
+      console.log("Logging to", logDir + "/daemon.log")
       const outLog = nova.path.join(logDir, "daemon.log")
       _args = ["bash", "-c", `"${daemonFile}" | tee "${outLog}"`]
       _env = {
@@ -42,15 +42,16 @@ export class FlutterDaemonService {
     const daemon = new Process("/usr/bin/env", {
       args: _args,
       env: _env,
-      stdio: "jsonrpc"
+      stdio: ["ignore", "pipe", "ignore"]
     })
     this.process = daemon
-    let obj: Message = {}
     this.process.onStdout(line => {
-      if (line.startsWith("[{") && line.endsWith("}]")) {
-        obj = JSON.parse(line.trim().slice(1, line.length - 2))
-        obj.params && (vars.daemonPid = obj.params.pid)
-        console.log(`Pid: ${vars.daemonPid}`)
+      if (line.charAt(0) === "[") {
+        const obj = JSON.parse(line.trim().slice(1, line.length - 2))
+        if (obj.event === "daemon.connected") {
+          vars.daemonPid = obj.params.pid
+          console.log(`Pid: ${vars.daemonPid}`)
+        }
       }
     })
     this.process.onDidExit(() => {

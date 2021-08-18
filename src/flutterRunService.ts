@@ -1,5 +1,5 @@
 import { cleanPath } from "nova-extension-utils"
-import { keys, state } from "./globalVars"
+import { keys, state, vars } from "./globalVars"
 import { wrapCommand } from "./utils/utils"
 import { makeFileExecutable } from "./utils/utils"
 
@@ -45,7 +45,7 @@ export class FlutterRunService {
         p.onDidExit(status => (status === 0 ? resolve() : reject()))
         p.start()
       })
-      console.log("logging to", logDir)
+      console.log("Logging to", logDir + "/app.log")
       const outLog = nova.path.join(logDir, "app.log")
       _args = ["bash", "-c", `"${appFile}" | tee "${outLog}"`]
       _env = {
@@ -57,20 +57,33 @@ export class FlutterRunService {
       args: _args,
       env: _env,
       cwd: this.path,
-      stdio: "jsonrpc"
+      stdio: ["ignore", "pipe", "ignore"]
     })
     this.process = client
-    // this.process.onStdout(line => console.log(line))
-    this.process.onNotify("app.started", message => {
-      console.log("started message")
-      console.log(message.result)
-      this.appId = message.result.params.appId
+    this.process.onStdout(line => {
+      if (line.charAt(0) === "[") {
+        const obj = JSON.parse(line.trim().slice(1, line.length - 2))
+        if (obj.event === "daemon.connected") {
+          vars.runPid = obj.params.pid
+          console.log(`Pid: ${vars.runPid}`)
+        }
+      }
     })
-    this.process.onNotify("app.debugPort", message => {
-      console.log("port message")
-      console.log(message.result)
-      this.wsUri = message.result.params.wsUri
-    })
+    // this.process.onNotify("app.connected", message => {
+    //   console.log("Pid message")
+    //   console.log(message.result)
+    //   this.wsUri = message.result.params.wsUri
+    // })
+    // this.process.onNotify("app.started", message => {
+    //   console.log("Started message")
+    //   console.log(message.result)
+    //   this.appId = message.result.params.appId
+    // })
+    // this.process.onNotify("app.debugPort", message => {
+    //   console.log("Port message")
+    //   console.log(message.result)
+    //   this.wsUri = message.result.params.wsUri
+    // })
     // nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
     nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
     nova.commands.register(keys.hotReload, wrapCommand(this.reload))
@@ -84,12 +97,12 @@ export class FlutterRunService {
   }
 
   stop() {
-    const method = "app.stop"
-    const params = { appId: `${this.appId}` }
-    this.process?.request(method, params).then(reply => {
-      console.log(reply)
-      this.appId = undefined
-    })
+    // const method = "app.stop"
+    // const params = { appId: `${this.appId}` }
+    // this.process?.request(method, params).then(reply => {
+    //   console.log(reply)
+    //   this.appId = undefined
+    // })
     console.log("Stopping app")
     if (this.process) {
       this.process.terminate()
