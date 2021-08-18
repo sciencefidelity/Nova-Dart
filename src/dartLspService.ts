@@ -1,11 +1,10 @@
-import { preferences, cleanPath } from "nova-extension-utils"
+import { cleanPath, preferences } from "nova-extension-utils"
 import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
-import { cancelSubs } from "./utils/utils"
 import { findDartPath } from "./utils/findDart"
-import { showActionableError } from "./utils/utils"
-import { makeFileExecutable } from "./utils/utils"
+// prettier-ignore
+import { cancelSubs, makeFileExecutable, showActionableError } from "./utils/utils"
 
 export class DartLanguageClient {
   languageClient: LanguageClient | null
@@ -56,15 +55,16 @@ export class DartLanguageClient {
         const p = new Process("/usr/bin/env", {
           args: ["mkdir", "-p", logDir]
         })
-        p.onDidExit((status) => (status === 0 ? resolve() : reject()))
+        p.onDidExit(status => (status === 0 ? resolve() : reject()))
         p.start()
       })
       console.log("Logging to", logDir + "/lsp.log")
       const outLog = nova.path.join(logDir, "lsp.log")
       _args = ["bash", "-c", `"${runFile}" | tee "${outLog}"`]
       _env = {
-        WORKSPACE_DIR: `${cleanPath(nova.workspace.path!)}/test-workspace` ?? "",
-        INSTALL_DIR: analysisServer,
+        WORKSPACE_DIR:
+          `${cleanPath(nova.workspace.path!)}/test-workspace` ?? "",
+        INSTALL_DIR: analysisServer
       }
     }
 

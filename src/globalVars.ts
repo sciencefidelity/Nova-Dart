@@ -1,6 +1,6 @@
 import { DartLanguageClient } from "./dartLspService"
-import { FlutterRunService } from "./flutterRunService"
 import { FlutterDaemonService } from "./flutterDaemonService"
+import { FlutterRunService } from "./flutterRunService"
 
 export const keys = {
   analyzerPath: "sciencefidelity.dart.config.analyzerPath",

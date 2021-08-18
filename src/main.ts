@@ -1,17 +1,15 @@
-// import { activateLsp, deactivateLsp, reloadLsp } from "./activateLsp"
-import { DartLanguageClient } from "./dartLspService"
 import { DartColorAssistant } from "./colors"
 import { flutterCreate } from "./commands/flutterCreate"
-import { registerFlutterRun } from "./flutterRunService"
 import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
+import { DartLanguageClient } from "./dartLspService"
+import { FlutterDaemonService } from "./flutterDaemonService"
+import { registerFlutterRun } from "./flutterRunService"
 import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
-import { cancelSubs } from "./utils/utils"
-import { FlutterDaemonService } from "./flutterDaemonService"
 import { getDartVersion, getFlutterVersion } from "./utils/getVersions"
-import { cleanPid, wrapCommand } from "./utils/utils"
+import { cancelSubs, cleanPid, wrapCommand } from "./utils/utils"
 
 // Start color assistant
 const Colors = new DartColorAssistant()
@@ -35,7 +33,7 @@ nova.config.onDidChange(keys.enableAnalyzer, async current => {
 
 export async function activate() {
   // Resgister subscriptions
-  state.lspSubs && await cancelSubs(state.lspSubs)
+  state.lspSubs && (await cancelSubs(state.lspSubs))
   state.globalSubs = new CompositeDisposable()
   // add commands to global Composite Disposable
   state.globalSubs?.add(registerFlutterRun())
@@ -74,8 +72,8 @@ export async function activate() {
 // deactivate everything when the plugin in deactivated
 export async function deactivate() {
   await state.client?.deactivate()
-  state.editorSubs && await cancelSubs(state.editorSubs)
-  state.lspSubs && await cancelSubs(state.lspSubs)
+  state.editorSubs && (await cancelSubs(state.editorSubs))
+  state.lspSubs && (await cancelSubs(state.lspSubs))
   state.daemon?.stop()
   vars.daemonPid && cleanPid(vars.daemonPid)
   vars.runPid && cleanPid(vars.runPid)
