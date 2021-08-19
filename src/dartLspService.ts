@@ -3,9 +3,8 @@ import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
 import { findDartPath } from "./utils/findDart"
-import { wrapCommand } from "./utils/utils"
 // prettier-ignore
-import { cancelSubs, makeFileExecutable, showActionableError } from "./utils/utils"
+import { cancelSubs, makeFileExecutable, showActionableError, wrapCommand } from "./utils/utils"
 
 export class DartLanguageClient {
   languageClient: LanguageClient | null
