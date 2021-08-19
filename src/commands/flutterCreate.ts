@@ -1,21 +1,8 @@
-// import { keys } from "../globalVars"
-// import { wrapCommand } from "../utils/utils"
-
 let appName = "my_app"
 let installLocation = nova.workspace.path!
 
-// export function registerFlutterCreate() {
-//   return nova.commands.register(keys.flutterCreate, wrapCommand(flutterCreate))
-// }
-
 export async function flutterCreate() {
   console.log("Creating new Flutter app")
-  // chooseAppName()
-  //   .then(response => (appName = response))
-  //   .catch(() => console.log("App name not given"))
-  // chooseInstallLocation()
-  // .then(response => (installLocation = response))
-  // .catch(() => console.log("Path not given"))
   try {
     appName = await chooseAppName()
   } catch {
