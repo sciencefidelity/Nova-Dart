@@ -1,7 +1,6 @@
 import { cleanPath } from "nova-extension-utils"
 import { keys, state, vars } from "./globalVars"
 import { makeFileExecutable, wrapCommand } from "./utils/utils"
-// import { Message } from "./interfaces/interfaces"
 
 export class FlutterDaemonService {
   process: Process | null
