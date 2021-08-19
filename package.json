@@ -39,7 +39,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nova": "^1.5.0",
     "jest": "^27.0.6",
-    "jsonrpc-lite": "^2.2.0",
     "nova-extension-utils": "^1.4.0",
     "onchange": "^7.1.0",
     "prettier": "^2.3.2",
