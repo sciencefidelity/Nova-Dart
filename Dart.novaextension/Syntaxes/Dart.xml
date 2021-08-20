@@ -66,7 +66,7 @@
     <collections>
         <!-- !Dartdoc -->
         <!-- TODO: Choose colors for dartdoc identifiers -->
-        <!-- <collection name="dartdoc">
+        <collection name="dartdoc">
             <scope name="dart.identifier.argument.dartdoc">
                 <expression>(\[.*?\])</expression>
                 <capture number="0" name="dart.identifier.argument" />
@@ -101,7 +101,7 @@
             <scope name="dart.identifier.variable.other.source">
                 <expression>(\*    .*)$</expression>
             </scope>
-        </collection> -->
+        </collection>
 
         <!-- shebang -->
         <collection name="shebang">
