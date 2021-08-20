@@ -106,6 +106,7 @@ export class DartLanguageClient {
       notification => {
         vars.outline = notification
       }
+
     )
     nova.commands.register(keys.diagnosticServer, wrapCommand(this.debugPort))
     console.log("LSP Running")
