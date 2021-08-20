@@ -4,7 +4,7 @@ import { registerGetDependencies } from "./commands/getDependencies"
 import { registerOpenEmulator } from "./commands/openEmulator"
 import { registerOpenSimulator } from "./commands/openSimulartor"
 import { DartLanguageClient } from "./dartLspService"
-import { FlutterDaemonService } from "./flutterDaemonService"
+// import { FlutterDaemonService } from "./flutterDaemonService"
 import { registerFlutterRun } from "./flutterRunService"
 import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
@@ -64,8 +64,8 @@ export async function activate() {
     nova.commands.register(keys.reloadLspKey, state.client.reload)
   }
   // start the Flutter Daemon
-  state.daemon = new FlutterDaemonService()
-  state.daemon.start()
+  // state.daemon = new FlutterDaemonService()
+  // state.daemon.start()
   info.reload()
 }
 
