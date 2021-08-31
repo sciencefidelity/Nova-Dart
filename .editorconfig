@@ -1,0 +1,31 @@
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# TypeScript, JavaScript
+[*.{ts,js}]
+charset = utf-8
+indent_style = space
+indent_size = 2
+
+# package.json, tsconfig.json, extension.json
+[*.json]
+indent_style = space
+indent_size = 2
+
+# Shell script
+[*.sh]
+indent_style = space
+indent_size = 2
+
+# Dart
+[*.dart]
+charset = utf-8
+indent_style = space
+indent_size = 2
+
+# xml
+[*.xml]
+indent_style = space
+indent_size = 4
