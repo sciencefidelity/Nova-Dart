@@ -28,7 +28,7 @@
   "homepage": "https://github.com/sciencefidelity/Nova-Dart",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.5",
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.11",
     "@types/nova-editor-node": "^4.1.3",
