@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.grey[900],
       ),
-      home: MyHomePage(title: 'Color Picker'),
+      home: MyHomePage(title: 'Colour Picker'),
     ); // MaterialApp
   }
 }
