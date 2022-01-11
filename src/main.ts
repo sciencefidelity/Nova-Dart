@@ -59,7 +59,7 @@ export async function activate() {
       state.client.activate(false)
     } catch (err) {
       console.error(err)
-      throw new Error(err)
+      throw new Error("Dart LSP failed to activate")
     }
     nova.commands.register(keys.reloadLspKey, state.client.reload)
   }

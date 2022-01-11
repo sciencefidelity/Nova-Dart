@@ -97,7 +97,7 @@ export class DartLanguageClient {
       this.languageClient.start()
     } catch (err) {
       console.error(err)
-      throw new Error(err)
+      throw new Error("Dart LSP failed to start")
     }
     await this.subscribe()
     // TODO: Do something with the Flutter outline

@@ -69,7 +69,7 @@ export function wrapCommand(
     try {
       await command(...args)
     } catch (err) {
-      nova.workspace.showErrorMessage(err)
+      nova.workspace.showErrorMessage("Error")
     }
   }
 }

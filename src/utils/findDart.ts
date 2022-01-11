@@ -4,13 +4,13 @@ import { makeFileExecutable } from "./utils"
 const findDartFile = nova.path.join(nova.extension.path, "findDart.sh")
 let path: string | null = null
 
-export async function findDartPath() {
+export async function findDartPath(): Promise<string | null> {
   path = nova.config.get(keys.analyzerPath, "string")
   if (path) return path
   try {
     return (path = await findDart())
   } catch (err) {
-    return err
+    return "Dart Analyzer not found."
   }
 }
 
@@ -30,7 +30,7 @@ async function findDart() {
     })
     // prettier-ignore
     find.onDidExit(status => {
-      status === 0
+      status === 0 && typeof analyzerPath === "string"
         ? reslove(analyzerPath)
         : reject("Path to Dart Analyzer not found, please add it in the config.")
     })
