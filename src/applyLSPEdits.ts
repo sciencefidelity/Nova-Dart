@@ -1,7 +1,7 @@
 import type * as lspTypes from "vscode-languageserver-protocol"
 import { lspRangeToRange } from "./utils/lspNovaConversions"
 
-export async function applyLSPEdits (
+export async function applyLSPEdits(
   editor: TextEditor,
   edits: Array<lspTypes.TextEdit>
 ) {

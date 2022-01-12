@@ -106,7 +106,6 @@ export class DartLanguageClient {
       notification => {
         vars.outline = notification
       }
-
     )
     nova.commands.register(keys.diagnosticServer, wrapCommand(this.debugPort))
     console.log("LSP Running")
@@ -151,10 +150,10 @@ export class DartLanguageClient {
             ["Restart", "Ignore"],
             (r: number) => {
               switch (r) {
-              case 0:
-                // false means the LSP is not active when called
-                this.activate(false)
-                break
+                case 0:
+                  // false means the LSP is not active when called
+                  this.activate(false)
+                  break
               }
             }
           )
