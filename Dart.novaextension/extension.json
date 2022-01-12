@@ -196,11 +196,11 @@
     "extensions": [
       {
         "title": "Create New Flutter App",
-        "command": "sciencefidelity.dart.commands.flutterCreate",
+        "command": "sciencefidelity.dart.commands.flutterCreate"
       },
       {
         "title": "Get Debug Port",
-        "command": "sciencefidelity.dart.commands.diagnosticServer",
+        "command": "sciencefidelity.dart.commands.diagnosticServer"
       },
       {
         "title": "Preferences",
