@@ -1,6 +1,4 @@
-# don't ever lint node_modules
 node_modules
-# don't lint build output
 Scripts
-# don't lint Nova custom tasks
 .nova
+types
