@@ -1,7 +1,7 @@
 .DS_Store
 *.bak
-node_modules/
-/dart.novaextension/Scripts
-logs/
-coverage/
+node_modules
+Scripts
+logs
+coverage
 *.log
