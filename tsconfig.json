@@ -11,12 +11,13 @@
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "removeComments": true
-  },
-  "types": ["jest", "node", "nova-editor-node"],
-  "paths": {
-    "~/*": ["./src/*"],
-    "@/*": ["./src/*"]
+    "removeComments": true,
+    "baseUrl": "./src",
+    "typeRoots": ["node_modules/@types", "types"],
+    "types": ["bluebird", "jest", "node", "nova-editor-node"],
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["src/*", "src/**/*"],
   "exclude": [
