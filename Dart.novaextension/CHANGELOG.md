@@ -1,3 +1,8 @@
+## Version 0.5.2
+
+Fix type errors that were causing build to fail.
+Temporarily remove @types/nova-editor-node while sending a PR to Definately Typed.
+
 ## Version 0.5.1
 
 Fix a bug that would show an alert when reloading the LSP.
