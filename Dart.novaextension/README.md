@@ -22,7 +22,7 @@ The extension cannot currently find the dart LSP executable when installed by Ho
 # for M1 mac
 /opt/homebrew/Caskroom/flutter/2.8.0/flutter/bin/cache/dart-sdk/bin/snapshots
 # for Intell mac
-/usr/local/flutter/2.8.0/flutter/bin/cache/dart-sdk/bin/snapshots
+/usr/local/Caskroom/flutter/2.8.0/flutter/bin/cache/dart-sdk/bin/snapshots
 ```
 
 The extension is not finished and some planned features are not implemented, there are some UI elements and commands that available that will not work. This includes Hot Reloading - which is essential to this extension leaving beta. Please see these embelishment to the UI as a roadmap to the future of this extension. If you find something that dosen't work please feel free to [open an issue](https://github.com/sciencefidelity/Nova-Dart/issues).
