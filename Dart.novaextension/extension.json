@@ -44,13 +44,6 @@
       "default": true
     },
     {
-      "key": "sciencefidelity.dart.config.hotReloadOnSave",
-      "title": "Hot Reload on Save",
-      "description": "Run Hot Reload command on file save.",
-      "type": "boolean",
-      "default": true
-    },
-    {
       "key": "sciencefidelity.dart.config.formatDocumentOnSave",
       "title": "Format Document on Save",
       "description": "Run Format Document command on file save.",
@@ -63,18 +56,6 @@
     {
       "key": "sciencefidelity.dart.config.enableAnalyzer",
       "title": "Enable Language Server",
-      "type": "enum",
-      "values": [
-        ["null", "Inherit from Global Settings"],
-        ["false", "Disable"],
-        ["true", "Enable"]
-      ],
-      "default": "null"
-    },
-    {
-      "key": "sciencefidelity.dart.config.hotReloadOnSave",
-      "title": "Hot Reload on Save",
-      "description": "Run Hot Reload command on file save.",
       "type": "enum",
       "values": [
         ["null", "Inherit from Global Settings"],
@@ -99,39 +80,6 @@
 
   "sidebars": [
     {
-      "id": "sciencefidelity.dart.flutter.sidebar",
-      "name": "Flutter",
-      "smallImage": "FlutterSidebarSmall",
-      "largeImage": "FlutterSidebarLarge",
-      "sections": [
-        {
-          "id": "sciencefidelity.dart.sidebar.run",
-          "name": "Flutter",
-          "placeholderText": "Flutter Hot Reload",
-          "headerCommands": [
-            {
-              "title": "Run",
-              "image": "FlutterRun",
-              "tooltip": "Flutter run",
-              "command": "sciencefidelity.dart.commands.flutterRun"
-            },
-            {
-              "title": "Hot Reload",
-              "image": "HotReload",
-              "tooltip": "Hot reload",
-              "command": "sciencefidelity.dart.commands.hotReload"
-            },
-            {
-              "title": "Stop",
-              "image": "Stop",
-              "tooltip": "Stop the current app",
-              "command": "sciencefidelity.dart.commands.flutterStop"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "sciencefidelity.dart.dart.sidebar",
       "name": "Dart",
       "smallImage": "DartSidebarSmall",
@@ -147,12 +95,6 @@
               "image": "FlutterRun",
               "tooltip": "Flutter run",
               "command": "sciencefidelity.dart.commands.flutterRun"
-            },
-            {
-              "title": "Hot Reload",
-              "image": "HotReload",
-              "tooltip": "Hot reload",
-              "command": "sciencefidelity.dart.commands.hotReload"
             },
             {
               "title": "Stop",
@@ -174,19 +116,6 @@
               "command": "sciencefidelity.dart.commands.reloadLsp"
             }
           ]
-        },
-        {
-          "id": "sciencefidelity.dart.sidebar.symbols",
-          "name": "Results",
-          "placeholderText": "Results from “Find Symbol”, “Find Reference” and “Go to Definition” will show here.",
-          "headerCommands": [
-            {
-              "title": "Find Symbol",
-              "image": "Search",
-              "tooltip": "Open the Find Symbol palette",
-              "command": "sciencefidelity.dart.findSymbol"
-            }
-          ]
         }
       ]
     }
@@ -199,20 +128,12 @@
         "command": "sciencefidelity.dart.commands.flutterCreate"
       },
       {
-        "title": "Get Debug Port",
-        "command": "sciencefidelity.dart.commands.diagnosticServer"
-      },
-      {
         "title": "Preferences",
         "command": "sciencefidelity.dart.commands.openWorkspaceConfig"
       },
       {
         "title": "Restart Server",
         "command": "sciencefidelity.dart.commands.reloadLsp"
-      },
-      {
-        "title": "Get Daemon Version",
-        "command": "sciencefidelity.dart.commands.getDaemonVersion"
       }
     ],
     "editor": [
@@ -223,14 +144,6 @@
       {
         "title": "Flutter Stop",
         "command": "sciencefidelity.dart.commands.flutterStop"
-      },
-      {
-        "title": "Hot Reload",
-        "command": "sciencefidelity.dart.hotReload",
-        "shortcut": "option-shift-r",
-        "filters": {
-          "syntaxes": ["dart"]
-        }
       },
       {
         "title": "Format",

@@ -3,7 +3,6 @@ import { registerFormatDocument } from "./commands/formatDocument"
 import { keys, state, vars } from "./globalVars"
 import { info } from "./informationView"
 import { findDartPath } from "./utils/findDart"
-// prettier-ignore
 import { cancelSubs, makeFileExecutable, showActionableError, wrapCommand } from "./utils/utils"
 
 export class DartLanguageClient {
