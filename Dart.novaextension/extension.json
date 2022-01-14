@@ -87,7 +87,7 @@
       "sections": [
         {
           "id": "sciencefidelity.dart.sidebar.flutterRun",
-          "name": "Dart",
+          "name": "Flutter",
           "placeholderText": "Flutter Hot Reload",
           "headerCommands": [
             {
