@@ -29,6 +29,10 @@ nova.commands.register(keys.flutterCreate, flutterCreate)
 nova.config.onDidChange(keys.enableAnalyzer, async current => {
   current ? state.client?.activate(true) : state.client?.deactivate()
 })
+nova.config.onDidChange(keys.analyzerPath, async current => {
+  state.client?.deactivate()
+  state.client?.activate(true)
+})
 
 export async function activate() {
   // Resgister subscriptions

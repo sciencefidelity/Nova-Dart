@@ -12,7 +12,11 @@ Supports syntax highlighting, intelligent code completion, auto formatting, the 
 
 To use this extension you will need to have the [Flutter SDK](https://flutter.dev/docs/get-started/install/macos) or the [Dart SDK](https://dart.dev/get-dart) installed on your system.
 
-To use the built in language server, specify the location of the Dart Language Server in the extension preferences. If you have installed the Flutter SDK in your home directory then the extension should connect automatically, otherwise you need to specify the full path to the language server executable (`analysis_server.dart.snapshot`), which if using Flutter will be `<path to Flutter SDK>/flutter/bin/cache/dart-sdk/bin/snapshots`, or if using the Dart SDK the path will be `<path to Dart SDK>/dart-sdk/bin/snapshots`. The extension cannot currently find the dart LSP executable when installed by Homebrew. If you installed Flutter with Homebrew the path will be similar to one the following:
+To use the built in language server, specify the full path to the the Dart Language Server executable (`analysis_server.dart.snapshot`) in the extension preferences.
+
+If using Flutter will be `<path to Flutter SDK>/flutter/bin/cache/dart-sdk/bin/snapshots`, or if using the Dart SDK the path will be `<path to Dart SDK>/dart-sdk/bin/snapshots`.
+
+If you installed Flutter with Homebrew the path will be similar to one the following:
 
 ```shell
 # for M1 mac

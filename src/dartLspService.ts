@@ -36,15 +36,9 @@ export class DartLanguageClient {
       throw new Error("Dart Analyzer not found.")
     }
 
-    const analysisServer = `${analyzerPath
-      ?.trim()
-      .replace(
-        "/bin/dart",
-        "/bin/cache/dart-sdk/bin/snapshots"
-      )}/analysis_server.dart.snapshot`
-    console.log(`Analyzer path is: ${analysisServer}`)
+    if (analyzerPath === "") return
 
-    let _args = ["dart", `${analysisServer}`, "--lsp"]
+    let _args = ["dart", `${analyzerPath}`, "--lsp"]
     let _env = {}
     // enable logs in dev mode
     if (nova.inDevMode()) {
@@ -64,7 +58,7 @@ export class DartLanguageClient {
       _env = {
         WORKSPACE_DIR:
           `${cleanPath(nova.workspace.path!)}/test-workspace` ?? "",
-        INSTALL_DIR: analysisServer
+        INSTALL_DIR: analyzerPath
       }
     }
 
@@ -99,13 +93,7 @@ export class DartLanguageClient {
       throw new Error("Dart LSP failed to start")
     }
     await this.subscribe()
-    // TODO: Do something with the Flutter outline
-    this.languageClient.onNotification(
-      "dart/textDocument/publishFlutterOutline",
-      notification => {
-        vars.outline = notification
-      }
-    )
+
     nova.commands.register(keys.diagnosticServer, wrapCommand(this.debugPort))
     console.log("LSP Running")
     info.status = "Running"

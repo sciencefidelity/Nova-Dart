@@ -6,11 +6,15 @@ let path: string | null = null
 
 export async function findDartPath(): Promise<string | null> {
   path = nova.config.get(keys.analyzerPath, "string")
-  if (path) return path
-  try {
-    return (path = await findDart())
-  } catch (err) {
-    return "Dart Analyzer not found."
+  if (path) {
+    path = path.replace(/(analysis_server.dart.snapshot)$/, '')
+    path = path.replace(/\/$/, '')
+    return `${path}/analysis_server.dart.snapshot`
+  } else {
+    const notification = new NotificationRequest("pathNotFound")
+    notification.body = "Path to Dart Analysys Server not found.\n\nPlease add the full path in the extension preferences."
+    nova.notifications.add(notification)
+    return ""
   }
 }
 

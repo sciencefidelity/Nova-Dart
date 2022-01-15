@@ -13,7 +13,6 @@ export const keys = {
   formatDocumentOnSave: "sciencefidelity.dart.config.formatDocumentOnSave",
   getDaemonVersion: "sciencefidelity.dart.commands.getDaemonVersion",
   getDependencies: "sciencefidelity.dart.commands.getDependencies",
-  hotReload: "sciencefidelity.dart.commands.hotReload",
   openEmulator: "sciencefidelity.dart.commands.openEmulator",
   openSimulator: "sciencefidelity.dart.commands.openSimulator",
   openWorkspaceConfig: "sciencefidelity.dart.commands.openWorkspaceConfig",
