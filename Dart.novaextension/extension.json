@@ -10,7 +10,7 @@
     "completions",
     "formatters",
     "languages",
-    "sidebars",
+    "sidebars"
   ],
   "license": "MIT",
   "repository": "https://github.com/sciencefidelity/Nova-Dart",
