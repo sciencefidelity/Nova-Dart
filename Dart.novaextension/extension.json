@@ -2,7 +2,7 @@
   "identifier": "sciencefidelity.dart",
   "name": "Dart",
   "organization": "Matt Cook",
-  "description": "Dart and Flutter tools for Nova",
+  "description": "Dart and Flutter tools for Nova.",
   "version": "0.5.2",
   "categories": [
     "clips",
