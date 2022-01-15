@@ -7,8 +7,8 @@ let path: string | null = null
 export async function findDartPath(): Promise<string | null> {
   path = nova.config.get(keys.analyzerPath, "string")
   if (path) {
-    path = path.replace(/(analysis_server.dart.snapshot)$/, '')
-    path = path.replace(/\/$/, '')
+    path = path.replace(/(analysis_server.dart.snapshot)$/, "")
+    path = path.replace(/\/$/, "")
     return `${path}/analysis_server.dart.snapshot`
   } else {
     const notification = new NotificationRequest("pathNotFound")
