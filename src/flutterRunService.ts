@@ -93,7 +93,7 @@ export class FlutterRunService {
     //   this.wsUri = message.result.params.wsUri
     // })
     nova.commands.register(keys.flutterStop, wrapCommand(this.stop))
-    nova.commands.register(keys.hotReload, wrapCommand(this.reload))
+    // nova.commands.register(keys.hotReload, wrapCommand(this.reload))
     nova.commands.register(keys.flutterRun, () =>
       console.log("App already running")
     )
@@ -137,10 +137,10 @@ export function registerFlutterRun() {
     keys.flutterStop,
     () => console.log("App not running")
   )
-  nova.commands.register(
-    keys.hotReload,
-    () => console.log("App not running")
-  )
+  // nova.commands.register(
+  //   keys.hotReload,
+  //   () => console.log("App not running")
+  // )
   return nova.commands.register(
     keys.flutterRun,
     wrapCommand(flutterRun)

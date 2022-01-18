@@ -153,16 +153,16 @@ export class JsonRpcService {
     } catch (err) {
       if (typeof err === "string") return { error: { message: err } }
 
-      this.write({
-        id: request.id,
-        result: {
-          error: {
-            name: err.name,
-            message: err.message,
-            stack: err.stack
-          }
-        }
-      })
+      // this.write({
+      //   id: request.id,
+      //   result: {
+      //     error: {
+      //       name: err.name,
+      //       message: err.message,
+      //       stack: err.stack
+      //     }
+      //   }
+      // })
     }
   }
 
