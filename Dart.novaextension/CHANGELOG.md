@@ -1,3 +1,9 @@
+## Version 0.5.3
+
+Temporarily remove functionality where the extension tries to find the Dart LSP, which will now need to be input manually in preferences.
+Allow users to use choose a file of a folder with the picker when adding the path to the LSP.
+Process to path so that the LSP file cannot be added twice (by the user and by the extension).
+
 ## Version 0.5.2
 
 Fix type errors that were causing build to fail.

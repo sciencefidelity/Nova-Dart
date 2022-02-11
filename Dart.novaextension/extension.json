@@ -3,7 +3,7 @@
   "name": "Dart",
   "organization": "Matt Cook",
   "description": "Dart and Flutter tools for Nova.",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "categories": [
     "clips",
     "commands",
@@ -30,9 +30,10 @@
     {
       "key": "sciencefidelity.dart.config.analyzerPath",
       "title": "Dart Analyzer Path",
-      "description": "The extension will attempt to find the Dart analysis server (analysis_server.dart.snapshot). If that does not work add the path here, it's located in /bin/cache/dart-sdk/bin/snapshots of your Flutter installation.",
+      "description": "Please add the full path to the Dart Analysis Server (`analysis_server.dart.snapshot`), it's located in /bin/cache/dart-sdk/bin/snapshots of your Flutter installation.",
       "type": "path",
-      "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots"
+      "placeholder": "~/flutter/bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot",
+      "allowFolders": true
     },
     {
       "key": "sciencefidelity.dart.config.enableAnalyzer",
