@@ -84,11 +84,11 @@
                     <expression>```</expression>
                 </ends-with>
                 <subscopes>
-                  <scope name="dart.comment.triple-slash">
-                    <expression>///</expression>
-                </scope>
-                <include syntax="dart" />
-              </subscopes>
+                    <scope name="dart.comment.triple-slash">
+                        <expression>///</expression>
+                    </scope>
+                    <include syntax="dart" />
+                </subscopes>
             </scope>
             <scope name="dart.bracket.dartdoc">
                 <expression>`(.*?)`</expression>

@@ -2,11 +2,20 @@
   "name": "nova-dart",
   "version": "0.5.3",
   "description": "Dart and Flutter Tools for Nova",
+  "author": "Matt Cook",
+  "license": "MIT",
   "main": "",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sciencefidelity/Nova-Dart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sciencefidelity/Nova-Dart/issues"
+  },
+  "homepage": "https://github.com/sciencefidelity/Nova-Dart",
   "scripts": {
     "build": "rollup -c rollup.config.main.js",
-    "test": "jest",
+    "watch": "onchange -i \"src/**\" \"rollup.*.js\" -- npm run build",
     "lint": "concurrently 'yarn:lint:*'",
     "lint:js": "eslint '**/*.{ts,js}'",
     "lint:format": "prettier --check '**/*.{ts,js,json,md,yml}'",
@@ -14,24 +23,15 @@
     "fix": "concurrently 'yarn:fix:*'",
     "fix:js": "eslint --fix \"**/*.{ts,js}\"",
     "fix:format": "prettier --write \"**/*.{ts,js,json,md,yml}\"",
-    "watch": "onchange -i \"src/**\" \"rollup.*.js\" -- npm run build"
+    "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sciencefidelity/Nova-Dart.git"
-  },
-  "author": "Matt Cook",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sciencefidelity/Nova-Dart/issues"
-  },
-  "homepage": "https://github.com/sciencefidelity/Nova-Dart",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.1.2",
     "@types/bluebird": "^3.5.36",
     "@types/jest": "^27.0.2",
     "@types/node": "^17.0.14",
+    "@types/nova-editor": "^1.0.0",
     "@types/nova-editor-node": "^4.1.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
