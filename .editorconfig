@@ -1,31 +1,74 @@
 # EditorConfig is awesome: https://EditorConfig.org
-
-# top-most EditorConfig file
 root = true
 
-# Unix-style newlines with a newline ending every file
 [*]
 end_of_line = lf
 charset = utf-8
+trim_trailing_whitespace = true
 insert_final_newline = true
+
+# Markup
+[*.html]
 indent_style = space
+indent_size = 2
+
+# Markdown
+[*.md]
+indent_style = space
+indent_size = 2
+
+# Stylesheet
+[*.{css,scss}]
+indent_style = space
+indent_size = 2
 
 # TypeScript, JavaScript
-[*.{ts,js}]
+[*.{ts,tsx,js,jsx,cjs,mjs}]
+indent_style = space
 indent_size = 2
 
-# package.json, tsconfig.json, extension.json
-[*.json]
+# Framework component
+[*.{astro,svelte,vue}]
+indent_style = space
 indent_size = 2
 
-# Shell script
-[*.sh]
+# Go
+[{*.go,go.mod,go.sum}]
+indent_style = tab
 indent_size = 2
 
-# Dart
+# Dart, Flutter
 [*.dart]
+indent_style = space
+indent_size = 2
+
+# Lua
+[*.lua]
+indent_style = space
+indent_size = 2
+
+# json
+[*.json]
+indent_style = space
+indent_size = 2
+
+# yml
+[*.yml]
+indent_style = space
 indent_size = 2
 
 # xml
 [*.xml]
+indent_style = space
 indent_size = 4
+
+# Nix
+[*.nix]
+indent_style = space
+indent_size = 2
+
+# Shell
+[*.sh]
+indent_style = space
+indent_size = 4
+
